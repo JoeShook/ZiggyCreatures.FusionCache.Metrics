@@ -4,7 +4,7 @@ using System.Threading;
 using Microsoft.Extensions.Caching.Memory;
 using ZiggyCreatures.Caching.Fusion;
 
-namespace JoeShook.FusionCache.EventCounters
+namespace JoeShook.FusionCache.EventCounters.Plugin
 {
     /// <summary>
     /// Generic FusionCacheEventSource.  
@@ -246,7 +246,7 @@ namespace JoeShook.FusionCache.EventCounters
 
         #endregion
 
-        public void Wireup(IFusionCache fusionCache)
+        public void Wireup(IFusionCache fusionCache, FusionCacheOptions? fusionCacheOptions = null)
         {
             fusionCache.Events.Hit += (s, e) =>
             {
@@ -268,15 +268,44 @@ namespace JoeShook.FusionCache.EventCounters
             // fusionCache.Events.FactorySyntheticTimeout 
             // fusionCache.Events.FailSafeActivate  
 
-            fusionCache.Events.Replaced += (s, e) => CacheReplaced();
-            fusionCache.Events.Expired += (s, e) => CacheCapacityExpired();
-            fusionCache.Events.Evicted += (s, e) => CacheEvicted();
-            fusionCache.Events.Expired += (s, e) => CacheExpired();
-
+            fusionCacheOptions?.DefaultEntryOptions.PostEvictionCallbacks.Add(new PostEvictionCallbackRegistration()
+            {
+                EvictionCallback = EvictionCallbackMetrics(this),
+                State = null
+            });
+            
             //
             // Background refresh vs sets?  Not sure I care.  Maybe 
             //
             fusionCache.Events.BackgroundFactorySuccess += (s, e) => CacheBackgroundRefresh();
+        }
+
+        private PostEvictionDelegate EvictionCallbackMetrics(FusionCacheEventSource metrics)
+        {
+            return (key, value, reason, state) =>
+            {
+                if (reason == EvictionReason.Expired)
+                {
+                    metrics.CacheExpired();
+                }
+                else if (reason == EvictionReason.Capacity)
+                {
+                    metrics.CacheCapacityExpired();
+                }
+                // else if (reason == EvictionReason.Removed)
+                // {
+                // 	This is supported already in FusionCache
+                // }
+                else if (reason == EvictionReason.Replaced)
+                {
+
+                    metrics.CacheReplaced();
+                }
+                else // Evicted un-categorized
+                {
+                    metrics.CacheEvicted();
+                }
+            };
         }
     }
 }

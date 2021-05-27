@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JoeShook.FusionCache.EventCounters.Plugin", "src\JoeShook.FusionCache.EventCounters.Plugin\JoeShook.FusionCache.EventCounters.Plugin.csproj", "{60AFEA2D-651B-462A-A995-0F7C88CD3B9C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.AppMetrics.Plugins", "src\JoeShook.FusionCache.AppMetrics.Plugin\ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj", "{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60AFEA2D-651B-462A-A995-0F7C88CD3B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60AFEA2D-651B-462A-A995-0F7C88CD3B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60AFEA2D-651B-462A-A995-0F7C88CD3B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60AFEA2D-651B-462A-A995-0F7C88CD3B9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {32C4269F-FC33-47FA-91DA-2B6C5DF7D025}
+	EndGlobalSection
+EndGlobal
