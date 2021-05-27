@@ -248,7 +248,7 @@ namespace JoeShook.FusionCache.EventCounters.Plugin
 
         public void Wireup(IFusionCache fusionCache, FusionCacheOptions? fusionCacheOptions = null)
         {
-            fusionCache.Events.Hit += (s, e) =>
+            fusionCache.Events.Memory.Hit += (s, e) =>
             {
                 if (e.IsStale)
                 {
@@ -260,8 +260,8 @@ namespace JoeShook.FusionCache.EventCounters.Plugin
                 }
             };
 
-            fusionCache.Events.Miss += (s, e) => CacheMiss();
-            fusionCache.Events.Remove += (s, e) => CacheRemoved();
+            fusionCache.Events.Memory.Miss += (s, e) => CacheMiss();
+            fusionCache.Events.Memory.Remove += (s, e) => CacheRemoved();
 
             // fusionCache.Events.BackgroundFactoryError 
             // fusionCache.Events.FactoryError 
