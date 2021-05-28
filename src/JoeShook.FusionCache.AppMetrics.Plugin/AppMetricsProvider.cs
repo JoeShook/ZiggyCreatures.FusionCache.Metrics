@@ -6,7 +6,7 @@ namespace JoeShook.FusionCache.AppMetrics.Plugins
     /// <summary>
     /// AppMetrics implementation of IFusionMetrics provider
     /// </summary>
-    public class AppMetricsProvider : IFusionMetrics
+    public class AppMetricsProvider // : IFusionMetrics
     {
         private IMetrics _metrics;
         private MetricTags _cacheNameMetricTag;
