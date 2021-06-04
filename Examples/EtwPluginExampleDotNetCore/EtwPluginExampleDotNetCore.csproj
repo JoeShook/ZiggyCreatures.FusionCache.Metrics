@@ -7,8 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\data\MockDomainCertData.json" Link="MockDomainCertData.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\data\MockEmailToIpData.json" Link="MockEmailToIpData.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.1.3.1-events" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\JoeShook.FusionCache.EventCounters.Plugin\JoeShook.FusionCache.EventCounters.Plugin.csproj" />
+    <ProjectReference Include="..\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj" />
   </ItemGroup>
 
 </Project>

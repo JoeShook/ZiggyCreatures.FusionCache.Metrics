@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using FusionCache.Example.Domain.Model;
-using Xunit;
+﻿using System.Text.Json;
 using Xunit.Abstractions;
 
 namespace FusionCache.Etw.Plugin.Tests
@@ -13,10 +7,17 @@ namespace FusionCache.Etw.Plugin.Tests
     public class CreateTestDataUtility
     {
         private readonly ITestOutputHelper _testOutputHelper;
+        private JsonSerializerOptions serializeOptions;
 
         public CreateTestDataUtility(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
+
+            serializeOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
         }
 
         /// <summary>
@@ -24,14 +25,32 @@ namespace FusionCache.Etw.Plugin.Tests
         /// This test utility correlates the domains in MockDomainCertData.json to the email addresses in
         /// MockEmailToIpData.json.  This data will be used to build example apps with caching and metrics needs.
         /// </summary>
-        [Fact]
-        public void fixupMockEmailToIpData_Json()
-        {
-            //_testOutputHelper.WriteLine(File.ReadAllText("../../../../../examples/data/MockDomainCertData.json"));
-            
-            var domains = JsonSerializer.Deserialize<List<DomainCertData>>(File.ReadAllText("../../../../../examples/data/MockDomainCertData.json"));
-            
-            
-        }
+        // [Fact]
+        // public void fixupMockEmailToIpData_Json()
+        // {
+        //     //_testOutputHelper.WriteLine(File.ReadAllText("../../../../../examples/data/MockDomainCertData.json"));
+        //     
+        //     var domains = JsonSerializer.Deserialize<List<DomainCertData>>(
+        //         File.ReadAllText("../../../../../examples/data/MockDomainCertData.json"),
+        //         serializeOptions);
+        //
+        //     var emails = JsonSerializer.Deserialize<List<EmailToIpData>>(
+        //         File.ReadAllText("../../../../../examples/data/MockEmailToIpData.json"),
+        //         serializeOptions);
+        //
+        //     foreach (var emailToIpData in emails)
+        //     {
+        //         var sourceIndex = emailToIpData.Id;
+        //         var sourceEmail = emailToIpData.Email;
+        //         var searchIndex = sourceIndex >= 101 ? emailToIpData.Id % 101 + 1 : emailToIpData.Id % 101;
+        //         // _testOutputHelper.WriteLine(emailToIpData.Id + " " + searchIndex.ToString());
+        //         var searchDomain = domains.Single(d => d.Id == searchIndex).Domain;
+        //         emailToIpData.Email = Regex.Replace(sourceEmail, "(?:.*@).*", searchDomain);
+        //     }
+        //
+        //     //_testOutputHelper.WriteLine(JsonSerializer.Serialize(emails, serializeOptions));
+        //
+        //     File.WriteAllText("../../../../../examples/data/MockEmailToIpData.json", JsonSerializer.Serialize(emails, serializeOptions));
+        // }
     }
 }

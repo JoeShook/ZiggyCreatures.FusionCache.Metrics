@@ -5,14 +5,15 @@
     /// </summary>
     public class DomainCertData
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public string domain { get; set; }
+        public string Domain { get; set; }
 
         /// <summary>
         /// Data is fake.  Not a real certificate
         /// </summary>
-        public string certificate { get; set; }
+        public string Certificate { get; set; }
         
+        public bool Enabled { get; set; }
     }
 }

@@ -1,15 +1,15 @@
+using System;
+using JoeShook.FusionCache.EventCounters.Plugin;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ZiggyCreatures.Caching.Fusion;
+
 
 namespace EtwPluginExampleDotNetCore
 {
@@ -25,8 +25,37 @@ namespace EtwPluginExampleDotNetCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
+
+            //
+            // Once this is a Fusion Cache Plugin maybe we can just call services.AddFusionCache(...)
+            //
+            var domainMemoryCache = new MemoryCache(new MemoryCacheOptions());
+            services.AddSingleton<IMemoryCache>(domainMemoryCache);
+
+            services.AddSingleton<IFusionCache>(serviceProvider =>
+            {
+                var logger = serviceProvider.GetService<ILogger<ZiggyCreatures.Caching.Fusion.FusionCache>>();
+
+                var fusionCacheOptions = new FusionCacheOptions
+                {
+                    DefaultEntryOptions = new FusionCacheEntryOptions
+                        {
+                            Duration = TimeSpan.FromSeconds(5),
+                            Priority = CacheItemPriority.High
+                        }
+                        .SetFailSafe(true, TimeSpan.FromSeconds(10))
+                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(10))
+                };
+
+                // Future Plugin for hooking metrics ???
+                var metrics = new FusionCacheEventSource("email", domainMemoryCache);
+                var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, domainMemoryCache, logger);
+                metrics.Wireup(fusionCache, fusionCacheOptions);
+
+                return fusionCache;
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EtwPluginExampleDotNetCore", Version = "v1" });
