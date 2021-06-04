@@ -7,6 +7,24 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JoeShook.FusionCache.EventC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.AppMetrics.Plugins", "src\JoeShook.FusionCache.AppMetrics.Plugin\ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj", "{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtwPluginExampleDotNetCore", "Examples\EtwPluginExampleDotNetCore\EtwPluginExampleDotNetCore.csproj", "{6C06623B-4065-417C-ABCC-4475AE3CF85C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{63DE5928-09B2-41DF-A026-120ABE23369C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A8A86176-AAA6-4CB3-9172-16A841E32138}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FusionCache.Etw.Plugin.Tests", "tests\FusionCache.Etw.Plugin.Tests\FusionCache.Etw.Plugin.Tests.csproj", "{0B4AA8D5-51B3-4C0D-A67B-6976A8063B0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FusionCache.Example.Domain.Model", "examples\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj", "{9DAA58CD-4DB6-4902-970E-DA2E07348306}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{3B2F7154-4E2C-4FC8-827D-7FED1C2A8716}"
+	ProjectSection(SolutionItems) = preProject
+		Examples\data\MockDomainCertData.json = Examples\data\MockDomainCertData.json
+		Examples\data\MockEmailToIpData.json = Examples\data\MockEmailToIpData.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +39,29 @@ Global
 		{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C06623B-4065-417C-ABCC-4475AE3CF85C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C06623B-4065-417C-ABCC-4475AE3CF85C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C06623B-4065-417C-ABCC-4475AE3CF85C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C06623B-4065-417C-ABCC-4475AE3CF85C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B4AA8D5-51B3-4C0D-A67B-6976A8063B0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B4AA8D5-51B3-4C0D-A67B-6976A8063B0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B4AA8D5-51B3-4C0D-A67B-6976A8063B0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B4AA8D5-51B3-4C0D-A67B-6976A8063B0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DAA58CD-4DB6-4902-970E-DA2E07348306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DAA58CD-4DB6-4902-970E-DA2E07348306}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DAA58CD-4DB6-4902-970E-DA2E07348306}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DAA58CD-4DB6-4902-970E-DA2E07348306}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{60AFEA2D-651B-462A-A995-0F7C88CD3B9C} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
+		{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
+		{6C06623B-4065-417C-ABCC-4475AE3CF85C} = {63DE5928-09B2-41DF-A026-120ABE23369C}
+		{0B4AA8D5-51B3-4C0D-A67B-6976A8063B0A} = {A8A86176-AAA6-4CB3-9172-16A841E32138}
+		{9DAA58CD-4DB6-4902-970E-DA2E07348306} = {63DE5928-09B2-41DF-A026-120ABE23369C}
+		{3B2F7154-4E2C-4FC8-827D-7FED1C2A8716} = {63DE5928-09B2-41DF-A026-120ABE23369C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32C4269F-FC33-47FA-91DA-2B6C5DF7D025}
