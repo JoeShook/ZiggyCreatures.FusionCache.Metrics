@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
 using System.Net.Mail;
 using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using EtwPluginExampleDotNetCore.Services;
 using FusionCache.Example.Domain.Model;
 using ZiggyCreatures.Caching.Fusion;
 
@@ -13,11 +14,13 @@ namespace EtwPluginExampleDotNetCore.Controllers
     public class EmailValidatorController : ControllerBase
     {
         private readonly DataManager _dataManager;
+        private readonly IEmailService _emailService;
         private readonly IFusionCache _cache;
 
-        public EmailValidatorController(DataManager dataManager, IFusionCache cache = null)
+        public EmailValidatorController(DataManager dataManager, IEmailService emailService, IFusionCache cache = null)
         {
             _dataManager = dataManager;
+            _emailService = emailService;
             _cache = cache;
         }
 
@@ -26,15 +29,23 @@ namespace EtwPluginExampleDotNetCore.Controllers
         public async Task<IActionResult> GetEmailRoute([FromRoute] string emailAddress, CancellationToken cancellationToken)
         {
             EmailToIpData result;
+            var hostPart = GetHostPart(emailAddress);
+
+            if (hostPart == null)
+            {
+                return BadRequest("Invalid email address.");
+            }
 
             if (_cache != null)
             {
-                var domainName = new MailAddress(emailAddress).Host;
-                var domain = await _cache.GetOrSetAsync(domainName, await _dataManager.GetDomain(domainName, cancellationToken));
+                var domain = await _cache.GetOrSetAsync(
+                    hostPart, 
+                    await _dataManager.GetDomain(hostPart, cancellationToken), 
+                    token: cancellationToken);
                 
                 if (domain != null && domain.Enabled)
                 {
-                    result = await _cache.GetOrSetAsync(emailAddress, await _dataManager.GetEmailRoute(emailAddress, cancellationToken));
+                    result = await _emailService.GetEmailRoute(emailAddress, cancellationToken);
                 }
                 else
                 {
@@ -49,6 +60,20 @@ namespace EtwPluginExampleDotNetCore.Controllers
             return Ok(result);
         }
 
+        private static string GetHostPart(string emailAddress)
+        {
+            try
+            {
+                return new MailAddress(emailAddress).Host;
+            }
+            catch (Exception ex)
+            {
+                //log
+            }
+
+            return null;
+        }
+
         [Route("Domain/{domainName}")]
         [HttpGet]
         public async Task<IActionResult> GetDomain([FromRoute] string domainName, CancellationToken cancellationToken)
@@ -57,7 +82,10 @@ namespace EtwPluginExampleDotNetCore.Controllers
 
             if (_cache != null)
             {
-                result = await _cache.GetOrSetAsync(domainName, await _dataManager.GetDomain(domainName, cancellationToken));
+                result = await _cache.GetOrSetAsync(
+                    domainName, 
+                    await _dataManager.GetDomain(domainName, cancellationToken), 
+                    token: cancellationToken);
             }
             else
             {

@@ -1,4 +1,7 @@
 using System;
+using System.Text.Json;
+using EtwPluginExampleDotNetCore.Controllers;
+using EtwPluginExampleDotNetCore.Services;
 using JoeShook.FusionCache.EventCounters.Plugin;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +28,14 @@ namespace EtwPluginExampleDotNetCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                options.JsonSerializerOptions.WriteIndented = true;
+            });
+
+            services.AddSingleton(new DataManager());
+            services.AddSingleton<IEmailService, EmailService>();
 
             //
             // Once this is a Fusion Cache Plugin maybe we can just call services.AddFusionCache(...)
