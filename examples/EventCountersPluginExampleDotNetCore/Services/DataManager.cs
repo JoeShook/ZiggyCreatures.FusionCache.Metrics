@@ -22,8 +22,8 @@ namespace EventCountersPluginExampleDotNetCore.Services
                 WriteIndented = true
             };
 
-            domains = JsonSerializer.Deserialize<List<DomainCertData>>(File.ReadAllText("../data/MockDomainCertData.json"), serializeOptions);
-            emailToIpDatas = JsonSerializer.Deserialize<List<EmailToIpData>>(File.ReadAllText("../data/MockEmailToIpData.json"), serializeOptions);
+            domains = JsonSerializer.Deserialize<List<DomainCertData>>(File.ReadAllText("MockDomainCertData.json"), serializeOptions);
+            emailToIpDatas = JsonSerializer.Deserialize<List<EmailToIpData>>(File.ReadAllText("MockEmailToIpData.json"), serializeOptions);
         }
 
         public async Task<DomainCertData> GetDomain(string name, CancellationToken cancellationToken)
