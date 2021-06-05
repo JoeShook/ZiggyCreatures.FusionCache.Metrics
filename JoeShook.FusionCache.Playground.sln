@@ -7,23 +7,25 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JoeShook.FusionCache.EventC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.AppMetrics.Plugins", "src\JoeShook.FusionCache.AppMetrics.Plugin\ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj", "{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{63DE5928-09B2-41DF-A026-120ABE23369C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A8A86176-AAA6-4CB3-9172-16A841E32138}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FusionCache.Example.Domain.Model", "examples\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj", "{9DAA58CD-4DB6-4902-970E-DA2E07348306}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.EventCounters.Plugin.Tests", "tests\FusionCache.EventCounters.Plugin.Tests\FusionCache.EventCounters.Plugin.Tests.csproj", "{ECF948AA-8D83-4261-8DD1-1E14CD3371E7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{3B2F7154-4E2C-4FC8-827D-7FED1C2A8716}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{3B2A9861-652E-4A23-AA07-3B5A6ACF1859}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{B1ABFEA2-4FD1-42E6-AF2A-ED2DAED00B95}"
 	ProjectSection(SolutionItems) = preProject
-		Examples\data\MockDomainCertData.json = Examples\data\MockDomainCertData.json
-		Examples\data\MockEmailToIpData.json = Examples\data\MockEmailToIpData.json
+		examples\data\MockDomainCertData.json = examples\data\MockDomainCertData.json
+		examples\data\MockDomainCertOriginalData.json = examples\data\MockDomainCertOriginalData.json
+		examples\data\MockEmailToIpData.json = examples\data\MockEmailToIpData.json
+		examples\data\MockEmailToIpOriginalData.json = examples\data\MockEmailToIpOriginalData.json
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventCountersPluginExampleDotNetCore", "Examples\EventCountersPluginExampleDotNetCore\EventCountersPluginExampleDotNetCore.csproj", "{E079B821-AB2A-4D80-9A87-53A72C635590}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.Example.Domain.Model", "examples\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj", "{A8FA9C7A-83B7-47A6-BC06-EA3C5FCEC092}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.EventCounters.Plugin.Tests", "tests\FusionCache.EventCounters.Plugin.Tests\FusionCache.EventCounters.Plugin.Tests.csproj", "{ECF948AA-8D83-4261-8DD1-1E14CD3371E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventCountersPluginExampleDotNetCore", "examples\EventCountersPluginExampleDotNetCore\EventCountersPluginExampleDotNetCore.csproj", "{00642705-51D1-402A-9749-130CFF041BC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,18 +41,18 @@ Global
 		{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9DAA58CD-4DB6-4902-970E-DA2E07348306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9DAA58CD-4DB6-4902-970E-DA2E07348306}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9DAA58CD-4DB6-4902-970E-DA2E07348306}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9DAA58CD-4DB6-4902-970E-DA2E07348306}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E079B821-AB2A-4D80-9A87-53A72C635590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E079B821-AB2A-4D80-9A87-53A72C635590}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E079B821-AB2A-4D80-9A87-53A72C635590}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E079B821-AB2A-4D80-9A87-53A72C635590}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ECF948AA-8D83-4261-8DD1-1E14CD3371E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ECF948AA-8D83-4261-8DD1-1E14CD3371E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECF948AA-8D83-4261-8DD1-1E14CD3371E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECF948AA-8D83-4261-8DD1-1E14CD3371E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8FA9C7A-83B7-47A6-BC06-EA3C5FCEC092}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8FA9C7A-83B7-47A6-BC06-EA3C5FCEC092}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8FA9C7A-83B7-47A6-BC06-EA3C5FCEC092}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8FA9C7A-83B7-47A6-BC06-EA3C5FCEC092}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00642705-51D1-402A-9749-130CFF041BC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00642705-51D1-402A-9749-130CFF041BC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00642705-51D1-402A-9749-130CFF041BC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00642705-51D1-402A-9749-130CFF041BC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,10 +60,10 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{60AFEA2D-651B-462A-A995-0F7C88CD3B9C} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
 		{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
-		{9DAA58CD-4DB6-4902-970E-DA2E07348306} = {63DE5928-09B2-41DF-A026-120ABE23369C}
-		{3B2F7154-4E2C-4FC8-827D-7FED1C2A8716} = {63DE5928-09B2-41DF-A026-120ABE23369C}
-		{E079B821-AB2A-4D80-9A87-53A72C635590} = {63DE5928-09B2-41DF-A026-120ABE23369C}
 		{ECF948AA-8D83-4261-8DD1-1E14CD3371E7} = {A8A86176-AAA6-4CB3-9172-16A841E32138}
+		{B1ABFEA2-4FD1-42E6-AF2A-ED2DAED00B95} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
+		{A8FA9C7A-83B7-47A6-BC06-EA3C5FCEC092} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
+		{00642705-51D1-402A-9749-130CFF041BC2} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32C4269F-FC33-47FA-91DA-2B6C5DF7D025}

@@ -6,16 +6,16 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["Examples/EtwPluginExampleDotNetCore/EtwPluginExampleDotNetCore.csproj", "Examples/EtwPluginExampleDotNetCore/"]
-RUN dotnet restore "Examples/EtwPluginExampleDotNetCore/EtwPluginExampleDotNetCore.csproj"
+COPY ["examples/EventCountersPluginExampleDotNetCore/EventCountersPluginExampleDotNetCore.csproj", "examples/EventCountersPluginExampleDotNetCore/"]
+RUN dotnet restore "examples/EventCountersPluginExampleDotNetCore/EventCountersPluginExampleDotNetCore.csproj"
 COPY . .
-WORKDIR "/src/Examples/EtwPluginExampleDotNetCore"
-RUN dotnet build "EtwPluginExampleDotNetCore.csproj" -c Release -o /app/build
+WORKDIR "/src/examples/EventCountersPluginExampleDotNetCore"
+RUN dotnet build "EventCountersPluginExampleDotNetCore.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "EtwPluginExampleDotNetCore.csproj" -c Release -o /app/publish
+RUN dotnet publish "EventCountersPluginExampleDotNetCore.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "EtwPluginExampleDotNetCore.dll"]
+ENTRYPOINT ["dotnet", "EventCountersPluginExampleDotNetCore.dll"]
