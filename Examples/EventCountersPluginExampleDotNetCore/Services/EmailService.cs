@@ -1,10 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using EtwPluginExampleDotNetCore.Controllers;
 using FusionCache.Example.Domain.Model;
 using ZiggyCreatures.Caching.Fusion;
 
-namespace EtwPluginExampleDotNetCore.Services
+namespace EventCountersPluginExampleDotNetCore.Services
 {
     public interface IEmailService
     {

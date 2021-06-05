@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FusionCache.Example.Domain.Model;
 
-namespace EtwPluginExampleDotNetCore.Controllers
+namespace EventCountersPluginExampleDotNetCore.Services
 {
     public class DataManager
     {

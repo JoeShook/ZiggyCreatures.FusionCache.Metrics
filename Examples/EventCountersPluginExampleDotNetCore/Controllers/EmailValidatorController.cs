@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Net.Mail;
 using System.Threading;
-using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using EtwPluginExampleDotNetCore.Services;
+using EventCountersPluginExampleDotNetCore.Services;
 using FusionCache.Example.Domain.Model;
+using Microsoft.AspNetCore.Mvc;
 using ZiggyCreatures.Caching.Fusion;
 
-namespace EtwPluginExampleDotNetCore.Controllers
+namespace EventCountersPluginExampleDotNetCore.Controllers
 {
     [ApiController]
     [Route("[controller]")]

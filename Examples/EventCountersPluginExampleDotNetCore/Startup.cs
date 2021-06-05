@@ -1,7 +1,6 @@
 using System;
 using System.Text.Json;
-using EtwPluginExampleDotNetCore.Controllers;
-using EtwPluginExampleDotNetCore.Services;
+using EventCountersPluginExampleDotNetCore.Services;
 using JoeShook.FusionCache.EventCounters.Plugin;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,8 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ZiggyCreatures.Caching.Fusion;
 
-
-namespace EtwPluginExampleDotNetCore
+namespace EventCountersPluginExampleDotNetCore
 {
     public class Startup
     {
@@ -68,7 +66,7 @@ namespace EtwPluginExampleDotNetCore
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EtwPluginExampleDotNetCore", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EventCountersPluginExampleDotNetCore", Version = "v1" });
             });
         }
 
