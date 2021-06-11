@@ -39,7 +39,7 @@ namespace EventCountersPluginExampleDotNetCore
             // Once this is a Fusion Cache Plugin maybe we can just call services.AddFusionCache(...)
             //
             var domainMemoryCache = new MemoryCache(new MemoryCacheOptions());
-            services.AddSingleton<IMemoryCache>(domainMemoryCache);
+            // services.AddSingleton<IMemoryCache>(domainMemoryCache);
 
             services.AddSingleton<IFusionCache>(serviceProvider =>
             {

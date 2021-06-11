@@ -3,8 +3,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Web.Http;
 using App.Metrics;
+using App.Metrics.Extensions.Hosting;
 using App.Metrics.Filtering;
 using App.Metrics.Formatters.InfluxDB;
 using AppMetricsPluginExample2.Services;
@@ -14,6 +16,7 @@ using AutofacSerilogIntegration;
 using JoeShook.FusionCache.AppMetrics.Plugins;
 using Microsoft.Configuration.ConfigurationBuilders;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using ZiggyCreatures.Caching.Fusion;
@@ -67,8 +70,8 @@ namespace AppMetricsPluginExample2.App_Start
                         var filter = new MetricsFilter();
                         filter.WhereContext(c => c == appMetricsContextLabel); //remove default AppMetrics metrics.
                         options.InfluxDb.BaseUri = new Uri($"http://{ConfigurationManager.AppSettings.Get("InfluxDbConfig.Host")}:{ConfigurationManager.AppSettings.Get("InfluxDbConfig.Port")}");
-                        //options.InfluxDb.Database = ConfigurationManager.AppSettings.Get("InfluxDbConfig.Database");
-                        //options.InfluxDb.RetentionPolicy = ConfigurationManager.AppSettings.Get("InfluxDbConfig.RetentionPolicy"); 
+                        options.InfluxDb.Database = ConfigurationManager.AppSettings.Get("InfluxDbConfig.Database");
+                        options.InfluxDb.RetentionPolicy = ConfigurationManager.AppSettings.Get("InfluxDbConfig.RetentionPolicy"); 
                         options.InfluxDb.UserName = ConfigurationManager.AppSettings.Get("InfluxDbConfig.Username");
                         options.InfluxDb.Password = ConfigurationManager.AppSettings.Get("InfluxDbConfig.Password");
                         options.InfluxDb.CreateDataBaseIfNotExists = false;
@@ -83,6 +86,11 @@ namespace AppMetricsPluginExample2.App_Start
                     })
                 .Build();
 
+            var metricsReporterService = new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters);
+            metricsReporterService.StartAsync(CancellationToken.None);
+            builder.Register(c => metricsReporterService)
+                .SingleInstance();
+
             builder.RegisterType<LoggerFactory>()
                 .As<ILoggerFactory>()
                 .SingleInstance();
@@ -94,10 +102,11 @@ namespace AppMetricsPluginExample2.App_Start
 
             builder.RegisterLogger(Log.Logger);
            
+
             builder.Register(c =>
                 {
-                    // var loggerFactory = c.Resolve<ILoggerFactory>();
-                    var logger = c.Resolve<ILogger<ZiggyCreatures.Caching.Fusion.FusionCache>>();
+                    var loggerFactory = c.Resolve<ILoggerFactory>();
+                    var logger = loggerFactory.CreateLogger<ZiggyCreatures.Caching.Fusion.FusionCache>();
 
                     var fusionCacheOptions = new FusionCacheOptions
                     {
@@ -111,7 +120,7 @@ namespace AppMetricsPluginExample2.App_Start
                     };
 
                     // Future Plugin for hooking metrics ???
-                    var metrics = new AppMetricsProvider("email", appMetrics);
+                    var metrics = new AppMetricsProvider("domain", appMetrics);
                     var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, domainMemoryCache, logger);
                     metrics.Wireup(fusionCache, fusionCacheOptions);
 

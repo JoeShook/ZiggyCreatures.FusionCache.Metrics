@@ -9,6 +9,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="App.Metrics" Version="4.2.0" />
+    <PackageReference Include="App.Metrics.Abstractions" Version="4.2.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Hosting" Version="4.1.0" />
+    <PackageReference Include="App.Metrics.Core" Version="4.2.0" />
+    <PackageReference Include="App.Metrics.Extensions.Hosting" Version="4.1.0" />
+    <PackageReference Include="App.Metrics.Formatters.InfluxDB" Version="4.2.0" />
+    <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
@@ -16,15 +23,19 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.10" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" version="3.1.10" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.10" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.10" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
-    <PackageReference Include="System.Text.Json" Version="4.6.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
+    <PackageReference Include="Serilog.Settings.AppSettings" Version="2.2.2" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
     <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.1.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\JoeShook.FusionCache.AppMetrics.Plugin\ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj" />
     <ProjectReference Include="..\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj" />
   </ItemGroup>
 
@@ -33,6 +44,7 @@
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <UserSecretsId>731b9398-3477-483d-b4ab-0976c3ad0fc9</UserSecretsId>
   </PropertyGroup>
 
 </Project>
