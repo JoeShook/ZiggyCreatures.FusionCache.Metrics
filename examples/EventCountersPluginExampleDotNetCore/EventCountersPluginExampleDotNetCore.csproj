@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.1.3.1-events" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.1.4" />
   </ItemGroup>
 
   <ItemGroup>

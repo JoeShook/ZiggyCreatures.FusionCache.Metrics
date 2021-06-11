@@ -1,7 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Source\GitHub\JoeShook\FusionCacheMetricsPlayground\examples\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

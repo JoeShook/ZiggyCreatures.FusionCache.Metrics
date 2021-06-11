@@ -1,4 +1,5 @@
 ﻿using App.Metrics;
+using Microsoft.Extensions.Caching.Memory;
 using ZiggyCreatures.Caching.Fusion;
 
 namespace JoeShook.FusionCache.AppMetrics.Plugins
@@ -17,7 +18,7 @@ namespace JoeShook.FusionCache.AppMetrics.Plugins
         /// </summary>
         /// <param name="metrics">App.Metrics IMetric instance</param>
         /// <param name="cacheName">Used to capture metrics tagged by cacheName</param>
-        public AppMetricsProvider(IMetrics metrics, string cacheName)
+        public AppMetricsProvider(string cacheName, IMetrics metrics)
         {
             _metrics = metrics;
             _cacheName = cacheName;
@@ -91,6 +92,56 @@ namespace JoeShook.FusionCache.AppMetrics.Plugins
         public void CacheCountDecrement()
         {
             _metrics.Measure.Counter.Decrement(FusionMetricsRegistry.CacheItemCounter, _cacheNameMetricTag);
+        }
+
+
+        public void Wireup(IFusionCache fusionCache, FusionCacheOptions? fusionCacheOptions = null)
+        {
+            fusionCache.Events.Hit += (s, e) =>
+            {
+                if (e.IsStale)
+                {
+                    CacheStaleHit();
+                }
+                else
+                {
+                    CacheHit();
+                }
+            };
+
+            fusionCache.Events.Miss += (s, e) => CacheMiss();
+            fusionCache.Events.Remove += (s, e) => CacheRemoved();
+
+            // fusionCache.Events.BackgroundFactoryError 
+            // fusionCache.Events.FactoryError 
+            // fusionCache.Events.FactorySyntheticTimeout 
+            // fusionCache.Events.FailSafeActivate  
+
+            fusionCache.Events.Memory.Eviction += (sender, e) =>
+            {
+                // If you need it...
+                // var cache = (IFusionCache)sender;
+
+                switch (e.Reason)
+
+                {
+
+                    case EvictionReason.Expired:
+
+                        CacheExpired();
+                        break;
+
+                    case EvictionReason.Capacity:
+
+                        CacheCapacityExpired();
+                        break;
+                }
+            };
+
+            //
+            // Background refresh vs sets?  Not sure I care.  Maybe 
+            //
+            fusionCache.Events.BackgroundFactorySuccess += (s, e) => CacheBackgroundRefresh();
         }
     }
 }

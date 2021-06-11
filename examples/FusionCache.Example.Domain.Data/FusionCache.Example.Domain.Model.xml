@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FusionCache.Example.Domain.Model</name>
+    </assembly>
+    <members>
+        <member name="T:FusionCache.Example.Domain.Model.DomainCertData">
+            <summary>
+            Mock data view after some database joins
+            </summary>
+        </member>
+        <member name="P:FusionCache.Example.Domain.Model.DomainCertData.Certificate">
+            <summary>
+            Data is fake.  Not a real certificate
+            </summary>
+        </member>
+        <member name="T:FusionCache.Example.Domain.Model.EmailToIpData">
+            <summary>
+            Mock data view after some interesting network resolution from domain to
+            MX record to A record with a ttl (time to live)
+            This is a simple view that only has one IP.
+            </summary>
+        </member>
+    </members>
+</doc>
