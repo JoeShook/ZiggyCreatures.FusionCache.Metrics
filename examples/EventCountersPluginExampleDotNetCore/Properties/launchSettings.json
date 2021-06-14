@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "EtwPluginExampleDotNetCore": {
+    "EventCountersPluginExampleDotNetCore": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

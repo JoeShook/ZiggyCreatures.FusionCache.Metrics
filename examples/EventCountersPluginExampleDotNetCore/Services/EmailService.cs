@@ -5,11 +5,6 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace EventCountersPluginExampleDotNetCore.Services
 {
-    public interface IEmailService
-    {
-        Task<EmailToIpData> GetEmailRoute(string emailAddress, CancellationToken cancellationToken);
-    }
-
     public class EmailService : IEmailService
     {
         private readonly DataManager _dataManager;

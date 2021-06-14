@@ -119,7 +119,7 @@ namespace AppMetricsPluginExample
                 };
 
                 var metrics = new AppMetricsProvider("email", appMetrics);
-                var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, hostNameCache, logger);
+                var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, emailCache, logger);
                 metrics.Wireup(fusionCache, fusionCacheOptions);
 
                 return new EmailService(serviceProvider.GetRequiredService<DataManager>(), fusionCache);
