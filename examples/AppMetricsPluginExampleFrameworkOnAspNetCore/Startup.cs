@@ -130,7 +130,6 @@ namespace AppMetricsPluginExample
             metricsReporterService.StartAsync(CancellationToken.None);
 
             services.AddSingleton(sp => metricsReporterService );
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
