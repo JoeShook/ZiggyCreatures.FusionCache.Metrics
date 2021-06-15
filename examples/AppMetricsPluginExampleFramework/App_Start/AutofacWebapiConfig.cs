@@ -13,13 +13,13 @@ using AppMetricsPluginExample2.Services;
 using Autofac;
 using Autofac.Integration.WebApi;
 using AutofacSerilogIntegration;
-using JoeShook.FusionCache.AppMetrics.Plugins;
 using Microsoft.Configuration.ConfigurationBuilders;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using ZiggyCreatures.Caching.Fusion;
+using ZiggyCreatures.FusionCache.AppMetrics.Plugins;
 
 namespace AppMetricsPluginExample2.App_Start
 {

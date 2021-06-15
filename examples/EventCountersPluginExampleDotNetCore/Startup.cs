@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ZiggyCreatures.Caching.Fusion;
+using ZiggyCreatures.FusionCache.EventCounters.Plugin;
 
 namespace EventCountersPluginExampleDotNetCore
 {

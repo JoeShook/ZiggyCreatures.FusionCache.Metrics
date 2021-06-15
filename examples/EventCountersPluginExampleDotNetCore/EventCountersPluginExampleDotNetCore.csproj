@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\JoeShook.FusionCache.EventCounters.Plugin\JoeShook.FusionCache.EventCounters.Plugin.csproj" />
+    <ProjectReference Include="..\..\src\JoeShook.FusionCache.EventCounters.Plugin\ZiggyCreatures.FusionCache.EventCounters.Plugin.csproj" />
     <ProjectReference Include="..\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj" />
   </ItemGroup>
 

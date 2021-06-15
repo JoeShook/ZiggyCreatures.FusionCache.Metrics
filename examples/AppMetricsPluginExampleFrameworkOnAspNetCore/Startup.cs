@@ -7,7 +7,6 @@ using App.Metrics.Extensions.Hosting;
 using App.Metrics.Filtering;
 using App.Metrics.Formatters.InfluxDB;
 using AppMetricsPluginExample.Services;
-using JoeShook.FusionCache.AppMetrics.Plugins;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using ZiggyCreatures.Caching.Fusion;
+using ZiggyCreatures.FusionCache.AppMetrics.Plugins;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 

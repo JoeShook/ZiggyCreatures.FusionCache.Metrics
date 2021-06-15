@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JoeShook.FusionCache.EventCounters.Plugin", "src\JoeShook.FusionCache.EventCounters.Plugin\JoeShook.FusionCache.EventCounters.Plugin.csproj", "{60AFEA2D-651B-462A-A995-0F7C88CD3B9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.EventCounters.Plugin", "src\JoeShook.FusionCache.EventCounters.Plugin\ZiggyCreatures.FusionCache.EventCounters.Plugin.csproj", "{60AFEA2D-651B-462A-A995-0F7C88CD3B9C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.AppMetrics.Plugins", "src\JoeShook.FusionCache.AppMetrics.Plugin\ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj", "{FA46D07B-CE9A-4C7E-A445-230B0C8D83EB}"
 EndProject
@@ -31,9 +31,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppMetricsPluginExampleFram
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppMetricsPluginExampleFrameworkOnAspNetCore", "examples\AppMetricsPluginExampleFrameworkOnAspNetCore\AppMetricsPluginExampleFrameworkOnAspNetCore.csproj", "{9157CC23-95F9-4E88-978F-FE9B566C9C34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTelemetry.Instrumentation.FusionCache", "OpenTelemetry.Instrumentation.FusionCache\OpenTelemetry.Instrumentation.FusionCache.csproj", "{A5817CF1-17BA-40EF-B0A2-8D126B7CC5C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenTelemetry.Instrumentation.FusionCache", "OpenTelemetry.Instrumentation.FusionCache\OpenTelemetry.Instrumentation.FusionCache.csproj", "{A5817CF1-17BA-40EF-B0A2-8D126B7CC5C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTelemetry.Exporter.InfluxDB", "src\OpenTelemetry.Exporter.InfluxDB\OpenTelemetry.Exporter.InfluxDB.csproj", "{FC09E5D6-94AD-4F46-892C-CC89FF0298A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenTelemetry.Exporter.InfluxDB", "src\OpenTelemetry.Exporter.InfluxDB\OpenTelemetry.Exporter.InfluxDB.csproj", "{FC09E5D6-94AD-4F46-892C-CC89FF0298A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

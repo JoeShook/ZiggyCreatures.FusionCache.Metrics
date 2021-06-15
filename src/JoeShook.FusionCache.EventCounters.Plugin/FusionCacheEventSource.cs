@@ -4,7 +4,7 @@ using System.Threading;
 using Microsoft.Extensions.Caching.Memory;
 using ZiggyCreatures.Caching.Fusion;
 
-namespace JoeShook.FusionCache.EventCounters.Plugin
+namespace ZiggyCreatures.FusionCache.EventCounters.Plugin
 {
     /// <summary>
     /// Generic FusionCacheEventSource.  

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using ZiggyCreatures.Caching.Fusion;
 
-namespace JoeShook.FusionCache.AppMetrics.Plugins
+namespace ZiggyCreatures.FusionCache.AppMetrics.Plugins
 {
     /// <summary>
     /// AppMetrics implementation of IFusionMetrics provider

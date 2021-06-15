@@ -1,7 +1,7 @@
 ﻿using App.Metrics;
 using App.Metrics.Counter;
 
-namespace JoeShook.FusionCache.AppMetrics.Plugins
+namespace ZiggyCreatures.FusionCache.AppMetrics.Plugins
 {
     /// <summary>
     /// Define FusionCache metrics

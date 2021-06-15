@@ -14,7 +14,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>caching;cache;multi-level;multilevel;fusion;fusioncache;fusion-cache;performance;async;ziggy;metrics</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <RootNamespace>JoeShook.FusionCache.AppMetrics.Plugins</RootNamespace>
+    <RootNamespace>ZiggyCreatures.FusionCache.AppMetrics.Plugins</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
@@ -25,7 +25,7 @@
 
   <PropertyGroup>
     <DocumentationFile></DocumentationFile>
-    <AssemblyName>JoeShook.FusionCache.AppMetrics.Plugins</AssemblyName>
+    <AssemblyName>ZiggyCreatures.FusionCache.AppMetrics.Plugins</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

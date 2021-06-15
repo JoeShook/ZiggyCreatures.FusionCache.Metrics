@@ -8,6 +8,7 @@ using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
 using Microsoft.Extensions.Hosting;
+using ZiggyCreatures.FusionCache.EventCounters.Plugin;
 
 namespace JoeShook.FusionCache.EventCounters.Plugin
 {
