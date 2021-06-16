@@ -31,9 +31,9 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
         private readonly MemoryCache? _cache;
         private readonly ISemanticConventions _conventions;
 
-        public FusionCacheEventSource(string cacheName, ISemanticConventions semanticConventions, IMemoryCache? cache) : base(eventSourceName: cacheName)
+        public FusionCacheEventSource(string cacheName, IMemoryCache? cache, ISemanticConventions? semanticConventions = null) : base(eventSourceName: cacheName)
         {
-            _conventions = semanticConventions ?? throw new ArgumentNullException(nameof(semanticConventions));
+            _conventions = semanticConventions ?? new SemanticConventions();
             _displayRateTimeScale = TimeSpan.FromSeconds(5);
 
             if (cache is MemoryCache memoryCache)

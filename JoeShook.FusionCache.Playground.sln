@@ -35,7 +35,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenTelemetry.Instrumentati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenTelemetry.Exporter.InfluxDB", "src\OpenTelemetry.Exporter.InfluxDB\OpenTelemetry.Exporter.InfluxDB.csproj", "{FC09E5D6-94AD-4F46-892C-CC89FF0298A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZiggyCreatures.FusionCache.Metrics.Core", "src\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj", "{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.Metrics.Core", "src\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj", "{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", "{8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.EventCounters.Benchmarks", "benchmarks\ZiggyCreatures.FusionCache.EventCounters.Benchmarks\ZiggyCreatures.FusionCache.EventCounters.Benchmarks.csproj", "{500495DC-3059-4F65-85C7-830B2BDA68EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.AppMetrics.Benchmarks", "benchmarks\ZiggyCreatures.FusionCache.AppMetrics.Benchmarks\ZiggyCreatures.FusionCache.AppMetrics.Benchmarks.csproj", "{EB7D42E4-DA6A-451D-8D00-150762BE4B57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +89,14 @@ Global
 		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{500495DC-3059-4F65-85C7-830B2BDA68EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{500495DC-3059-4F65-85C7-830B2BDA68EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{500495DC-3059-4F65-85C7-830B2BDA68EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{500495DC-3059-4F65-85C7-830B2BDA68EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB7D42E4-DA6A-451D-8D00-150762BE4B57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB7D42E4-DA6A-451D-8D00-150762BE4B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB7D42E4-DA6A-451D-8D00-150762BE4B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB7D42E4-DA6A-451D-8D00-150762BE4B57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +113,8 @@ Global
 		{A5817CF1-17BA-40EF-B0A2-8D126B7CC5C6} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
 		{FC09E5D6-94AD-4F46-892C-CC89FF0298A5} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
 		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
+		{500495DC-3059-4F65-85C7-830B2BDA68EB} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
+		{EB7D42E4-DA6A-451D-8D00-150762BE4B57} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32C4269F-FC33-47FA-91DA-2B6C5DF7D025}
