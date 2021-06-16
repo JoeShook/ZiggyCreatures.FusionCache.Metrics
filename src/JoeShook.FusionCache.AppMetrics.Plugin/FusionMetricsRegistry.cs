@@ -1,7 +1,9 @@
 ﻿using App.Metrics;
 using App.Metrics.Counter;
+using App.Metrics.Gauge;
+using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 
-namespace ZiggyCreatures.FusionCache.AppMetrics.Plugins
+namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
 {
     /// <summary>
     /// Define FusionCache metrics
@@ -10,44 +12,44 @@ namespace ZiggyCreatures.FusionCache.AppMetrics.Plugins
     {
         // In time series database the MetricsOptions.DefaultContextLabel will be prefixed to the MeasurementName
         private static string MeasurementName = "cache-events";
-
+        
         /// <summary>
         /// Cache hit counter
         /// </summary>
-        public static CounterOptions CacheHitCounter => new CounterOptions
+        public static CounterOptions CacheHitCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Name = MeasurementName,
-            Tags = new MetricTags("cacheEvent", "HIT"),
+            Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheHitTagValue),
             ResetOnReporting = true
         };
 
         /// <summary>
         /// Cache miss counter.  When a cache is written to local cache
         /// </summary>
-        public static CounterOptions CacheMissCounter => new CounterOptions
+        public static CounterOptions CacheMissCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Name = MeasurementName,
-            Tags = new MetricTags("cacheEvent", "MISS"),
+            Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheMissTagValue),
             ResetOnReporting = true
         };
 
         /// <summary>
         /// Cache stale hit counter.  Cache failed to complete within soft timeout period. 
         /// </summary>
-        public static CounterOptions CacheStaleHitCounter => new CounterOptions
+        public static CounterOptions CacheStaleHitCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Name = MeasurementName,
-            Tags = new MetricTags("cacheEvent", "STALE_HIT"),
+            Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheStaleHitTagValue),
             ResetOnReporting = true
         };
 
         /// <summary>
         /// Cache refresh in background.
         /// </summary>
-        public static CounterOptions CacheBackgroundRefreshed => new CounterOptions
+        public static CounterOptions CacheBackgroundRefreshed(ISemanticConventions conventions) => new CounterOptions
         {
             Name = MeasurementName,
-            Tags = new MetricTags("cacheEvent", "STALE_REFRESH"),
+            Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheBackgroundRefreshedTagValue),
             ResetOnReporting = true
         };
 
@@ -55,60 +57,40 @@ namespace ZiggyCreatures.FusionCache.AppMetrics.Plugins
         /// <summary>
         /// Cache expired counter
         /// </summary>
-        public static CounterOptions CacheExpireCounter => new CounterOptions
+        public static CounterOptions CacheExpireCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Name = MeasurementName,
-            Tags = new MetricTags("cacheEvent", "EXPIRE"),
+            Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheExpiredEvictTagValue),
             ResetOnReporting = true
         };
 
         /// <summary>
         /// Cache eviction from capacity limit
         /// </summary>
-        public static CounterOptions CacheCapacityCounter => new CounterOptions
+        public static CounterOptions CacheCapacityCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Name = MeasurementName,
-            Tags = new MetricTags("cacheEvent", "CAPACITY"),
+            Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheCapacityEvictTagValue),
             ResetOnReporting = true
         };
 
         /// <summary>
         /// Cache item removed counter
         /// </summary>
-        public static CounterOptions CacheRemoveCounter => new CounterOptions
+        public static CounterOptions CacheRemoveCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Name = MeasurementName,
-            Tags = new MetricTags("cacheEvent", "REMOVE"),
-            ResetOnReporting = true
-        };
-
-        /// <summary>
-        /// Cache item replaced.  Happens from either user code or a background refresh.
-        /// </summary>
-        public static CounterOptions CacheReplaceCounter => new CounterOptions
-        {
-            Name = MeasurementName,
-            Tags = new MetricTags("cacheEvent", "REPLACE"),
-            ResetOnReporting = true
-        };
-
-        /// <summary>
-        /// Cache item evicted for unknown reason.
-        /// </summary>
-        public static CounterOptions CacheEvictCounter => new CounterOptions
-        {
-            Name = MeasurementName,
-            Tags = new MetricTags("cacheEvent", "EVICT"),
+            Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheRemovedTagValue),
             ResetOnReporting = true
         };
 
         /// <summary>
         /// Cache item count.  Tracked by add and remove counters. 
         /// </summary>
-        public static CounterOptions CacheItemCounter => new CounterOptions
+        public static GaugeOptions CacheItemCounter(ISemanticConventions conventions) => new GaugeOptions
         {
             Name = MeasurementName,
-            Tags = new MetricTags("cacheEvent", "ITEM_COUNT"),
+            Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheItemCountTagValue),
             ResetOnReporting = false,
         };
     }

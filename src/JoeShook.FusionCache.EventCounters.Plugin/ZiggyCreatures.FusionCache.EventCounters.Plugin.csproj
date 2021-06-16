@@ -15,8 +15,9 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>caching;cache;multi-level;multilevel;fusion;fusioncache;fusion-cache;performance;async;ziggy;metrics;EventSource;EventCounter;DiagnosticCounter</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <RootNamespace>ZiggyCreatures.FusionCache.EventCounters.Plugin</RootNamespace>
+    <RootNamespace>ZiggyCreatures.Caching.Fusion.EventCounters.Plugin</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyName>ZiggyCreatures.FusionCache.EventCounters.Plugin</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -34,6 +35,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.13" />
     <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj" />
   </ItemGroup>
 
 

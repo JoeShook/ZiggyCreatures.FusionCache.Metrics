@@ -8,7 +8,7 @@ using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
 using Microsoft.Extensions.Hosting;
-using ZiggyCreatures.FusionCache.EventCounters.Plugin;
+using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 
 namespace JoeShook.FusionCache.EventCounters.Plugin
 {
@@ -18,12 +18,15 @@ namespace JoeShook.FusionCache.EventCounters.Plugin
         private Task _dataSource;
         private InfluxDBClient _influxDBClient;
         private MetricsConfig _metricsConfig;
-        private string _measurementName;
+        private readonly string _measurementName;
+        private readonly ISemanticConventions _conventions;
 
-        public MetricsListenerService(InfluxDBClient influxDBClient, MetricsConfig metricsConfig)
+        public MetricsListenerService(InfluxDBClient influxDBClient, MetricsConfig metricsConfig, ISemanticConventions conventions = null)
         {
-            _influxDBClient = influxDBClient;
-            _metricsConfig = metricsConfig;
+            _influxDBClient = influxDBClient ?? throw new ArgumentNullException(nameof(influxDBClient));
+            _metricsConfig = metricsConfig ?? throw  new ArgumentNullException(nameof(metricsConfig));
+            _conventions = conventions ?? new SemanticConventions();
+
             _measurementName = $"{metricsConfig.Prefix}{metricsConfig.ApplicationName}_{metricsConfig.MeasurementName}";
         }
 
@@ -86,11 +89,11 @@ namespace JoeShook.FusionCache.EventCounters.Plugin
 
                     var point = PointData
                         .Measurement(_measurementName)
-                        .Field("value", counterValue)
-                        .Tag("application", _metricsConfig.ApplicationName)
-                        .Tag("applicationVersion", _metricsConfig.ApplicationVersion)
-                        .Tag("cacheName", cacheName)
-                        .Tag("cacheEvent", counterName)
+                        .Field(_conventions.ValueFieldName, counterValue)
+                        .Tag(_conventions.ApplicationTagName, _metricsConfig.ApplicationName)
+                        .Tag(_conventions.ApplicationVersionTagName, _metricsConfig.ApplicationVersion)
+                        .Tag(_conventions.CacheNameTagName, cacheName)
+                        .Tag(_conventions.CacheEventTagName, counterName)
                         .Timestamp(time, WritePrecision.S);
 
                     pointData.Add(point);
@@ -106,7 +109,7 @@ namespace JoeShook.FusionCache.EventCounters.Plugin
             }
         }
 
-        private static (string cacheName, string counterName, long counterValue) GetMeasurement(
+        private (string cacheName, string counterName, long counterValue) GetMeasurement(
             IDictionary<string, object> eventPayload)
         {
             var cacheName = "";
@@ -121,7 +124,7 @@ namespace JoeShook.FusionCache.EventCounters.Plugin
                     .Select(item => item.Split(':'))
                     .ToDictionary(s => s[0], s => s[1]);
 
-                cacheName = metaData[FusionCacheEventSource.Tags.CacheName];
+                cacheName = metaData[_conventions.CacheNameTagName];
             }
 
             if (eventPayload.TryGetValue("Name", out object displayValue))

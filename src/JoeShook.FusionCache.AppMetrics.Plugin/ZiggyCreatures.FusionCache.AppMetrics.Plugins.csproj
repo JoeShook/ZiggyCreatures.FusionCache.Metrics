@@ -14,7 +14,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>caching;cache;multi-level;multilevel;fusion;fusioncache;fusion-cache;performance;async;ziggy;metrics</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <RootNamespace>ZiggyCreatures.FusionCache.AppMetrics.Plugins</RootNamespace>
+    <RootNamespace>ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
@@ -38,6 +38,10 @@
   <ItemGroup>
     <PackageReference Include="App.Metrics" Version="4.2.0" />
     <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj" />
   </ItemGroup>
 
 </Project>

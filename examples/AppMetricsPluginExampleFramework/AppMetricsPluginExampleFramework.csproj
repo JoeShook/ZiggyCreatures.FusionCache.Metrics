@@ -12,8 +12,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AppMetricsPluginExample2</RootNamespace>
-    <AssemblyName>AppMetricsPluginExample2</AssemblyName>
+    <RootNamespace>AppMetricsPluginExample</RootNamespace>
+    <AssemblyName>AppMetricsPluginExample</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -568,6 +568,10 @@
     <ProjectReference Include="..\..\src\JoeShook.FusionCache.AppMetrics.Plugin\ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj">
       <Project>{fa46d07b-ce9a-4c7e-a445-230b0c8d83eb}</Project>
       <Name>ZiggyCreatures.FusionCache.AppMetrics.Plugins</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj">
+      <Project>{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}</Project>
+      <Name>ZiggyCreatures.FusionCache.Metrics.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj">
       <Project>{a8fa9c7a-83b7-47a6-bc06-ea3c5fcec092}</Project>

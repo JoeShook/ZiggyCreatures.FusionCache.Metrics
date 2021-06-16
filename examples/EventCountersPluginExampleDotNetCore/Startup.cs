@@ -12,7 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ZiggyCreatures.Caching.Fusion;
-using ZiggyCreatures.FusionCache.EventCounters.Plugin;
+using ZiggyCreatures.Caching.Fusion.EventCounters.Plugin;
+using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 
 namespace EventCountersPluginExampleDotNetCore
 {
@@ -58,7 +59,7 @@ namespace EventCountersPluginExampleDotNetCore
                 };
 
                 // Future Plugin for hooking metrics ???
-                var metrics = new FusionCacheEventSource("domain", hostNameCache);
+                var metrics = new FusionCacheEventSource("domain", new SemanticConventions(), hostNameCache);
                 var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, hostNameCache, logger);
                 metrics.Wireup(fusionCache, fusionCacheOptions);
 
@@ -83,7 +84,7 @@ namespace EventCountersPluginExampleDotNetCore
                         .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
                 };
 
-                var metrics = new FusionCacheEventSource("email", hostNameCache);
+                var metrics = new FusionCacheEventSource("email", new SemanticConventions(), hostNameCache);
                 var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, emailCache, logger);
                 metrics.Wireup(fusionCache, fusionCacheOptions);
 

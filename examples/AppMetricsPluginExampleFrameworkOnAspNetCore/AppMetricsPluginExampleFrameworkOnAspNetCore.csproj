@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\JoeShook.FusionCache.AppMetrics.Plugin\ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj" />
+    <ProjectReference Include="..\..\src\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj" />
     <ProjectReference Include="..\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj" />
   </ItemGroup>
 
@@ -45,6 +46,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <UserSecretsId>731b9398-3477-483d-b4ab-0976c3ad0fc9</UserSecretsId>
+    <AssemblyName>AppMetricsPluginExampleFrameworkOnAspNetCore</AssemblyName>
   </PropertyGroup>
 
 </Project>

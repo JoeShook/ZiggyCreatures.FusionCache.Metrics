@@ -2,9 +2,9 @@
 using System.Diagnostics.Tracing;
 using System.Threading;
 using Microsoft.Extensions.Caching.Memory;
-using ZiggyCreatures.Caching.Fusion;
+using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 
-namespace ZiggyCreatures.FusionCache.EventCounters.Plugin
+namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
 {
     /// <summary>
     /// Generic FusionCacheEventSource.  
@@ -18,9 +18,6 @@ namespace ZiggyCreatures.FusionCache.EventCounters.Plugin
         private long _cacheExpiredEvict;
         private long _cacheCapacityEvict;
         private long _cacheRemoved;
-        private long _cacheReplaced;
-        private long _cacheEvict;
-
         private IncrementingPollingCounter? _cacheHitPollingCounter;
         private IncrementingPollingCounter? _cacheMissPollingCounter;
         private IncrementingPollingCounter? _cacheStaleHitPollingCounter;
@@ -28,149 +25,112 @@ namespace ZiggyCreatures.FusionCache.EventCounters.Plugin
         private IncrementingPollingCounter? _cacheExpiredEvictPollingCounter;
         private IncrementingPollingCounter? _cacheCapacityEvictPollingCounter;
         private IncrementingPollingCounter? _cacheRemovedPollingCounter;
-        private IncrementingPollingCounter? _cacheReplacedPollingCounter;
-        private IncrementingPollingCounter? _cacheEvictPollingCounter;
         private PollingCounter? _cacheSizePollingCounter;
 
         private readonly TimeSpan _displayRateTimeScale;
         private readonly MemoryCache? _cache;
+        private readonly ISemanticConventions _conventions;
 
-        public FusionCacheEventSource(string cacheName, IMemoryCache? cache) : base(eventSourceName: cacheName)
+        public FusionCacheEventSource(string cacheName, ISemanticConventions semanticConventions, IMemoryCache? cache) : base(eventSourceName: cacheName)
         {
+            _conventions = semanticConventions ?? throw new ArgumentNullException(nameof(semanticConventions));
             _displayRateTimeScale = TimeSpan.FromSeconds(5);
+
             if (cache is MemoryCache memoryCache)
             {
                 _cache = memoryCache;
             }
+
+            CreateCounters();
         }
 
-        protected override void OnEventCommand(EventCommandEventArgs command)
-        {
+        private void CreateCounters() {
             _cacheHitPollingCounter = new IncrementingPollingCounter(
-                Tags.CacheHit,
+                _conventions.CacheHitTagValue,
                 this,
                 () => Volatile.Read(ref _cacheHits))
             {
                 DisplayName = "Cache Hits",
                 DisplayRateTimeScale = _displayRateTimeScale
             };
-            _cacheHitPollingCounter.AddMetadata(Tags.CacheName, Name);
+            _cacheHitPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
 
 
             _cacheMissPollingCounter = new IncrementingPollingCounter(
-                Tags.CacheMiss,
+                _conventions.CacheMissTagValue,
                 this,
                 () => Volatile.Read(ref _cacheMisses))
             {
                 DisplayName = "Cache Misses",
                 DisplayRateTimeScale = _displayRateTimeScale
             };
-            _cacheMissPollingCounter.AddMetadata(Tags.CacheName, Name);
+            _cacheMissPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
 
 
             _cacheStaleHitPollingCounter = new IncrementingPollingCounter(
-                Tags.CacheStaleHit,
+                _conventions.CacheStaleHitTagValue,
                 this,
                 () => Volatile.Read(ref _cacheStaleHit))
             {
                 DisplayName = "Cache Stale Hit",
                 DisplayRateTimeScale = _displayRateTimeScale
             };
-            _cacheStaleHitPollingCounter.AddMetadata(Tags.CacheName, Name);
+            _cacheStaleHitPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
 
 
             _cacheBackgroundRefreshedPollingCounter = new IncrementingPollingCounter(
-                Tags.CacheBackgroundRefreshed,
+                _conventions.CacheBackgroundRefreshedTagValue,
                 this,
                 () => Volatile.Read(ref _cacheBackgroundRefreshed))
             {
                 DisplayName = "Cache Background Refresh",
                 DisplayRateTimeScale = _displayRateTimeScale
             };
-            _cacheBackgroundRefreshedPollingCounter.AddMetadata(Tags.CacheName, Name);
+            _cacheBackgroundRefreshedPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
 
 
             _cacheExpiredEvictPollingCounter = new IncrementingPollingCounter(
-                Tags.CacheExpiredEvict,
+                _conventions.CacheExpiredEvictTagValue,
                 this,
                 () => Volatile.Read(ref _cacheExpiredEvict))
             {
                 DisplayName = "Cache Expired Eviction",
                 DisplayRateTimeScale = _displayRateTimeScale
             };
-            _cacheExpiredEvictPollingCounter.AddMetadata(Tags.CacheName, Name);
+            _cacheExpiredEvictPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
 
 
             _cacheCapacityEvictPollingCounter = new IncrementingPollingCounter(
-                Tags.CacheCapacityEvict,
+                _conventions.CacheCapacityEvictTagValue,
                 this,
                 () => Volatile.Read(ref _cacheCapacityEvict))
             {
                 DisplayName = "Cache Capacity Eviction",
                 DisplayRateTimeScale = _displayRateTimeScale
             };
-            _cacheCapacityEvictPollingCounter.AddMetadata(Tags.CacheName, Name);
+            _cacheCapacityEvictPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
 
 
             _cacheRemovedPollingCounter = new IncrementingPollingCounter(
-                Tags.CacheRemoved,
+                _conventions.CacheRemovedTagValue,
                 this,
                 () => Volatile.Read(ref _cacheRemoved))
             {
                 DisplayName = "Cache Removed",
                 DisplayRateTimeScale = _displayRateTimeScale
             };
-            _cacheRemovedPollingCounter.AddMetadata(Tags.CacheName, Name);
+            _cacheRemovedPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
 
-
-            _cacheReplacedPollingCounter = new IncrementingPollingCounter(
-                Tags.CacheReplaced,
-                this,
-                () => Volatile.Read(ref _cacheReplaced))
-            {
-                DisplayName = "Cache Replaced",
-                DisplayRateTimeScale = _displayRateTimeScale
-            };
-            _cacheReplacedPollingCounter.AddMetadata(Tags.CacheName, Name);
-
-
-            _cacheEvictPollingCounter = new IncrementingPollingCounter(
-                Tags.CacheEvict,
-                this,
-                () => Volatile.Read(ref _cacheEvict))
-            {
-                DisplayName = "Cache Evicted",
-                DisplayRateTimeScale = _displayRateTimeScale
-            };
-            _cacheEvictPollingCounter.AddMetadata(Tags.CacheName, Name);
-
+            
 
             _cacheSizePollingCounter = new PollingCounter(
-                Tags.CacheItemCount,
+                _conventions.CacheItemCountTagValue,
                 this,
                 () => _cache?.Count ?? 0)
             {
                 DisplayName = "Cache Size",
             };
-            _cacheSizePollingCounter.AddMetadata(Tags.CacheName, Name);
-        }
-
-        /// <summary>
-        /// Helper class to tag metrics
-        /// </summary>
-        public static class Tags
-        {
-            public const string CacheName = "cacheName";
-            public const string CacheHit = "HIT";
-            public const string CacheMiss = "MISS";
-            public const string CacheStaleHit = "STALE_HIT";
-            public const string CacheBackgroundRefreshed = "STALE_REFRESH";
-            public const string CacheExpiredEvict = "EXPIRE";
-            public const string CacheCapacityEvict = "CAPACITY";
-            public const string CacheRemoved = "REMOVE";
-            public const string CacheReplaced = "REPLACE";
-            public const string CacheEvict = "EVICT";
-            public const string CacheItemCount = "ITEM_COUNT";
+            _cacheSizePollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
         }
 
         #region IFusionMetrics
@@ -228,22 +188,8 @@ namespace ZiggyCreatures.FusionCache.EventCounters.Plugin
             Interlocked.Increment(ref _cacheRemoved);
         }
 
-        /// <summary>
-        /// Cache item removed by user code or due to a background refresh
-        /// </summary>
-        [NonEvent]
-        public void CacheReplaced()
-        {
-            Interlocked.Increment(ref _cacheReplaced);
-        }
-
-        /// <summary>Cache item removed for unknown reason.</summary>
-        [NonEvent]
-        public void CacheEvicted()
-        {
-            Interlocked.Increment(ref _cacheEvict);
-        }
-
+        
+       
         #endregion
 
         public void Wireup(IFusionCache fusionCache, FusionCacheOptions? fusionCacheOptions = null)
@@ -262,7 +208,7 @@ namespace ZiggyCreatures.FusionCache.EventCounters.Plugin
 
             fusionCache.Events.Miss += (s, e) => CacheMiss();
             fusionCache.Events.Remove += (s, e) => CacheRemoved();
-
+            
             // fusionCache.Events.BackgroundFactoryError 
             // fusionCache.Events.FactoryError 
             // fusionCache.Events.FactorySyntheticTimeout 

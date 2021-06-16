@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenTelemetry.Instrumentati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenTelemetry.Exporter.InfluxDB", "src\OpenTelemetry.Exporter.InfluxDB\OpenTelemetry.Exporter.InfluxDB.csproj", "{FC09E5D6-94AD-4F46-892C-CC89FF0298A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZiggyCreatures.FusionCache.Metrics.Core", "src\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj", "{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{FC09E5D6-94AD-4F46-892C-CC89FF0298A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC09E5D6-94AD-4F46-892C-CC89FF0298A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC09E5D6-94AD-4F46-892C-CC89FF0298A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{9157CC23-95F9-4E88-978F-FE9B566C9C34} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
 		{A5817CF1-17BA-40EF-B0A2-8D126B7CC5C6} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
 		{FC09E5D6-94AD-4F46-892C-CC89FF0298A5} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
+		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32C4269F-FC33-47FA-91DA-2B6C5DF7D025}

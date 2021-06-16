@@ -1,10 +1,4 @@
-﻿<div align="center">
-
-![FusionCache logo](../../docs/logo-256x256.png)
-
-</div>
-
-# FusionCache.AppMetrics
+﻿﻿# FusionCache.AppMetrics
 
 <div align="center">
 
@@ -13,25 +7,24 @@
 
 </div>
 
-### FusionCache.AppMetrics is a plugin to capture caching metrics using [FusionCache](https://github.com/jodydonetti/ZiggyCreatures.FusionCache).
+## FusionCache.AppMetrics is a plugin to capture caching metrics using [FusionCache](https://github.com/jodydonetti/ZiggyCreatures.FusionCache).
 
 Metrics are missing from open-source resiliency projects in the .NET ecosystem where in equivalent Java libraries, metrics tend to be common.  FusionCache is a feature rich caching library addressing resiliency needs of today’s enterprise implementations.  [Appmetrics](https://github.com/AppMetrics/AppMetrics) is an easy-to-use metrics library that works in .NET Framework and .NET Core.  Joining these two excellent libraries together you can easily be caching and writing metrics to your favorite timeseries database.
 
-Metrics plugins are created by implementing the IFusionMetrics interface from [FusionCache](https://github.com/jodydonetti/ZiggyCreatures.FusionCache).
+Metrics plugins are created by subscribing to FusionCache [Events](https://github.com/jodydonetti/ZiggyCreatures.FusionCache/blob/cecba47e773d799a6b978d43858915cc8fb018d8/docs/Events.md).
 
-The MeasurementName will always be "cache-events"
 
-The following IFusionMetrics are implemented along with Tag names.  Tags are the typical in time series databases and are indexed making them friendly to searching and grouping over time.  
+## MetricsConfig
+`MetricsConfig` contains the following properties and can be overriden by adding a `CacheMetrics` section is an appsettings section.  
 
-### CacheName
+- `ApplicationName` is defaulted to the executing assembly name.
+- `ApplicationVersion` is defaulted to the executing assembly version.
+- `Prefix` is defaulted to "appMetrics"
+- `MeasurementName` is defaulted to "cache-events"
+  
+  see Examples for usage
 
-"cacheName" is a Tag.  Set this when creating a AppMetricsProvider.
-
-Example usage where domainsCache is the name of the cache:
-
-```csharp
-var domainMetrics = new AppMetricsProvider(appMetrics, "domainsCache")
-```
+The following Events it subscribed to along with Tag names.  Tags are typical in time series databases and are indexed making them friendly to searching and grouping over time.  
 
 ## Incrementing Polling Counters for Hits and Misses
 
@@ -53,6 +46,10 @@ The cache tag is "STALE_HIT".  When [FailSafe](https://github.com/jodydonetti/Zi
 
 The cache tag is "STALE_REFRESH".  When [FailSafe](https://github.com/jodydonetti/ZiggyCreatures.FusionCache/blob/main/docs/Timeouts.md) is enabled and a request times out due to a "soft timeout" the request will continue for the length of a "hard timeout".  If the request finds data it will call this CacheBackgroundRefresh() and increment a counter.  Note it would be normal for this counter and CacheStaleHit() to track with eachother.
 
+### CacheRemoved()
+
+The cache tag is "REMOVE".  When the cache is removed by user code.
+
 ## Incrementing Polling Counter for Evictions
 
 Eviction counters are wired into the ICacheEntries with the PostEvictionDelegate.  
@@ -65,13 +62,8 @@ The cache tag is "EXPIRE".  When the EvictionReason is Expired increment a count
 
 The cache tag is "CAPACITY".  When the EvictionReason is Capacity increment a counter.
 
-### CacheRemoved()
 
-The cache tag is "REMOVE".  When the EvictionReason is Replaced increment a counter.
 
-### CacheEvicted()
-
-The cache tag is "EVICT".  When the EvictionReason is non of the previous options increment a counter.
 
 ## Polling Counters
 

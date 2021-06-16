@@ -1,98 +1,112 @@
-﻿using App.Metrics;
+﻿using System;
+using App.Metrics;
 using Microsoft.Extensions.Caching.Memory;
-using ZiggyCreatures.Caching.Fusion;
+using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 
-namespace ZiggyCreatures.FusionCache.AppMetrics.Plugins
+namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
 {
     /// <summary>
-    /// AppMetrics implementation of IFusionMetrics provider
+    /// Implementation of AppMetrics for caching metrics. 
+    /// See https://github.com/AppMetrics/AppMetrics
     /// </summary>
-    public class AppMetricsProvider // : IFusionMetrics
+    public class AppMetricsProvider
     {
         private IMetrics _metrics;
         private MetricTags _cacheNameMetricTag;
-        private string _cacheName;
-        
+        private readonly MemoryCache? _cache;
+        private readonly ISemanticConventions _semanticConventions;
+
         /// <summary>
         /// Instantiate AppMetricsProvider
         /// </summary>
         /// <param name="metrics">App.Metrics IMetric instance</param>
         /// <param name="cacheName">Used to capture metrics tagged by cacheName</param>
-        public AppMetricsProvider(string cacheName, IMetrics metrics)
+        /// <param name="cache">Pass the <see cref="MemoryCache"/> instance to enable cache item count measurements</param>
+        /// /// <param name="semanticConventions">Semantic naming conventions</param>
+        public AppMetricsProvider(string cacheName, IMetrics metrics, IMemoryCache? cache = null, ISemanticConventions? semanticConventions = null)
         {
-            _metrics = metrics;
-            _cacheName = cacheName;
-            _cacheNameMetricTag = new MetricTags("cacheName", cacheName);
+            if (string.IsNullOrWhiteSpace(cacheName))
+            {
+                throw new ArgumentNullException(nameof(cacheName));
+            }
+
+            _metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
+            _semanticConventions = semanticConventions ?? new SemanticConventions();
+            _cacheNameMetricTag = new MetricTags(_semanticConventions.CacheNameTagName, cacheName);
+
+            if (cache is MemoryCache memoryCache)
+            {
+                _cache = memoryCache;
+            }
         }
 
-        /// <inheritdoc/>
-        public string CacheName => _cacheName;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Cache item hit counter.
+        /// </summary>
         public void CacheHit()
         {
-            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheHitCounter, _cacheNameMetricTag);
+            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheHitCounter(_semanticConventions), _cacheNameMetricTag);
+
+            if (_cache != null)
+            {
+                _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemCounter(_semanticConventions), () => _cache.Count);
+            }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Cache item miss counter.  When a cache item is written to local cache
+        /// </summary>
         public void CacheMiss()
         {
-            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheMissCounter, _cacheNameMetricTag);
+            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheMissCounter(_semanticConventions), _cacheNameMetricTag);
+
+            if (_cache != null)
+            {
+                _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemCounter(_semanticConventions), () => _cache.Count);
+            }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Cache item stale hit counter.  Cache item failed to complete within soft timeout period. 
+        /// </summary>
         public void CacheStaleHit()
         {
-            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheStaleHitCounter, _cacheNameMetricTag);
+            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheStaleHitCounter(_semanticConventions), _cacheNameMetricTag);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Cache item refresh in background.
+        /// </summary>
         public void CacheBackgroundRefresh()
         {
-            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheBackgroundRefreshed, _cacheNameMetricTag);
+            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheBackgroundRefreshed(_semanticConventions), _cacheNameMetricTag);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Cache item expired
+        /// </summary>
         public void CacheExpired()
         {
-            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheExpireCounter, _cacheNameMetricTag);
+            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheExpireCounter(_semanticConventions), _cacheNameMetricTag);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Cache item removed due to capacity
+        /// </summary>
         public void CacheCapacityExpired()
         {
-            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheCapacityCounter, _cacheNameMetricTag);
+            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheCapacityCounter(_semanticConventions), _cacheNameMetricTag);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Cache item explicitly removed by user code
+        /// </summary>
         public void CacheRemoved()
         {
-            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheRemoveCounter, _cacheNameMetricTag);
+            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheRemoveCounter(_semanticConventions), _cacheNameMetricTag);
         }
-
-        /// <inheritdoc/>
-        public void CacheReplaced()
-        {
-            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheReplaceCounter, _cacheNameMetricTag);
-        }
-
-        /// <inheritdoc/>
-        public void CacheEvicted()
-        {
-            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheEvictCounter, _cacheNameMetricTag);
-        }
-
-        /// <inheritdoc/>
-        public void CacheCountIncrement()
-        {
-            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheItemCounter, _cacheNameMetricTag);
-        }
-
-        /// <inheritdoc/>
-        public void CacheCountDecrement()
-        {
-            _metrics.Measure.Counter.Decrement(FusionMetricsRegistry.CacheItemCounter, _cacheNameMetricTag);
-        }
+    
 
 
         public void Wireup(IFusionCache fusionCache, FusionCacheOptions? fusionCacheOptions = null)

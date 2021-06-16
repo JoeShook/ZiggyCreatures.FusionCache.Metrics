@@ -1,7 +1,5 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Configuration;
-using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Web.Http;
@@ -13,13 +11,11 @@ using AppMetricsPluginExample2.Services;
 using Autofac;
 using Autofac.Integration.WebApi;
 using AutofacSerilogIntegration;
-using Microsoft.Configuration.ConfigurationBuilders;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using ZiggyCreatures.Caching.Fusion;
-using ZiggyCreatures.FusionCache.AppMetrics.Plugins;
+using ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins;
 
 namespace AppMetricsPluginExample2.App_Start
 {

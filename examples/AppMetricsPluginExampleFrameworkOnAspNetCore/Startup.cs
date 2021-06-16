@@ -17,7 +17,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using ZiggyCreatures.Caching.Fusion;
-using ZiggyCreatures.FusionCache.AppMetrics.Plugins;
+using ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins;
+using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 
@@ -45,10 +46,10 @@ namespace AppMetricsPluginExample
                                        = new DefaultContractResolver()
                 )
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            
+            var metricsConfig = new MetricsConfig();
+            var appMetricsContextLabel = $"{metricsConfig.Prefix}_{metricsConfig.ApplicationName}";
 
-            
-            var appMetricsContextLabel = $"appMetrics_AppMetricsPluginExampleFrameworkOnAspNetCore";
-            
             var appMetrics = new MetricsBuilder()
                 .Configuration.Configure(
                     options =>
@@ -94,7 +95,7 @@ namespace AppMetricsPluginExample
                 };
 
                 // Future Plugin for hooking metrics ???
-                var metrics = new AppMetricsProvider("domain", appMetrics);
+                var metrics = new AppMetricsProvider("domain", appMetrics, hostNameCache);
                 var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, hostNameCache, logger);
                 metrics.Wireup(fusionCache, fusionCacheOptions);
 
@@ -118,7 +119,7 @@ namespace AppMetricsPluginExample
                         .SetFactoryTimeouts(TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(10))
                 };
 
-                var metrics = new AppMetricsProvider("email", appMetrics);
+                var metrics = new AppMetricsProvider("email", appMetrics, emailCache);
                 var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, emailCache, logger);
                 metrics.Wireup(fusionCache, fusionCacheOptions);
 
