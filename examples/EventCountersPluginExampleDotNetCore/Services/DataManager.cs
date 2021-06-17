@@ -28,18 +28,18 @@ namespace EventCountersPluginExampleDotNetCore.Services
 
         public async Task<DomainCertData> GetDomain(string name, CancellationToken cancellationToken)
         {
-            var rndWait = new Random();
-            int number = rndWait.Next(10, 200);
-            await Task.Delay(number);
+            int number = RandomGenerator.Next();
+            await Task.Delay(number, cancellationToken);
+            // Console.WriteLine(number);
 
             return domains.SingleOrDefault(d => d.Domain.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
         public async Task<EmailToIpData> GetEmailRoute(string name, CancellationToken cancellationToken)
         {
-            var rndWait = new Random();
-            int number = rndWait.Next(10, 200);
+            int number = RandomGenerator.Next();
             await Task.Delay(number, cancellationToken);
+            // Console.WriteLine(number);
 
             return emailToIpDatas.SingleOrDefault(d => d.Email.Equals(name, StringComparison.OrdinalIgnoreCase));
         }

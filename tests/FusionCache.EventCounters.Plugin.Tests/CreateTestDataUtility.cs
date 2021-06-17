@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using FusionCache.Example.Domain.Model;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -85,5 +86,21 @@ namespace FusionCache.Etw.Plugin.Tests
         //
         //     File.WriteAllText("../../../../../examples/data/MockDomainCertData.json", JsonSerializer.Serialize(uniqueDomains, serializeOptions));
         // }
+
+
+        [Fact]
+        public void CreateLoadTestDataUtil()
+        {
+            var emails = JsonSerializer.Deserialize<List<EmailToIpData>>(
+                File.ReadAllText("../../../../../examples/data/MockEmailToIpData.json"),
+                serializeOptions);
+        
+            var testData = "email\r\n" + string.Join("\r\n", emails.Select(e => e.Email));
+        
+            // _testOutputHelper.WriteLine(testData);
+            File.WriteAllText("../../../../../examples/superbenchmarker/EmailAddressData.csv", testData);
+        }
+
+
     }
 }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web;
+using AppMetricsPluginExample;
 using FusionCache.Example.Domain.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -31,8 +32,7 @@ namespace AppMetricsPluginExample2.Services
 
         public DomainCertData GetDomain(string name)
         {
-            var rndWait = new Random();
-            int number = rndWait.Next(10, 200);
+            int number = RandomGenerator.Next();
             Thread.Sleep(number);
 
             return domains.SingleOrDefault(d => d.Domain.Equals(name, StringComparison.OrdinalIgnoreCase));
@@ -40,8 +40,7 @@ namespace AppMetricsPluginExample2.Services
 
         public EmailToIpData GetEmailRoute(string name)
         {
-            var rndWait = new Random();
-            int number = rndWait.Next(10, 200);
+            int number = RandomGenerator.Next();
             Thread.Sleep(number);
 
             return emailToIpDatas.SingleOrDefault(d => d.Email.Equals(name, StringComparison.OrdinalIgnoreCase));

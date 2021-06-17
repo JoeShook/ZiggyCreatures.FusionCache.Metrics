@@ -91,7 +91,7 @@ namespace AppMetricsPluginExample
                             Priority = CacheItemPriority.High
                         }
                         .SetFailSafe(true, TimeSpan.FromSeconds(10))
-                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(10))
+                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3))
                 };
 
                 // Future Plugin for hooking metrics ???
@@ -116,7 +116,7 @@ namespace AppMetricsPluginExample
                             Priority = CacheItemPriority.High
                         }
                         .SetFailSafe(true, TimeSpan.FromSeconds(10))
-                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(10))
+                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3))
                 };
 
                 var metrics = new AppMetricsProvider("email", appMetrics, emailCache);

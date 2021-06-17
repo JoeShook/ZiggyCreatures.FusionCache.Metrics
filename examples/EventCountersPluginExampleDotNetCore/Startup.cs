@@ -41,7 +41,6 @@ namespace EventCountersPluginExampleDotNetCore
             //
             // Once this is a Fusion Cache Plugin maybe we can just call services.AddFusionCache(...)
             //
-           
             services.AddSingleton<IFusionCache>(serviceProvider =>
             {
                 var logger = serviceProvider.GetService<ILogger<ZiggyCreatures.Caching.Fusion.FusionCache>>();
@@ -55,7 +54,7 @@ namespace EventCountersPluginExampleDotNetCore
 
                         }
                         .SetFailSafe(true, TimeSpan.FromMinutes(1))
-                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
+                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3))
                 };
 
                 // Future Plugin for hooking metrics ???
@@ -81,7 +80,7 @@ namespace EventCountersPluginExampleDotNetCore
 
                         }
                         .SetFailSafe(true, TimeSpan.FromMinutes(1))
-                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
+                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3))
                 };
 
                 var metrics = new FusionCacheEventSource("email", hostNameCache);

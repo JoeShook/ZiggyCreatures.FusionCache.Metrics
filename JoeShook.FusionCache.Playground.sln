@@ -43,6 +43,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.AppMetrics.Benchmarks", "benchmarks\ZiggyCreatures.FusionCache.AppMetrics.Benchmarks\ZiggyCreatures.FusionCache.AppMetrics.Benchmarks.csproj", "{EB7D42E4-DA6A-451D-8D00-150762BE4B57}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "superbenchmarker", "superbenchmarker", "{57C63C6C-AB04-4C0B-8F0A-5A289AD9949A}"
+	ProjectSection(SolutionItems) = preProject
+		examples\superbenchmarker\EmailAddressData.csv = examples\superbenchmarker\EmailAddressData.csv
+		examples\superbenchmarker\README.md = examples\superbenchmarker\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +121,7 @@ Global
 		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
 		{500495DC-3059-4F65-85C7-830B2BDA68EB} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
 		{EB7D42E4-DA6A-451D-8D00-150762BE4B57} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
+		{57C63C6C-AB04-4C0B-8F0A-5A289AD9949A} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32C4269F-FC33-47FA-91DA-2B6C5DF7D025}
