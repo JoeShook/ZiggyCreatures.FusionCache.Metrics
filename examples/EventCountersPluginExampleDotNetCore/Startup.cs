@@ -99,15 +99,41 @@ namespace EventCountersPluginExampleDotNetCore
             // EventListener too write metrics to InfluxDb
             services.AddSingleton(this.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>());
 
-            services.AddSingleton(sp => 
-                InfluxDBClientFactory.CreateV1(
-                    $"http://{Configuration["InfluxDbConfig.Host"]}:{Configuration["InfluxDbConfig.Port"]}",
-                    Configuration["InfluxDbConfig.Username"],
-                    Configuration["InfluxDbConfig.Password"].ToCharArray(),
-                    Configuration["InfluxDbConfig.Database"],
-                    Configuration["InfluxDbConfig.RetentionPolicy"]));
+            switch (this.Configuration.GetValue<string>("UseInflux").ToLowerInvariant())
+            {
+                case "cloud":
+                    services.AddSingleton(sp =>
+                        InfluxDBClientFactory.Create(
+                            $"http://{Configuration["InfluxCloudConfig.Host"]}:{Configuration["InfluxCloudConfig.Port"]}",
+                            Configuration["InfluxCloudConfig.Token"].ToCharArray()));
+                    services.AddHostedService<MetricsListenerService>();
 
-            services.AddHostedService<MetricsListenerService>();
+                    break;
+
+                case "db":
+                    services.AddSingleton(sp =>
+                        InfluxDBClientFactory.CreateV1(
+                            $"http://{Configuration["InfluxDbConfig.Host"]}:{Configuration["InfluxDbConfig.Port"]}",
+                            Configuration["InfluxDbConfig.Username"],
+                            Configuration["InfluxDbConfig.Password"].ToCharArray(),
+                            Configuration["InfluxDbConfig.Database"],
+                            Configuration["InfluxDbConfig.RetentionPolicy"]));
+                    services.AddHostedService<MetricsListenerService>();
+
+                    break;
+
+                default:
+                    services.AddSingleton(sp =>
+                        InfluxDBClientFactory.Create(
+                            $"http://localhost",
+                            "nullToken".ToCharArray()));
+                    services.AddHostedService<ConsoleMetricsListenter>();
+
+                    break;
+            }
+            
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

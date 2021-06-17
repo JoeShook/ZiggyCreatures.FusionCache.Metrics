@@ -88,18 +88,18 @@ namespace FusionCache.Etw.Plugin.Tests
         // }
 
 
-        [Fact]
-        public void CreateLoadTestDataUtil()
-        {
-            var emails = JsonSerializer.Deserialize<List<EmailToIpData>>(
-                File.ReadAllText("../../../../../examples/data/MockEmailToIpData.json"),
-                serializeOptions);
-        
-            var testData = "email\r\n" + string.Join("\r\n", emails.Select(e => e.Email));
-        
-            // _testOutputHelper.WriteLine(testData);
-            File.WriteAllText("../../../../../examples/superbenchmarker/EmailAddressData.csv", testData);
-        }
+        // [Fact]
+        // public void CreateLoadTestDataUtil()
+        // {
+        //     var emails = JsonSerializer.Deserialize<List<EmailToIpData>>(
+        //         File.ReadAllText("../../../../../examples/data/MockEmailToIpData.json"),
+        //         serializeOptions);
+        //
+        //     var testData = "email\r\n" + string.Join("\r\n", emails.Select(e => e.Email));
+        //
+        //     // _testOutputHelper.WriteLine(testData);
+        //     File.WriteAllText("../../../../../examples/superbenchmarker/EmailAddressData.csv", testData);
+        // }
 
 
     }

@@ -12,6 +12,26 @@ using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 
 namespace JoeShook.FusionCache.EventCounters.Plugin
 {
+    public class ConsoleMetricsListenter : MetricsListenerService
+    {
+        public ConsoleMetricsListenter(
+            InfluxDBClient influxDBClient, 
+            MetricsConfig metricsConfig, 
+            ISemanticConventions conventions = null) : 
+            base(influxDBClient, metricsConfig, conventions)
+        {
+
+        }
+
+        public override void WriteData(List<PointData> pointData)
+        {
+            foreach (var data in pointData)
+            {
+                Console.WriteLine(data.ToLineProtocol());
+            }
+        }
+    }
+
     public class MetricsListenerService : EventListener, IHostedService
     {
         private List<string> RegisteredEventSources = new List<string>();
@@ -102,10 +122,15 @@ namespace JoeShook.FusionCache.EventCounters.Plugin
 
             if (pointData != null && pointData.Any())
             {
-                using (var writeApi = _influxDBClient.GetWriteApi())
-                {
-                    writeApi.WritePoints(pointData);
-                }
+                WriteData(pointData);
+            }
+        }
+
+        public virtual void WriteData(List<PointData> pointData)
+        {
+            using (var writeApi = _influxDBClient.GetWriteApi())
+            {
+                writeApi.WritePoints(pointData);
             }
         }
 
