@@ -7,26 +7,35 @@
 
 </div>
 
-### FusionCache.EventCounters is a plugin to capture caching metrics using [FusionCache](https://github.com/jodydonetti/ZiggyCreatures.FusionCache).
+## FusionCache.EventCounters is a plugin to capture caching metrics using [FusionCache](https://github.com/jodydonetti/ZiggyCreatures.FusionCache).
 
 Metrics are missing from open-source resiliency projects in the .NET ecosystem where in equivalent Java libraries, metrics tend to be common.  FusionCache is a feature rich caching library addressing resiliency needs of today’s enterprise implementations.  [EventCounters](https://docs.microsoft.com/en-us/dotnet/core/diagnostics/event-counters) is a lightweight .NET Core API library that works in .NET Core.  Joining these two excellent libraries together you can easily be caching and writing metrics to your favorite timeseries database or use the dotnet-counters tool to monitor from the console.
 
-Metrics plugins are created by implementing the IFusionMetrics interface from [FusionCache](https://github.com/jodydonetti/ZiggyCreatures.FusionCache).
+## Usage
 
-
-The following IFusionMetrics are implemented along with Tag names.  Tags are the typical in time series databases and are indexed making them friendly to searching and grouping over time.  
-
-### CacheName
-
-"cacheName" is a Tag.  Set this when creating a AppMetricsProvider.
-
-Example usage where domainsCache is the name of the cache:
+Setup
 
 ```csharp
-var domainMetrics = FusionCacheEventSource.Instance("domainsCache");
+    var domainMetrics = FusionCacheEventSource.Instance("domainCache");
+
+    services.AddFusionCache(options =>
+        {
+            options.DefaultEntryOptions = new FusionCacheEntryOptions
+            {
+                Duration = TimeSpan.FromSeconds(5),
+                Priority = CacheItemPriority.High
+            }
+                .SetFailSafe(true, TimeSpan.FromHours(2))
+                .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(2));
+        },
+        metrics: domainMetrics);
 ```
 
-## Incrementing Polling Counters for Hits and Misses
+Listenting for events
+
+see example of an [EventListener](examples/EventCountersPluginExampleDotNetCore/Services/MetricsListenerService.cs) in the example project [EventCountersPluginExampleDotNetCore](https://github.com/JoeShook/FusionCacheMetricsPlayground/tree/main/examples/EventCountersPluginExampleDotNetCore)
+
+## Events:: Incrementing Polling Counters for Hits and Misses
 
 The following counters are all IncrementingPollingCounters which tracks based on a time interval. EventListeners will get a value based on the difference between the current invocation and the last invocation. Read [EventCounter API overview](https://docs.microsoft.com/en-us/dotnet/core/diagnostics/event-counters#eventcounter-api-overview) to get a better understanding of the various EventCounter implementations.
 
@@ -62,25 +71,9 @@ The cache tag is "EXPIRE".  When the EvictionReason is Expired increment a count
 
 The cache tag is "CAPACITY".  When the EvictionReason is Capacity increment a counter.
 
-## Usage
-
-```csharp
-    var domainMetrics = FusionCacheEventSource.Instance("domainCache");
-
-    services.AddFusionCache(options =>
-        {
-            options.DefaultEntryOptions = new FusionCacheEntryOptions
-            {
-                Duration = TimeSpan.FromSeconds(5),
-                Priority = CacheItemPriority.High
-            }
-                .SetFailSafe(true, TimeSpan.FromHours(2))
-                .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(2));
-        },
-        metrics: domainMetrics);
-```
-
 ### Reporting
+
+In addition to implementing a `EventListener` as mentioned previously one can also monitor the events from the command line.
 
 dotnet-counters can listen to the metrics above.
 Example command line for a example.exe application
