@@ -1,4 +1,4 @@
-﻿﻿# FusionCache.AppMetrics
+# FusionCache.AppMetrics
 
 <div align="center">
 
