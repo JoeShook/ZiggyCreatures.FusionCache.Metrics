@@ -46,6 +46,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "superbenchmarker", "superbenchmarker", "{57C63C6C-AB04-4C0B-8F0A-5A289AD9949A}"
 	ProjectSection(SolutionItems) = preProject
 		examples\superbenchmarker\EmailAddressData.csv = examples\superbenchmarker\EmailAddressData.csv
+		examples\superbenchmarker\EmailAddressDataSmallBatch.csv = examples\superbenchmarker\EmailAddressDataSmallBatch.csv
 		examples\superbenchmarker\README.md = examples\superbenchmarker\README.md
 	EndProjectSection
 EndProject

@@ -88,7 +88,8 @@ namespace AppMetricsPluginExample
                     DefaultEntryOptions = new FusionCacheEntryOptions
                         {
                             Duration = TimeSpan.FromSeconds(5),
-                            Priority = CacheItemPriority.High
+                            JitterMaxDuration = TimeSpan.FromSeconds(20),
+                            FailSafeThrottleDuration = TimeSpan.FromMilliseconds(10)
                         }
                         .SetFailSafe(true, TimeSpan.FromSeconds(10))
                         .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3))
@@ -113,7 +114,8 @@ namespace AppMetricsPluginExample
                     DefaultEntryOptions = new FusionCacheEntryOptions
                         {
                             Duration = TimeSpan.FromSeconds(5),
-                            Priority = CacheItemPriority.High
+                            JitterMaxDuration = TimeSpan.FromSeconds(20),
+                            FailSafeThrottleDuration = TimeSpan.FromMilliseconds(10)
                         }
                         .SetFailSafe(true, TimeSpan.FromSeconds(10))
                         .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3))

@@ -50,12 +50,10 @@ namespace EventCountersPluginExampleDotNetCore
                     DefaultEntryOptions = new FusionCacheEntryOptions
                         {
                             Duration = TimeSpan.FromSeconds(1),
-                            Priority = CacheItemPriority.High,
                             JitterMaxDuration = TimeSpan.FromSeconds(20)
                         }
-                        .SetFailSafe(true, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1))
-                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3)),
-                    FactorySyntheticTimeoutsLogLevel = LogLevel.Critical
+                        .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(10))
+                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
                 };
 
                 // Future Plugin for hooking metrics ???
@@ -77,12 +75,11 @@ namespace EventCountersPluginExampleDotNetCore
                     DefaultEntryOptions = new FusionCacheEntryOptions
                         {
                             Duration = TimeSpan.FromSeconds(1),
-                            Priority = CacheItemPriority.High,
-                            JitterMaxDuration = TimeSpan.FromSeconds(20)
-                    }
-                        .SetFailSafe(true, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1))
-                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3)),
-                    FactorySyntheticTimeoutsLogLevel = LogLevel.Critical
+                            JitterMaxDuration = TimeSpan.FromSeconds(20),
+                            FailSafeThrottleDuration = TimeSpan.FromMilliseconds(10)
+                        }
+                        .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(1))
+                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(10), TimeSpan.FromSeconds(1))
                 };
 
                 var metrics = new FusionCacheEventSource("email", emailCache);
