@@ -6,6 +6,8 @@ Using [SuperBenchmarker](https://github.com/aliostad/SuperBenchmarker) to place 
 
 sb -u "http://localhost:5000/EmailValidator/EmailRoute/{{{email}}}"  -f EmailAddressData.csv -U -c 10 -N 600 -P 1
 
+Small batch to get metrics results quicker.
+
 sb -u "http://localhost:5000/EmailValidator/EmailRoute/{{{email}}}"  -f EmailAddressDataSmallBatch.csv -U -c 8 -N 600 -P 1
 
 ## Example used to test EventCountersPluginExampleDotnetCore

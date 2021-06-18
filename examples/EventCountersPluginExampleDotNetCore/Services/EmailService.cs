@@ -21,6 +21,11 @@ namespace EventCountersPluginExampleDotNetCore.Services
 
         public async Task<EmailToIpData> GetEmailRoute(string emailAddress, CancellationToken cancellationToken)
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return null;
+            }
+
             return await _cache.GetOrSetAsync(
                 emailAddress,
                 await _dataManager.GetEmailRoute(emailAddress, cancellationToken),

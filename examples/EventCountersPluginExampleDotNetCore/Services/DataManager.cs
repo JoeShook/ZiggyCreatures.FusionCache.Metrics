@@ -32,14 +32,31 @@ namespace EventCountersPluginExampleDotNetCore.Services
             await Task.Delay(number, cancellationToken);
             // Console.WriteLine(number);
 
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return null;
+            }
+
             return domains.SingleOrDefault(d => d.Domain.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
         public async Task<EmailToIpData> GetEmailRoute(string name, CancellationToken cancellationToken)
         {
             int number = RandomGenerator.Next();
+
+            if (number > 900)
+            {
+                throw new Exception("timeout");
+            }
+
             await Task.Delay(number, cancellationToken);
             // Console.WriteLine(number);
+            
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return null;
+            }
 
             return emailToIpDatas.SingleOrDefault(d => d.Email.Equals(name, StringComparison.OrdinalIgnoreCase));
         }

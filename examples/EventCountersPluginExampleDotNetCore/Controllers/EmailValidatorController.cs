@@ -28,6 +28,11 @@ namespace EventCountersPluginExampleDotNetCore.Controllers
         [HttpGet]
         public async Task<IActionResult> GetEmailRoute([FromRoute] string emailAddress, CancellationToken cancellationToken)
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return null;
+            }
+
             EmailToIpData result;
             var hostPart = GetHostPart(emailAddress);
 
