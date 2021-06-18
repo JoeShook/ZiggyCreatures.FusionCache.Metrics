@@ -4,6 +4,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using EventCountersPluginExampleDotNetCore.Services;
 using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
@@ -40,12 +41,18 @@ namespace JoeShook.FusionCache.EventCounters.Plugin
         private MetricsConfig _metricsConfig;
         private readonly string _measurementName;
         private readonly ISemanticConventions _conventions;
+        private readonly IInfluxCloudConfig _influxCloudConfig;
 
-        public MetricsListenerService(InfluxDBClient influxDBClient, MetricsConfig metricsConfig, ISemanticConventions conventions = null)
+        public MetricsListenerService(
+            InfluxDBClient influxDBClient, 
+            MetricsConfig metricsConfig, 
+            ISemanticConventions conventions = null,
+            IInfluxCloudConfig influxCloudConfig = null)
         {
             _influxDBClient = influxDBClient ?? throw new ArgumentNullException(nameof(influxDBClient));
             _metricsConfig = metricsConfig ?? throw  new ArgumentNullException(nameof(metricsConfig));
             _conventions = conventions ?? new SemanticConventions();
+            _influxCloudConfig = influxCloudConfig;
 
             _measurementName = $"{metricsConfig.Prefix}{metricsConfig.ApplicationName}_{metricsConfig.MeasurementName}";
         }
@@ -130,7 +137,14 @@ namespace JoeShook.FusionCache.EventCounters.Plugin
         {
             using (var writeApi = _influxDBClient.GetWriteApi())
             {
-                writeApi.WritePoints(pointData);
+                if (_influxCloudConfig != null)
+                {
+                    writeApi.WritePoints(_influxCloudConfig.Bucket, _influxCloudConfig.Organization, pointData);
+                }
+                else
+                {
+                    writeApi.WritePoints(pointData);
+                }
             }
         }
 

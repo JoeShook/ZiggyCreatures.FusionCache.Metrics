@@ -15,6 +15,10 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
         private long _cacheMisses;
         private long _cacheStaleHit;
         private long _cacheBackgroundRefreshed;
+        private long _cacheBackgroundRefreshedError;
+        private long _cacheCacheFactoryError;
+        private long _cacheFactorySyntheticTimeout;
+        private long _cacheFailSafeActivate;
         private long _cacheExpiredEvict;
         private long _cacheCapacityEvict;
         private long _cacheRemoved;
@@ -22,6 +26,10 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
         private IncrementingPollingCounter? _cacheMissPollingCounter;
         private IncrementingPollingCounter? _cacheStaleHitPollingCounter;
         private IncrementingPollingCounter? _cacheBackgroundRefreshedPollingCounter;
+        private IncrementingPollingCounter? _cacheBackgroundRefreshedErrorPollingCounter;
+        private IncrementingPollingCounter? _cacheCacheFactoryErrorPollingCounter;
+        private IncrementingPollingCounter? _cacheFactorySyntheticTimeoutPollingCounter;
+        private IncrementingPollingCounter? _cacheFailSafeActivatePollingCounter;
         private IncrementingPollingCounter? _cacheExpiredEvictPollingCounter;
         private IncrementingPollingCounter? _cacheCapacityEvictPollingCounter;
         private IncrementingPollingCounter? _cacheRemovedPollingCounter;
@@ -88,7 +96,51 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
             };
             _cacheBackgroundRefreshedPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
 
+            
+            _cacheBackgroundRefreshedErrorPollingCounter = new IncrementingPollingCounter(
+                _conventions.CacheBackgroundFailedRefreshedTagValue,
+                this,
+                () => Volatile.Read(ref _cacheBackgroundRefreshedError))
+            {
+                DisplayName = "Cache Background Refresh Error",
+                DisplayRateTimeScale = _displayRateTimeScale
+            };
+            _cacheBackgroundRefreshedErrorPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
 
+
+            _cacheCacheFactoryErrorPollingCounter = new IncrementingPollingCounter(
+                _conventions.CacheCacheFactoryErrorTagValue,
+                this,
+                () => Volatile.Read(ref _cacheBackgroundRefreshedError))
+            {
+                DisplayName = "Cache Factory Error",
+                DisplayRateTimeScale = _displayRateTimeScale
+            };
+            _cacheCacheFactoryErrorPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
+
+
+            _cacheFactorySyntheticTimeoutPollingCounter = new IncrementingPollingCounter(
+                _conventions.CacheFactorySyntheticTimeoutTagValue,
+                this,
+                () => Volatile.Read(ref _cacheBackgroundRefreshedError))
+            {
+                DisplayName = "Cache Factory Synthetic Timeout",
+                DisplayRateTimeScale = _displayRateTimeScale
+            };
+            _cacheFactorySyntheticTimeoutPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
+
+
+            _cacheFailSafeActivatePollingCounter = new IncrementingPollingCounter(
+                _conventions.CacheFailSafeActivateTagValue,
+                this,
+                () => Volatile.Read(ref _cacheBackgroundRefreshedError))
+            {
+                DisplayName = "Cache Factory Synthetic Timeout",
+                DisplayRateTimeScale = _displayRateTimeScale
+            };
+            _cacheFailSafeActivatePollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
+
+            
             _cacheExpiredEvictPollingCounter = new IncrementingPollingCounter(
                 _conventions.CacheExpiredEvictTagValue,
                 this,
@@ -162,9 +214,37 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
 
         /// <summary>Cache item refresh in background.</summary>
         [NonEvent]
-        public void CacheBackgroundRefresh()
+        public void CacheBackgroundRefreshSuccess()
         {
             Interlocked.Increment(ref _cacheBackgroundRefreshed);
+        }
+
+        /// <summary>Cache item refresh in background.</summary>
+        [NonEvent]
+        public void CacheBackgroundRefreshError()
+        {
+            Interlocked.Increment(ref _cacheBackgroundRefreshedError);
+        }
+
+        /// <summary>Generic cache factory error.</summary>
+        [NonEvent]
+        public void CacheFactoryError()
+        {
+            Interlocked.Increment(ref _cacheCacheFactoryError);
+        }
+
+        /// <summary>Cache factory synthetic timeout</summary>
+        [NonEvent]
+        public void CacheFactorySyntheticTimeout()
+        {
+            Interlocked.Increment(ref _cacheFactorySyntheticTimeout);
+        }
+
+        /// <summary>The event for a fail-safe activation.</summary>
+        [NonEvent]
+        public void CacheFailSafeActivate()
+        {
+            Interlocked.Increment(ref _cacheFailSafeActivate);
         }
 
         /// <summary>Cache item expired</summary>
@@ -208,11 +288,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
 
             fusionCache.Events.Miss += (s, e) => CacheMiss();
             fusionCache.Events.Remove += (s, e) => CacheRemoved();
-            
-            // fusionCache.Events.BackgroundFactoryError 
-            // fusionCache.Events.FactoryError 
-            // fusionCache.Events.FactorySyntheticTimeout 
-            // fusionCache.Events.FailSafeActivate  
+           
 
             fusionCache.Events.Memory.Eviction += (sender, e) =>
             {
@@ -234,11 +310,12 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
                         break;
                 }
             };
-            
-            //
-            // Background refresh vs sets?  Not sure I care.  Maybe 
-            //
-            fusionCache.Events.BackgroundFactorySuccess += (s, e) => CacheBackgroundRefresh();
+
+            fusionCache.Events.BackgroundFactorySuccess += (s, e) => CacheBackgroundRefreshSuccess();
+            fusionCache.Events.BackgroundFactoryError += (s, e) => CacheBackgroundRefreshError();
+            fusionCache.Events.FactoryError += (s, e) => CacheFactoryError();
+            fusionCache.Events.FactorySyntheticTimeout += (s, e) => CacheFactorySyntheticTimeout();
+            fusionCache.Events.FailSafeActivate += (s, e) => CacheFailSafeActivate();
         }
     }
 }

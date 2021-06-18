@@ -51,10 +51,11 @@ namespace EventCountersPluginExampleDotNetCore
                         {
                             Duration = TimeSpan.FromSeconds(1),
                             Priority = CacheItemPriority.High,
-
+                            JitterMaxDuration = TimeSpan.FromSeconds(20)
                         }
-                        .SetFailSafe(true, TimeSpan.FromMinutes(1))
-                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3))
+                        .SetFailSafe(true, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1))
+                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3)),
+                    FactorySyntheticTimeoutsLogLevel = LogLevel.Critical
                 };
 
                 // Future Plugin for hooking metrics ???
@@ -77,13 +78,14 @@ namespace EventCountersPluginExampleDotNetCore
                         {
                             Duration = TimeSpan.FromSeconds(1),
                             Priority = CacheItemPriority.High,
-
-                        }
-                        .SetFailSafe(true, TimeSpan.FromMinutes(1))
-                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3))
+                            JitterMaxDuration = TimeSpan.FromSeconds(20)
+                    }
+                        .SetFailSafe(true, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1))
+                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3)),
+                    FactorySyntheticTimeoutsLogLevel = LogLevel.Critical
                 };
 
-                var metrics = new FusionCacheEventSource("email", hostNameCache);
+                var metrics = new FusionCacheEventSource("email", emailCache);
                 var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, emailCache, logger);
                 metrics.Wireup(fusionCache, fusionCacheOptions);
 
@@ -94,8 +96,7 @@ namespace EventCountersPluginExampleDotNetCore
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EventCountersPluginExampleDotNetCore", Version = "v1" });
             });
-
-
+            
             // EventListener too write metrics to InfluxDb
             services.AddSingleton(this.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>());
 
@@ -104,10 +105,16 @@ namespace EventCountersPluginExampleDotNetCore
                 case "cloud":
                     services.AddSingleton(sp =>
                         InfluxDBClientFactory.Create(
-                            $"http://{Configuration["InfluxCloudConfig.Host"]}:{Configuration["InfluxCloudConfig.Port"]}",
+                            Configuration["InfluxCloudConfig.Url"],
                             Configuration["InfluxCloudConfig.Token"].ToCharArray()));
                     services.AddHostedService<MetricsListenerService>();
 
+                    services.AddSingleton<IInfluxCloudConfig>(new InfluxCloudConfig
+                    {
+                        Bucket = Configuration["InfluxCloudConfig.Bucket"],
+                        Organization = Configuration["InfluxCloudConfig.Organization"]
+                    });
+                   
                     break;
 
                 case "db":

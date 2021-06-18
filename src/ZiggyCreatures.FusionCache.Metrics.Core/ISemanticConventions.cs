@@ -44,6 +44,12 @@
         string CacheBackgroundRefreshedTagValue { get; }
 
         /// <summary>
+        /// Cache item background failed refreshed tag.  Request was not returned within soft timeout period and the Fail-Safe cache was returned.
+        /// In the background the cached refresh also timed out.
+        /// </summary>
+        string CacheBackgroundFailedRefreshedTagValue { get; }
+
+        /// <summary>
         /// Cache item expired tag.
         /// </summary>
         string CacheExpiredEvictTagValue { get; }
@@ -62,5 +68,20 @@
         /// Cache item count tag
         /// </summary>
         string CacheItemCountTagValue { get; }
+
+        /// <summary>
+        /// Cache factory threw and error.
+        /// </summary>
+        string CacheCacheFactoryErrorTagValue { get; }
+
+        /// <summary>
+        /// Cache factory timed out according to FusionCache soft-timeout settings.
+        /// </summary>
+        string CacheFactorySyntheticTimeoutTagValue { get; }
+
+        /// <summary>
+        /// Cache returned a stale cache value.
+        /// </summary>
+        string CacheFailSafeActivateTagValue { get; }
     }
 }
