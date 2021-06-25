@@ -30,9 +30,9 @@ namespace AppMetricsPluginExample.Services
 
         public async Task<DomainCertData> GetDomain(string name, CancellationToken cancellationToken)
         {
-            // int number = RandomGenerator.Next();
-            // await Task.Delay(number, cancellationToken);
-            // // Console.WriteLine(number);
+            int number = RandomGenerator.Next();
+            await Task.Delay(number, cancellationToken);
+            // Console.WriteLine(number);
             
             if (cancellationToken.IsCancellationRequested)
             {
@@ -44,16 +44,16 @@ namespace AppMetricsPluginExample.Services
 
         public async Task<EmailToIpData> GetEmailRoute(string name, CancellationToken cancellationToken)
         {
-            // int number = RandomGenerator.Next();
-            //
-            // if (number > 1400)
-            // {
-            //     await Task.Delay(number, cancellationToken);
-            //     throw new Exception("poof");
-            // }
-            //
-            // await Task.Delay(number, cancellationToken);
-            // // Console.WriteLine(number);
+            int number = RandomGenerator.Next();
+            
+            if (number > 1400)
+            {
+                await Task.Delay(number, cancellationToken);
+                throw new Exception("poof");
+            }
+            
+            await Task.Delay(number, cancellationToken);
+            // Console.WriteLine(number);
 
 
             if (cancellationToken.IsCancellationRequested)

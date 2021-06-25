@@ -135,7 +135,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
                 this,
                 () => Volatile.Read(ref _cacheFailSafeActivate))
             {
-                DisplayName = "Cache Factory Synthetic Timeout",
+                DisplayName = "Cache Fail-Safe activation",
                 DisplayRateTimeScale = _displayRateTimeScale
             };
             _cacheFailSafeActivatePollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
@@ -219,7 +219,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
             Interlocked.Increment(ref _cacheBackgroundRefreshed);
         }
 
-        /// <summary>Cache item refresh in background.</summary>
+        /// <summary>Cache item refresh in background failed.</summary>
         [NonEvent]
         public void CacheBackgroundRefreshError()
         {

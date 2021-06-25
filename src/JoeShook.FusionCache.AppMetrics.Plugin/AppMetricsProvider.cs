@@ -48,10 +48,10 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
         {
             _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheHitCounter(_semanticConventions), _cacheNameMetricTag);
 
-            // if (_cache != null)
-            // {
-            //     _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemGauge(_semanticConventions), _cacheNameMetricTag, () => _cache.Count);
-            // }
+            if (_cache != null)
+            {
+                _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemGauge(_semanticConventions), _cacheNameMetricTag, () => _cache.Count);
+            }
         }
 
         /// <summary>
@@ -61,10 +61,10 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
         {
             _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheMissCounter(_semanticConventions), _cacheNameMetricTag);
 
-            // if (_cache != null)
-            // {
-            //     _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemGauge(_semanticConventions), _cacheNameMetricTag, () => _cache.Count);
-            // }
+            if (_cache != null)
+            {
+                _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemGauge(_semanticConventions), _cacheNameMetricTag, () => _cache.Count);
+            }
         }
 
         /// <summary>
@@ -82,6 +82,39 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
         {
             _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheBackgroundRefreshed(_semanticConventions), _cacheNameMetricTag);
         }
+
+        /// <summary>
+        /// Cache item refresh in background failed.
+        /// </summary>
+        public void CacheBackgroundRefreshError()
+        {
+            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheBackgroundRefreshError(_semanticConventions), _cacheNameMetricTag);
+        }
+
+        /// <summary>
+        /// Generic cache factory error.
+        /// </summary>
+        public void CacheFactoryError()
+        {
+            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheFactoryError(_semanticConventions), _cacheNameMetricTag);
+        }
+        
+        /// <summary>
+        /// Cache factory synthetic timeout
+        /// </summary>
+        public void CacheFactorySyntheticTimeout()
+        {
+            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheFactorySyntheticTimeout(_semanticConventions), _cacheNameMetricTag);
+        }
+
+        /// <summary>
+        /// The event for a fail-safe activation.
+        /// </summary>
+        public void CacheFailSafeActivate()
+        {
+            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheFailSafeActivate(_semanticConventions), _cacheNameMetricTag);
+        }
+
 
         /// <summary>
         /// Cache item expired
@@ -125,12 +158,7 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
 
             fusionCache.Events.Miss += (s, e) => CacheMiss();
             fusionCache.Events.Remove += (s, e) => CacheRemoved();
-
-            // fusionCache.Events.BackgroundFactoryError 
-            // fusionCache.Events.FactoryError 
-            // fusionCache.Events.FactorySyntheticTimeout 
-            // fusionCache.Events.FailSafeActivate  
-
+            
             fusionCache.Events.Memory.Eviction += (sender, e) =>
             {
                 // If you need it...
@@ -152,10 +180,11 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
                 }
             };
 
-            //
-            // Background refresh vs sets?  Not sure I care.  Maybe 
-            //
             fusionCache.Events.BackgroundFactorySuccess += (s, e) => CacheBackgroundRefresh();
+            fusionCache.Events.BackgroundFactoryError += (s, e) => CacheBackgroundRefreshError();
+            fusionCache.Events.FactoryError += (s, e) => CacheFactoryError();
+            fusionCache.Events.FactorySyntheticTimeout += (s, e) => CacheFactorySyntheticTimeout();
+            fusionCache.Events.FailSafeActivate += (s, e) => CacheFailSafeActivate();
         }
     }
 }

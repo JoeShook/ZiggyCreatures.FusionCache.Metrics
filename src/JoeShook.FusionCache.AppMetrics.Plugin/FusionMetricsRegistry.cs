@@ -12,7 +12,8 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
     {
         // In time series database the MetricsOptions.DefaultContextLabel will be prefixed to the MeasurementName
         private static string MeasurementName = "cache-events";
-        
+        private static string GaugeName = "cache-gauges";
+
         /// <summary>
         /// Cache hit counter
         /// </summary>
@@ -53,7 +54,46 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
             ResetOnReporting = true
         };
 
+        /// <summary>
+        /// Cache refresh in background failed.
+        /// </summary>
+        public static CounterOptions CacheBackgroundRefreshError(ISemanticConventions conventions) => new CounterOptions
+        {
+            Name = MeasurementName,
+            Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheBackgroundFailedRefreshedTagValue),
+            ResetOnReporting = true
+        };
 
+        /// <summary>
+        /// Generic cache factory error.
+        /// </summary>
+        public static CounterOptions CacheFactoryError(ISemanticConventions conventions) => new CounterOptions
+        {
+            Name = MeasurementName,
+            Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheCacheFactoryErrorTagValue),
+            ResetOnReporting = true
+        };
+
+        /// <summary>
+        /// Cache factory synthetic timeout
+        /// </summary>
+        public static CounterOptions CacheFactorySyntheticTimeout(ISemanticConventions conventions) => new CounterOptions
+        {
+            Name = MeasurementName,
+            Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheFactorySyntheticTimeoutTagValue),
+            ResetOnReporting = true
+        };
+
+        /// <summary>
+        /// Cache Fail-Safe activation
+        /// </summary>
+        public static CounterOptions CacheFailSafeActivate(ISemanticConventions conventions) => new CounterOptions
+        {
+            Name = MeasurementName,
+            Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheFailSafeActivateTagValue),
+            ResetOnReporting = true
+        };
+        
         /// <summary>
         /// Cache expired counter
         /// </summary>
@@ -89,7 +129,7 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
         /// </summary>
         public static GaugeOptions CacheItemGauge(ISemanticConventions conventions) => new GaugeOptions
         {
-            Name = MeasurementName + "_gauge",
+            Name = GaugeName,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheItemCountTagValue),
             ResetOnReporting = true,
         };
