@@ -311,11 +311,11 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
                 }
             };
 
-            // fusionCache.Events.BackgroundFactorySuccess += (s, e) => CacheBackgroundRefreshSuccess();
-            // fusionCache.Events.BackgroundFactoryError += (s, e) => CacheBackgroundRefreshError();
-            // fusionCache.Events.FactoryError += (s, e) => CacheFactoryError();
-            // fusionCache.Events.FactorySyntheticTimeout += (s, e) => CacheFactorySyntheticTimeout();
-            // fusionCache.Events.FailSafeActivate += (s, e) => CacheFailSafeActivate();
+            fusionCache.Events.BackgroundFactorySuccess += (s, e) => CacheBackgroundRefreshSuccess();
+            fusionCache.Events.BackgroundFactoryError += (s, e) => CacheBackgroundRefreshError();
+            fusionCache.Events.FactoryError += (s, e) => CacheFactoryError();
+            fusionCache.Events.FactorySyntheticTimeout += (s, e) => CacheFactorySyntheticTimeout();
+            fusionCache.Events.FailSafeActivate += (s, e) => CacheFailSafeActivate();
         }
     }
 }
