@@ -59,7 +59,7 @@ namespace EventCountersPluginExampleDotNetCore
                 // Future Plugin for hooking metrics ???
                 var metrics = new FusionCacheEventSource("domain", hostNameCache);
                 var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, hostNameCache, logger);
-                // metrics.Wireup(fusionCache, fusionCacheOptions);
+                metrics.Wireup(fusionCache, fusionCacheOptions);
 
                 return fusionCache;
             });
@@ -88,10 +88,10 @@ namespace EventCountersPluginExampleDotNetCore
                 return new EmailService(serviceProvider.GetRequiredService<DataManager>(), fusionCache);
             });
 
-            // services.AddSwaggerGen(c =>
-            // {
-            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "EventCountersPluginExampleDotNetCore", Version = "v1" });
-            // });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EventCountersPluginExampleDotNetCore", Version = "v1" });
+            });
             
             // EventListener too write metrics to InfluxDb
             services.AddSingleton(this.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>());
@@ -142,21 +142,21 @@ namespace EventCountersPluginExampleDotNetCore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // if (env.IsDevelopment())
-            // {
-            //     app.UseDeveloperExceptionPage();
-            //     app.UseSwagger();
-            //     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EtwPluginExampleDotNetCore v1"));
-            // }
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EtwPluginExampleDotNetCore v1"));
+            }
 
             app.UseRouting();
             
             // app.UseAuthorization();
 
-            // app.UseEndpoints(endpoints =>
-            // {
-            //     endpoints.MapControllers();
-            // });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
