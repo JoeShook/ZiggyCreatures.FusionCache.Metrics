@@ -26,7 +26,7 @@ namespace AppMetricsPluginExample2.Services
         {
             return _cache.GetOrSet(
                 emailAddress, 
-                _dataManager.GetEmailRoute(emailAddress));
+                _ => _dataManager.GetEmailRoute(emailAddress));
         }
     }
 }

@@ -34,10 +34,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.13" />
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.1.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ZiggyCreatures.FusionCache\src\ZiggyCreatures.FusionCache\ZiggyCreatures.FusionCache.csproj" />
     <ProjectReference Include="..\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj" />
   </ItemGroup>
 

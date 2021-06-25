@@ -27,7 +27,7 @@
     "id": 5,
     "domain": "ibm.com",
     "certificate": "0dd928b16b177aee51b1f2e07d5c93e9260d9a52",
-    "enabled": false
+    "enabled": true
   },
   {
     "id": 6,
@@ -39,7 +39,7 @@
     "id": 7,
     "domain": "friendfeed.com",
     "certificate": "0dd928b16b177aee51b1f2e07d5c93e9260d9a52",
-    "enabled": false
+    "enabled": true
   },
   {
     "id": 8,
@@ -105,7 +105,7 @@
     "id": 18,
     "domain": "businesswire.com",
     "certificate": "0dd928b16b177aee51b1f2e07d5c93e9260d9a52",
-    "enabled": false
+    "enabled": true
   },
   {
     "id": 19,
@@ -129,7 +129,7 @@
     "id": 22,
     "domain": "ehow.com",
     "certificate": "0dd928b16b177aee51b1f2e07d5c93e9260d9a52",
-    "enabled": false
+    "enabled": true
   },
   {
     "id": 23,
@@ -153,7 +153,7 @@
     "id": 26,
     "domain": "vimeo.com",
     "certificate": "0dd928b16b177aee51b1f2e07d5c93e9260d9a52",
-    "enabled": false
+    "enabled": true
   },
   {
     "id": 27,
@@ -183,7 +183,7 @@
     "id": 31,
     "domain": "si.edu",
     "certificate": "0dd928b16b177aee51b1f2e07d5c93e9260d9a52",
-    "enabled": false
+    "enabled": true
   },
   {
     "id": 32,
@@ -219,7 +219,7 @@
     "id": 37,
     "domain": "goo.ne.jp",
     "certificate": "0dd928b16b177aee51b1f2e07d5c93e9260d9a52",
-    "enabled": false
+    "enabled": true
   },
   {
     "id": 38,

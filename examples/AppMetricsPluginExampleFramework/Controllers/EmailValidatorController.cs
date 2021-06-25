@@ -36,7 +36,7 @@ namespace AppMetricsPluginExample2.Controllers
             {
                 var domain = _cache.GetOrSet(
                     hostPart, 
-                    _dataManager.GetDomain(hostPart));
+                    _ => _dataManager.GetDomain(hostPart));
                 
                 if (domain != null && domain.Enabled)
                 {
@@ -79,7 +79,7 @@ namespace AppMetricsPluginExample2.Controllers
             {
                 result = _cache.GetOrSet(
                     domainName, 
-                    _dataManager.GetDomain(domainName));
+                    _ => _dataManager.GetDomain(domainName));
             }
             else
             {

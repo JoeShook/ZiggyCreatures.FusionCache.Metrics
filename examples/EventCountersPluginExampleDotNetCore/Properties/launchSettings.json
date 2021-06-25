@@ -12,7 +12,7 @@
     "EventCountersPluginExampleDotNetCore": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "EmailValidator/EmailRoute/umceniry1@stumbleupon.com",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

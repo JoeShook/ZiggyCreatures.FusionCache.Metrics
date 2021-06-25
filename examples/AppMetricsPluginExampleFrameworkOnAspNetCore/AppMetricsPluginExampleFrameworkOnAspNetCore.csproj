@@ -40,6 +40,19 @@
     <ProjectReference Include="..\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="MockDomainCertData.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="MockEmailToIpData.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
   
 
   <PropertyGroup>

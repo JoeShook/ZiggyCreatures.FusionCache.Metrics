@@ -17,7 +17,7 @@ namespace EventCountersPluginExampleDotNetCore
                 lock (_global) seed = _global.Next();
                 _local = inst = new Random(seed);
             }
-            return inst.Next(50, 1000);
+            return inst.Next(50, 1500);
         }
     }
 }

@@ -87,11 +87,11 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
         /// <summary>
         /// Cache item count.  Tracked by add and remove counters. 
         /// </summary>
-        public static GaugeOptions CacheItemCounter(ISemanticConventions conventions) => new GaugeOptions
+        public static GaugeOptions CacheItemGauge(ISemanticConventions conventions) => new GaugeOptions
         {
-            Name = MeasurementName,
+            Name = MeasurementName + "_gauge",
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheItemCountTagValue),
-            ResetOnReporting = false,
+            ResetOnReporting = true,
         };
     }
 }

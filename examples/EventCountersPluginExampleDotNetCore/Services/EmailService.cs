@@ -1,6 +1,4 @@
-﻿using System;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using FusionCache.Example.Domain.Model;
 using ZiggyCreatures.Caching.Fusion;
@@ -28,7 +26,7 @@ namespace EventCountersPluginExampleDotNetCore.Services
 
             return await _cache.GetOrSetAsync(
                 emailAddress,
-                await _dataManager.GetEmailRoute(emailAddress, cancellationToken),
+                _ => _dataManager.GetEmailRoute(emailAddress, _),
                 token: cancellationToken);
 
             /*

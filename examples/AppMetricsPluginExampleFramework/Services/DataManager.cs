@@ -41,6 +41,14 @@ namespace AppMetricsPluginExample2.Services
         public EmailToIpData GetEmailRoute(string name)
         {
             int number = RandomGenerator.Next();
+
+            if (number > 1400)
+            {
+                Thread.Sleep(number);
+                throw new Exception("poof");
+            }
+
+
             Thread.Sleep(number);
 
             return emailToIpDatas.SingleOrDefault(d => d.Email.Equals(name, StringComparison.OrdinalIgnoreCase));

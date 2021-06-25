@@ -50,6 +50,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "superbenchmarker", "superbe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenTelemetry.Instrumentation.FusionCache", "src\OpenTelemetry.Instrumentation.FusionCache\OpenTelemetry.Instrumentation.FusionCache.csproj", "{A903FE20-683B-448D-9253-C07DD582968A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache", "..\..\ZiggyCreatures.FusionCache\src\ZiggyCreatures.FusionCache\ZiggyCreatures.FusionCache.csproj", "{A51CABBA-1133-4A23-800D-ADBD09402525}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{A903FE20-683B-448D-9253-C07DD582968A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A903FE20-683B-448D-9253-C07DD582968A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A903FE20-683B-448D-9253-C07DD582968A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A51CABBA-1133-4A23-800D-ADBD09402525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A51CABBA-1133-4A23-800D-ADBD09402525}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A51CABBA-1133-4A23-800D-ADBD09402525}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A51CABBA-1133-4A23-800D-ADBD09402525}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,6 +129,7 @@ Global
 		{EB7D42E4-DA6A-451D-8D00-150762BE4B57} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
 		{57C63C6C-AB04-4C0B-8F0A-5A289AD9949A} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
 		{A903FE20-683B-448D-9253-C07DD582968A} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
+		{A51CABBA-1133-4A23-800D-ADBD09402525} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32C4269F-FC33-47FA-91DA-2B6C5DF7D025}

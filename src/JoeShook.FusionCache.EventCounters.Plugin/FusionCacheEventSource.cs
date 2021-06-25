@@ -111,7 +111,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
             _cacheCacheFactoryErrorPollingCounter = new IncrementingPollingCounter(
                 _conventions.CacheCacheFactoryErrorTagValue,
                 this,
-                () => Volatile.Read(ref _cacheBackgroundRefreshedError))
+                () => Volatile.Read(ref _cacheCacheFactoryError))
             {
                 DisplayName = "Cache Factory Error",
                 DisplayRateTimeScale = _displayRateTimeScale
@@ -122,7 +122,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
             _cacheFactorySyntheticTimeoutPollingCounter = new IncrementingPollingCounter(
                 _conventions.CacheFactorySyntheticTimeoutTagValue,
                 this,
-                () => Volatile.Read(ref _cacheBackgroundRefreshedError))
+                () => Volatile.Read(ref _cacheFactorySyntheticTimeout))
             {
                 DisplayName = "Cache Factory Synthetic Timeout",
                 DisplayRateTimeScale = _displayRateTimeScale
@@ -133,7 +133,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
             _cacheFailSafeActivatePollingCounter = new IncrementingPollingCounter(
                 _conventions.CacheFailSafeActivateTagValue,
                 this,
-                () => Volatile.Read(ref _cacheBackgroundRefreshedError))
+                () => Volatile.Read(ref _cacheFailSafeActivate))
             {
                 DisplayName = "Cache Factory Synthetic Timeout",
                 DisplayRateTimeScale = _displayRateTimeScale

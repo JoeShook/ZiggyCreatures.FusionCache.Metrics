@@ -40,7 +40,7 @@ namespace AppMetricsPluginExample.Controllers
             {
                 var domain = await _cache.GetOrSetAsync(
                     hostPart, 
-                    await _dataManager.GetDomain(hostPart, cancellationToken), 
+                    _ => _dataManager.GetDomain(hostPart, _), 
                     token: cancellationToken);
                 
                 if (domain != null && domain.Enabled)
@@ -84,7 +84,7 @@ namespace AppMetricsPluginExample.Controllers
             {
                 result = await _cache.GetOrSetAsync(
                     domainName, 
-                    await _dataManager.GetDomain(domainName, cancellationToken), 
+                    _ => _dataManager.GetDomain(domainName, _), 
                     token: cancellationToken);
             }
             else

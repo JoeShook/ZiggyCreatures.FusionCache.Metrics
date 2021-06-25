@@ -87,12 +87,11 @@ namespace AppMetricsPluginExample
                 {
                     DefaultEntryOptions = new FusionCacheEntryOptions
                         {
-                            Duration = TimeSpan.FromSeconds(5),
-                            JitterMaxDuration = TimeSpan.FromSeconds(20),
-                            FailSafeThrottleDuration = TimeSpan.FromMilliseconds(10)
+                            Duration = TimeSpan.FromSeconds(1),
+                            JitterMaxDuration = TimeSpan.FromMilliseconds(200)
                         }
-                        .SetFailSafe(true, TimeSpan.FromSeconds(10))
-                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3))
+                        .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(1))
+                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
                 };
 
                 // Future Plugin for hooking metrics ???
@@ -113,12 +112,11 @@ namespace AppMetricsPluginExample
                 {
                     DefaultEntryOptions = new FusionCacheEntryOptions
                         {
-                            Duration = TimeSpan.FromSeconds(5),
-                            JitterMaxDuration = TimeSpan.FromSeconds(20),
-                            FailSafeThrottleDuration = TimeSpan.FromMilliseconds(10)
+                            Duration = TimeSpan.FromSeconds(1),
+                            JitterMaxDuration = TimeSpan.FromMilliseconds(200)
                         }
-                        .SetFailSafe(true, TimeSpan.FromSeconds(10))
-                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3))
+                        .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(1))
+                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
                 };
 
                 var metrics = new AppMetricsProvider("email", appMetrics, emailCache);

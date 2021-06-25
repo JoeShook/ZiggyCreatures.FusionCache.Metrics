@@ -37,7 +37,7 @@ namespace EventCountersPluginExampleDotNetCore
 
             var emailCache = new MemoryCache(new MemoryCacheOptions());
             var hostNameCache = new MemoryCache(new MemoryCacheOptions());
-
+            
             //
             // Once this is a Fusion Cache Plugin maybe we can just call services.AddFusionCache(...)
             //
@@ -50,16 +50,16 @@ namespace EventCountersPluginExampleDotNetCore
                     DefaultEntryOptions = new FusionCacheEntryOptions
                         {
                             Duration = TimeSpan.FromSeconds(1),
-                            JitterMaxDuration = TimeSpan.FromSeconds(20)
+                            JitterMaxDuration = TimeSpan.FromMilliseconds(200)
                         }
-                        .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(10))
+                        .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(1))
                         .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
                 };
 
                 // Future Plugin for hooking metrics ???
                 var metrics = new FusionCacheEventSource("domain", hostNameCache);
                 var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, hostNameCache, logger);
-                metrics.Wireup(fusionCache, fusionCacheOptions);
+                // metrics.Wireup(fusionCache, fusionCacheOptions);
 
                 return fusionCache;
             });
@@ -75,11 +75,10 @@ namespace EventCountersPluginExampleDotNetCore
                     DefaultEntryOptions = new FusionCacheEntryOptions
                         {
                             Duration = TimeSpan.FromSeconds(1),
-                            JitterMaxDuration = TimeSpan.FromSeconds(20),
-                            FailSafeThrottleDuration = TimeSpan.FromMilliseconds(10)
+                            JitterMaxDuration = TimeSpan.FromMilliseconds(200)
                         }
                         .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(1))
-                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(10), TimeSpan.FromSeconds(1))
+                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
                 };
 
                 var metrics = new FusionCacheEventSource("email", emailCache);
@@ -89,10 +88,10 @@ namespace EventCountersPluginExampleDotNetCore
                 return new EmailService(serviceProvider.GetRequiredService<DataManager>(), fusionCache);
             });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EventCountersPluginExampleDotNetCore", Version = "v1" });
-            });
+            // services.AddSwaggerGen(c =>
+            // {
+            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "EventCountersPluginExampleDotNetCore", Version = "v1" });
+            // });
             
             // EventListener too write metrics to InfluxDb
             services.AddSingleton(this.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>());
@@ -105,7 +104,7 @@ namespace EventCountersPluginExampleDotNetCore
                             Configuration["InfluxCloudConfig.Url"],
                             Configuration["InfluxCloudConfig.Token"].ToCharArray()));
                     services.AddHostedService<MetricsListenerService>();
-
+            
                     services.AddSingleton<IInfluxCloudConfig>(new InfluxCloudConfig
                     {
                         Bucket = Configuration["InfluxCloudConfig.Bucket"],
@@ -113,7 +112,7 @@ namespace EventCountersPluginExampleDotNetCore
                     });
                    
                     break;
-
+            
                 case "db":
                     services.AddSingleton(sp =>
                         InfluxDBClientFactory.CreateV1(
@@ -123,16 +122,16 @@ namespace EventCountersPluginExampleDotNetCore
                             Configuration["InfluxDbConfig.Database"],
                             Configuration["InfluxDbConfig.RetentionPolicy"]));
                     services.AddHostedService<MetricsListenerService>();
-
+            
                     break;
-
+            
                 default:
                     services.AddSingleton(sp =>
                         InfluxDBClientFactory.Create(
                             $"http://localhost",
                             "nullToken".ToCharArray()));
                     services.AddHostedService<ConsoleMetricsListenter>();
-
+            
                     break;
             }
             
@@ -143,21 +142,21 @@ namespace EventCountersPluginExampleDotNetCore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EtwPluginExampleDotNetCore v1"));
-            }
+            // if (env.IsDevelopment())
+            // {
+            //     app.UseDeveloperExceptionPage();
+            //     app.UseSwagger();
+            //     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EtwPluginExampleDotNetCore v1"));
+            // }
 
             app.UseRouting();
+            
+            // app.UseAuthorization();
 
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            // app.UseEndpoints(endpoints =>
+            // {
+            //     endpoints.MapControllers();
+            // });
         }
     }
 }

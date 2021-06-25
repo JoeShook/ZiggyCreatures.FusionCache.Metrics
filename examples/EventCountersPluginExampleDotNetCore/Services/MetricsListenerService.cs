@@ -64,7 +64,6 @@ namespace JoeShook.FusionCache.EventCounters.Plugin
                 while (true)
                 {
                     GetNewSources();
-                    await Task.Delay(5000, cancellationToken);
                 }
             }, cancellationToken);
 

@@ -19,7 +19,7 @@
         public string CacheStaleHitTagValue => "STALE_HIT";
 
         public string CacheBackgroundRefreshedTagValue => "STALE_REFRESH";
-        public string CacheBackgroundFailedRefreshedTagValue => "STALE_REFRESH_TIMEOUT";
+        public string CacheBackgroundFailedRefreshedTagValue => "STALE_REFRESH_ERROR";
         public string CacheExpiredEvictTagValue => "EXPIRE";
         public string CacheCapacityEvictTagValue => "CAPACITY";
         public string CacheRemovedTagValue => "REMOVE";

@@ -48,10 +48,10 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
         {
             _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheHitCounter(_semanticConventions), _cacheNameMetricTag);
 
-            if (_cache != null)
-            {
-                _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemCounter(_semanticConventions), () => _cache.Count);
-            }
+            // if (_cache != null)
+            // {
+            //     _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemGauge(_semanticConventions), _cacheNameMetricTag, () => _cache.Count);
+            // }
         }
 
         /// <summary>
@@ -61,10 +61,10 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
         {
             _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheMissCounter(_semanticConventions), _cacheNameMetricTag);
 
-            if (_cache != null)
-            {
-                _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemCounter(_semanticConventions), () => _cache.Count);
-            }
+            // if (_cache != null)
+            // {
+            //     _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemGauge(_semanticConventions), _cacheNameMetricTag, () => _cache.Count);
+            // }
         }
 
         /// <summary>

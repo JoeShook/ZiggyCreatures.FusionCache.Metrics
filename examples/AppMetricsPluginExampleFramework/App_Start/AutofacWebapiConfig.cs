@@ -46,10 +46,8 @@ namespace AppMetricsPluginExample2.App_Start
                 .As<IEmailService>()
                 .SingleInstance();
 
-            var domainMemoryCache = new MemoryCache(new MemoryCacheOptions());
-            builder.Register(c => domainMemoryCache)
-                .As<IMemoryCache>()
-                .SingleInstance();
+            var emailCache = new MemoryCache(new MemoryCacheOptions());
+            var hostNameCache = new MemoryCache(new MemoryCacheOptions());
 
             var appMetricsContextLabel = $"appMetrics_AppMetricsPluginExampleFramework";
 
@@ -108,16 +106,16 @@ namespace AppMetricsPluginExample2.App_Start
                     {
                         DefaultEntryOptions = new FusionCacheEntryOptions
                             {
-                                Duration = TimeSpan.FromSeconds(5),
-                                Priority = CacheItemPriority.High
-                            }
-                            .SetFailSafe(true, TimeSpan.FromSeconds(10))
-                            .SetFactoryTimeouts(TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(10))
+                                Duration = TimeSpan.FromSeconds(1),
+                                JitterMaxDuration = TimeSpan.FromMilliseconds(200)
+                        }
+                            .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(1))
+                            .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(400))
                     };
 
                     // Future Plugin for hooking metrics ???
-                    var metrics = new AppMetricsProvider("domain", appMetrics);
-                    var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, domainMemoryCache, logger);
+                    var metrics = new AppMetricsProvider("domain", appMetrics, hostNameCache);
+                    var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, hostNameCache, logger);
                     metrics.Wireup(fusionCache, fusionCacheOptions);
 
                     return fusionCache;
@@ -125,6 +123,30 @@ namespace AppMetricsPluginExample2.App_Start
                 .As<IFusionCache>()
                 .SingleInstance();
 
+            builder.Register(c =>
+            {
+                var loggerFactory = c.Resolve<ILoggerFactory>();
+                var logger = loggerFactory.CreateLogger<ZiggyCreatures.Caching.Fusion.FusionCache>();
+
+                var fusionCacheOptions = new FusionCacheOptions
+                {
+                    DefaultEntryOptions = new FusionCacheEntryOptions
+                        {
+                            Duration = TimeSpan.FromSeconds(1),
+                            JitterMaxDuration = TimeSpan.FromSeconds(20)
+                    }
+                        .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(1))
+                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(400))
+                };
+
+                var metrics = new AppMetricsProvider("email", appMetrics, emailCache);
+                var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, emailCache, logger);
+                metrics.Wireup(fusionCache, fusionCacheOptions);
+
+                return new EmailService(c.Resolve<DataManager>(), fusionCache);
+            })
+                .As<IEmailService>()
+                .SingleInstance();
 
             //Set the dependency resolver to be Autofac.  
             Container = builder.Build();

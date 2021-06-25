@@ -17,7 +17,7 @@ namespace AppMetricsPluginExample
                 lock (_global) seed = _global.Next();
                 _local = inst = new Random(seed);
             }
-            return inst.Next(50, 200);
+            return inst.Next(50, 1500);
         }
     }
 }
