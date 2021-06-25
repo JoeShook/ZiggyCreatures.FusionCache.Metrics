@@ -30,7 +30,7 @@ namespace EventCountersPluginExampleDotNetCore.Services
         {
             int number = RandomGenerator.Next();
             await Task.Delay(number, cancellationToken);
-            Console.WriteLine(number);
+            // Console.WriteLine(number);
 
             if (cancellationToken.IsCancellationRequested)
             {
@@ -51,7 +51,7 @@ namespace EventCountersPluginExampleDotNetCore.Services
             }
             
             await Task.Delay(number, cancellationToken);
-            Console.WriteLine(number);
+            // Console.WriteLine(number);
             
 
             if (cancellationToken.IsCancellationRequested)
