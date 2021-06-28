@@ -13,27 +13,54 @@ Metrics are missing from open-source resiliency projects in the .NET ecosystem w
 
 ## Usage
 
-Setup
+Setup option 1
+
+Notes:  MemoryCache is created outside of AddFusionCache extenstion method so it can be passed to FusionCacheEvenSource.  This is required if you want the cache count reportable. 
 
 ```csharp
-    var domainMetrics = FusionCacheEventSource.Instance("domainCache");
 
+    var memoryCache = new MemoryCache(new MemoryCacheOptions());
+    services.AddSingleton<IMemoryCache>(memoryCache);
+    services.AddSingleton<IFusionCachePlugin>(new FusionCacheEventSource("domain", memoryCache));
     services.AddFusionCache(options =>
-        {
-            options.DefaultEntryOptions = new FusionCacheEntryOptions
+        options.DefaultEntryOptions = new FusionCacheEntryOptions
             {
-                Duration = TimeSpan.FromSeconds(5),
-                Priority = CacheItemPriority.High
+                Duration = TimeSpan.FromSeconds(60)
             }
-                .SetFailSafe(true, TimeSpan.FromHours(2))
-                .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(2));
-        },
-        metrics: domainMetrics);
+            .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(5))
+            .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
+        );
 ```
 
-Listenting for events
+Setup option 2 or in addtion to 1 if you have multiple caches
 
-see example of an [EventListener](examples/EventCountersPluginExampleDotNetCore/Services/MetricsListenerService.cs) in the example project [EventCountersPluginExampleDotNetCore](https://github.com/JoeShook/FusionCacheMetricsPlayground/tree/main/examples/EventCountersPluginExampleDotNetCore)
+```csharp
+
+    var memoryCache = new MemoryCache(new MemoryCacheOptions());
+    
+    services.AddSingleton<IEmailService>(serviceProvider =>
+    {
+        var logger = serviceProvider.GetService<ILogger<ZiggyCreatures.Caching.Fusion.FusionCache>>();
+
+        var fusionCacheOptions = new FusionCacheOptions
+        {
+            DefaultEntryOptions = new FusionCacheEntryOptions
+                {
+                    Duration = TimeSpan.FromSeconds(1),
+                    JitterMaxDuration = TimeSpan.FromMilliseconds(200)
+                }
+                .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(1))
+                .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
+        };
+
+        var metrics = new FusionCacheEventSource("email", memoryCache);
+        var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, memoryCache, logger);
+        metrics.Start(fusionCache);
+
+        return new EmailService(serviceProvider.GetRequiredService<DataManager>(), fusionCache);
+    });
+
+```
 
 ## Events:: Incrementing Polling Counters for Hits and Misses
 
@@ -95,6 +122,210 @@ Example output would look like the following
 
 To make reporting seemless implent a [EventListener](https://docs.microsoft.com/en-us/dotnet/core/diagnostics/event-counters#sample-code)  and run it as a HostedService.
 
-```csharep
-Needs work.  I have an implementation to write to InfluxDb but it is not shareable yet.  Might work of a Prometheus sample.        
+## Listenting for events
+
+See this [EventListener](examples/EventCountersPluginExampleDotNetCore/Services/MetricsListenerService.cs) in action in the example project [EventCountersPluginExampleDotNetCore](https://github.com/JoeShook/FusionCacheMetricsPlayground/tree/main/examples/EventCountersPluginExampleDotNetCore)
+
+```csharp
+
+    public class MetricsListenerService : EventListener, IHostedService
+    {
+        private List<string> RegisteredEventSources = new List<string>();
+        private Task _dataSource;
+        private InfluxDBClient _influxDBClient;
+        private MetricsConfig _metricsConfig;
+        private readonly string _measurementName;
+        private readonly ISemanticConventions _conventions;
+        private readonly IInfluxCloudConfig _influxCloudConfig;
+
+        public MetricsListenerService(
+            InfluxDBClient influxDBClient, 
+            MetricsConfig metricsConfig, 
+            ISemanticConventions conventions = null,
+            IInfluxCloudConfig influxCloudConfig = null)
+        {
+            _influxDBClient = influxDBClient ?? throw new ArgumentNullException(nameof(influxDBClient));
+            _metricsConfig = metricsConfig ?? throw  new ArgumentNullException(nameof(metricsConfig));
+            _conventions = conventions ?? new SemanticConventions();
+            _influxCloudConfig = influxCloudConfig;
+
+            _measurementName = $"{metricsConfig.Prefix}{metricsConfig.ApplicationName}_{metricsConfig.MeasurementName}";
+        }
+
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
+            _dataSource = Task.Run(async () =>
+            {
+                while (true)
+                {
+                    GetNewSources();
+                }
+            }, cancellationToken);
+
+            return Task.CompletedTask;
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        private void GetNewSources()
+        {
+            foreach (var eventSource in EventSource.GetSources())
+            {
+                OnEventSourceCreated(eventSource);
+            }
+        }
+
+        protected override void OnEventSourceCreated(EventSource eventSource)
+        {
+            if (!RegisteredEventSources.Contains(eventSource.Name))
+            {
+                RegisteredEventSources.Add(eventSource.Name);
+                EnableEvents(eventSource, EventLevel.LogAlways, EventKeywords.All, new Dictionary<string, string>
+                {
+                    ["EventCounterIntervalSec"] = "5"
+                });
+            }
+        }
+
+        protected override void OnEventWritten(EventWrittenEventArgs eventData)
+        {
+            if (!eventData.EventSource.Name.Equals("email") &&
+                !eventData.EventSource.Name.Equals("domain"))
+            {
+                return;
+            }
+
+            List<PointData> pointData = null;
+            var time = DateTime.UtcNow;
+
+            for (int i = 0; i < eventData.Payload?.Count; ++i)
+            {
+                if (eventData.Payload[i] is IDictionary<string, object> eventPayload)
+                {
+                    pointData ??= new List<PointData>();
+                    var (cacheName, counterName, counterValue) = GetMeasurement(eventPayload);
+
+                    var point = PointData
+                        .Measurement(_measurementName)
+                        .Field(_conventions.ValueFieldName, counterValue)
+                        .Tag(_conventions.ApplicationTagName, _metricsConfig.ApplicationName)
+                        .Tag(_conventions.ApplicationVersionTagName, _metricsConfig.ApplicationVersion)
+                        .Tag(_conventions.CacheNameTagName, cacheName)
+                        .Tag(_conventions.CacheEventTagName, counterName)
+                        .Timestamp(time, WritePrecision.S);
+
+                    pointData.Add(point);
+                }
+            }
+
+            if (pointData != null && pointData.Any())
+            {
+                WriteData(pointData);
+            }
+        }
+
+        public virtual void WriteData(List<PointData> pointData)
+        {
+            using (var writeApi = _influxDBClient.GetWriteApi())
+            {
+                if (_influxCloudConfig != null)
+                {
+                    writeApi.WritePoints(_influxCloudConfig.Bucket, _influxCloudConfig.Organization, pointData);
+                }
+                else
+                {
+                    writeApi.WritePoints(pointData);
+                }
+            }
+        }
+
+        private (string cacheName, string counterName, long counterValue) GetMeasurement(
+            IDictionary<string, object> eventPayload)
+        {
+            var cacheName = "";
+            var counterName = "";
+            long counterValue = 0;
+
+            if (eventPayload.TryGetValue("Metadata", out object metaDataValue))
+            {
+                var metaDataString = Convert.ToString(metaDataValue);
+                var metaData = metaDataString
+                    .Split(',')
+                    .Select(item => item.Split(':'))
+                    .ToDictionary(s => s[0], s => s[1]);
+
+                cacheName = metaData[_conventions.CacheNameTagName];
+            }
+
+            if (eventPayload.TryGetValue("Name", out object displayValue))
+            {
+                counterName = displayValue.ToString();
+            }
+
+            if (eventPayload.TryGetValue("Increment", out object incrementingPollingCounterValue))
+            {
+                counterValue = Convert.ToInt64(incrementingPollingCounterValue);
+            }
+            else if (eventPayload.TryGetValue("Mean", out object pollingCounterValue))
+            {
+                counterValue = Convert.ToInt64(pollingCounterValue);
+            }
+
+
+            return (cacheName, counterName, counterValue);
+        }
+    }
+
+```
+
+## Reporting on metrics
+
+The listener example writes metrics to the console Influx database or Influx Cloud.  It is very easy to setup Influx Cloud and start experimenting.  Below is an pulled from the example project [EventCountersPluginExampleDotNetCore](https://github.com/JoeShook/FusionCacheMetricsPlayground/tree/main/examples/EventCountersPluginExampleDotNetCore)
+
+```csharp
+
+    services.AddSingleton(this.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>());
+
+    switch (this.Configuration.GetValue<string>("UseInflux").ToLowerInvariant())
+    {
+        case "cloud":
+            services.AddSingleton(sp =>
+                InfluxDBClientFactory.Create(
+                    Configuration["InfluxCloudConfig.Url"],
+                    Configuration["InfluxCloudConfig.Token"].ToCharArray()));
+            services.AddHostedService<MetricsListenerService>();
+
+            services.AddSingleton<IInfluxCloudConfig>(new InfluxCloudConfig
+            {
+                Bucket = Configuration["InfluxCloudConfig.Bucket"],
+                Organization = Configuration["InfluxCloudConfig.Organization"]
+            });
+            
+            break;
+
+        case "db":
+            services.AddSingleton(sp =>
+                InfluxDBClientFactory.CreateV1(
+                    $"http://{Configuration["InfluxDbConfig.Host"]}:{Configuration["InfluxDbConfig.Port"]}",
+                    Configuration["InfluxDbConfig.Username"],
+                    Configuration["InfluxDbConfig.Password"].ToCharArray(),
+                    Configuration["InfluxDbConfig.Database"],
+                    Configuration["InfluxDbConfig.RetentionPolicy"]));
+            services.AddHostedService<MetricsListenerService>();
+
+            break;
+
+        default:
+            services.AddSingleton(sp =>
+                InfluxDBClientFactory.Create(
+                    $"http://localhost",
+                    "nullToken".ToCharArray()));
+            services.AddHostedService<ConsoleMetricsListenter>();
+
+            break;
+    }
+       
 ```
