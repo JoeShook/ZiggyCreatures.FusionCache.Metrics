@@ -29,6 +29,19 @@ namespace EventCountersPluginExampleDotNetCore.Services
         public async Task<DomainCertData> GetDomain(string name, CancellationToken cancellationToken)
         {
             int number = RandomGenerator.Next();
+
+            if (number is > 40 and < 80) // cause some FACTORY_ERROR events.
+            {
+                throw new Exception("poof");
+            }
+
+            if (number is > 1400 and < 1460) // cause some STALE_REFRESH_ERROR events.
+            {
+                await Task.Delay(number, cancellationToken);
+                throw new Exception("poof");
+            }
+
+
             await Task.Delay(number, cancellationToken);
             // Console.WriteLine(number);
 
@@ -43,8 +56,13 @@ namespace EventCountersPluginExampleDotNetCore.Services
         public async Task<EmailToIpData> GetEmailRoute(string name, CancellationToken cancellationToken)
         {
             int number = RandomGenerator.Next();
-            
-            if (number > 1400)
+
+            if (number is > 40 and < 80) // cause some FACTORY_ERROR events.
+            {
+                throw new Exception("poof");
+            }
+
+            if (number is > 1400 and < 1460) // cause some STALE_REFRESH_ERROR events.
             {
                 await Task.Delay(number, cancellationToken);
                 throw new Exception("poof");

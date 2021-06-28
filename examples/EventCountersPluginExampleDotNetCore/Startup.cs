@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.EventCounters.Plugin;
 using ZiggyCreatures.Caching.Fusion.Metrics.Core;
+using ZiggyCreatures.Caching.Fusion.Plugins;
 
 namespace EventCountersPluginExampleDotNetCore
 {
@@ -35,37 +36,39 @@ namespace EventCountersPluginExampleDotNetCore
                 options.JsonSerializerOptions.WriteIndented = true;
             });
 
-            var emailCache = new MemoryCache(new MemoryCacheOptions());
-            var hostNameCache = new MemoryCache(new MemoryCacheOptions());
-            
-            //
-            // Once this is a Fusion Cache Plugin maybe we can just call services.AddFusionCache(...)
-            //
-            services.AddSingleton<IFusionCache>(serviceProvider =>
-            {
-                var logger = serviceProvider.GetService<ILogger<ZiggyCreatures.Caching.Fusion.FusionCache>>();
-
-                var fusionCacheOptions = new FusionCacheOptions
-                {
-                    DefaultEntryOptions = new FusionCacheEntryOptions
-                        {
-                            Duration = TimeSpan.FromSeconds(1),
-                            JitterMaxDuration = TimeSpan.FromMilliseconds(200)
-                        }
-                        .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(1))
-                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
-                };
-
-                // Future Plugin for hooking metrics ???
-                var metrics = new FusionCacheEventSource("domain", hostNameCache);
-                var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, hostNameCache, logger);
-                metrics.Wireup(fusionCache, fusionCacheOptions);
-
-                return fusionCache;
-            });
-
             services.AddSingleton(new DataManager());
 
+            var emailCache = new MemoryCache(new MemoryCacheOptions());
+            var hostNameCache = new MemoryCache(new MemoryCacheOptions());
+
+
+            //
+            // Cache called "domain"
+            //
+            // Register FusionCacheEventSource as a IFusionCachePlugin.
+            // Note that a MemoryCache object must be created outside of AddFusionCache extension method so that
+            // FusionCacheEventSource is holding the same object as FusionCache to enabled cache count reporting.
+            // See line 180 in FusionCacheEventSource.cs
+            //
+            services.AddSingleton<IMemoryCache>(hostNameCache);
+            services.AddSingleton<IFusionCachePlugin>(new FusionCacheEventSource("domain", hostNameCache));
+            services.AddFusionCache(options =>
+                options.DefaultEntryOptions = new FusionCacheEntryOptions
+                    {
+                        Duration = TimeSpan.FromSeconds(1),
+                        JitterMaxDuration = TimeSpan.FromMilliseconds(200)
+                    }
+                    .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(1))
+                    .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
+                );
+
+            //
+            // Cache called "email"
+            //
+            // Can't register IFusionCachePlugin here because it is already registered above.  
+            // This is a second cache and a second instance of FusionCacheEventSource to collect metrics for a 
+            // different cache called "email"
+            //
             services.AddSingleton<IEmailService>(serviceProvider =>
             {
                 var logger = serviceProvider.GetService<ILogger<ZiggyCreatures.Caching.Fusion.FusionCache>>();
@@ -83,7 +86,7 @@ namespace EventCountersPluginExampleDotNetCore
 
                 var metrics = new FusionCacheEventSource("email", emailCache);
                 var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, emailCache, logger);
-                metrics.Wireup(fusionCache, fusionCacheOptions);
+                metrics.Start(fusionCache);
 
                 return new EmailService(serviceProvider.GetRequiredService<DataManager>(), fusionCache);
             });
