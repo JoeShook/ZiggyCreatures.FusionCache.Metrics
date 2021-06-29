@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>ZiggyCreatures.Caching.Fusion.Metrics.Core</RootNamespace>
-    <Version>0.1.0.0-EventSource002</Version>
+    <Version>0.1.0.0-EventSource003</Version>
     <Authors>Joe Shook</Authors>
     <Product>FusionCache EventSource Metrics</Product>
     <PackageId>ZiggyCreatures.FusionCache.Metrics.Core</PackageId>

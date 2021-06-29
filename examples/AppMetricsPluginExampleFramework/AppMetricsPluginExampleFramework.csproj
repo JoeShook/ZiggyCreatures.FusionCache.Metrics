@@ -418,8 +418,8 @@
       <HintPath>..\..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="ZiggyCreatures.FusionCache, Version=0.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ZiggyCreatures.FusionCache.0.1.4\lib\netstandard2.0\ZiggyCreatures.FusionCache.dll</HintPath>
+    <Reference Include="ZiggyCreatures.FusionCache, Version=0.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ZiggyCreatures.FusionCache.0.1.5\lib\netstandard2.0\ZiggyCreatures.FusionCache.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

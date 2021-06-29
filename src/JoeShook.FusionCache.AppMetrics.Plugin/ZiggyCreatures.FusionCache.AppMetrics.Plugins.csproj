@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
-    <Version>0.1.0.0-EventSource</Version>
+    <Version>0.1.0.0-EventSource003</Version>
     <Authors>Joe Shook</Authors>
     <Product>FusionCache</Product>
     <PackageId>ZiggyCreatures.FusionCache.AppMetrics</PackageId>
@@ -37,7 +37,7 @@
 
   <ItemGroup>
     <PackageReference Include="App.Metrics" Version="4.2.0" />
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.1.4" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.1.5" />
   </ItemGroup>
 
   <ItemGroup>

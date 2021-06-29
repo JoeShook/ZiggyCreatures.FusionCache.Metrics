@@ -4,13 +4,14 @@ using System.Threading;
 using Microsoft.Extensions.Caching.Memory;
 using ZiggyCreatures.Caching.Fusion.Events;
 using ZiggyCreatures.Caching.Fusion.Metrics.Core;
+using ZiggyCreatures.Caching.Fusion.Plugins;
 
 namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
 {
     /// <summary>
     /// Generic FusionCacheEventSource.  
     /// </summary>
-    public sealed partial class FusionCacheEventSource : EventSource
+    public sealed partial class FusionCacheEventSource : EventSource, IFusionCachePlugin
     {
         private long _cacheHits;
         private long _cacheMisses;
