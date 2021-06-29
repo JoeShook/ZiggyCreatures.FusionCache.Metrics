@@ -8,7 +8,7 @@
 
 ## EventCountersPluginExampleDotNetCore is an example project using the FusionCache.EventCounters.Plugin to plugin to [FusionCache](https://github.com/jodydonetti/ZiggyCreatures.FusionCache)
 
-The example is built to produce all events [FusionCache](https://github.com/jodydonetti/ZiggyCreatures.FusionCache) could produce so a user of the plugin can get an understanding of how to use this plugin and what metrics to expect.  This particular example can report to the console, Influx Database or Influx Cloud.  Influx Cloud is very easy to setup and is recomended to get a good visual of the metrics.  We will also be using [SuperBenchMarker](https://github.com/aliostad/SuperBenchmarker) to produce a load for observing metrics.
+The example is built to produce all events [FusionCache](https://github.com/jodydonetti/ZiggyCreatures.FusionCache) could produce so a user of the plugin can get an understanding of how to use this plugin and what metrics to expect.  This particular example can report to the console, Influx Database or Influx Cloud.  Influx Cloud is very easy to setup and is recomended to get a good visual of the metrics.  See the end of this doc for guidance.  We will also be using [SuperBenchMarker](https://github.com/aliostad/SuperBenchmarker) to produce a load for observing metrics.
 
 ## Use Case
 
@@ -54,3 +54,18 @@ Study the DataManager in the samples and you will see that we randomly inject de
 If you study the FusionCache options the expectation would be that every 30 seconds a cache items would expire.  But it seems that MemoryCache collects about every one minute and that is when it runs the eviction process.  
 
 ![MetricsView-A-SlowLoadTest](./images/MetricsView-A-SlowLoadTest.png)
+
+## Connect to Influx Cloud
+
+You can easily create a free account on [Influxdata Cloud](https://cloud2.influxdata.com/signup).  Then you would need the following in your appsettings.json or secrets.json file:
+
+`[
+
+    "InfluxCloudConfig.Url": https://us-central1-1.gcp.cloud2.influxdata.com,
+
+    "InfluxCloudConfig.Token": "Get from Influx | Data | Tokens",
+
+    "InfluxCloudConfig.Bucket": "Get from Influx | Data | C# | Initialize the Client example",
+
+    "InfluxCloudConfig.Organization": “Get from Influx | Data | C# | Initialize the Client example”
+]`
