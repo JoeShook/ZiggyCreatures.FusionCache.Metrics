@@ -45,12 +45,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "superbenchmarker", "superbe
 	ProjectSection(SolutionItems) = preProject
 		examples\superbenchmarker\EmailAddressData.csv = examples\superbenchmarker\EmailAddressData.csv
 		examples\superbenchmarker\EmailAddressDataSmallBatch.csv = examples\superbenchmarker\EmailAddressDataSmallBatch.csv
+		examples\superbenchmarker\EmailAddressDataSmallBatch2.csv = examples\superbenchmarker\EmailAddressDataSmallBatch2.csv
 		examples\superbenchmarker\README.md = examples\superbenchmarker\README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenTelemetry.Instrumentation.FusionCache", "src\OpenTelemetry.Instrumentation.FusionCache\OpenTelemetry.Instrumentation.FusionCache.csproj", "{A903FE20-683B-448D-9253-C07DD582968A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FusionCache.Example.OpenTelemetryDotNetCore", "examples\FusionCache.Example.OpenTelemetryDotNetCore\FusionCache.Example.OpenTelemetryDotNetCore.csproj", "{5175C51E-E4D7-41DD-A329-BDFEDFCB0C46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.Example.OpenTelemetryDotNetCore", "examples\FusionCache.Example.OpenTelemetryDotNetCore\FusionCache.Example.OpenTelemetryDotNetCore.csproj", "{5175C51E-E4D7-41DD-A329-BDFEDFCB0C46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

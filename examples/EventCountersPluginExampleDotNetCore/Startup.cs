@@ -58,7 +58,7 @@ namespace EventCountersPluginExampleDotNetCore
                     Duration = TimeSpan.FromSeconds(1),
                     JitterMaxDuration = TimeSpan.FromMilliseconds(200)
                 }
-                    .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(1))
+                    .SetFailSafe(true, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(1))
                     .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
                 );
 
@@ -80,7 +80,7 @@ namespace EventCountersPluginExampleDotNetCore
                         Duration = TimeSpan.FromSeconds(1),
                         JitterMaxDuration = TimeSpan.FromMilliseconds(200)
                     }
-                        .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(1))
+                        .SetFailSafe(true, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(1))
                         .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
                 };
 
