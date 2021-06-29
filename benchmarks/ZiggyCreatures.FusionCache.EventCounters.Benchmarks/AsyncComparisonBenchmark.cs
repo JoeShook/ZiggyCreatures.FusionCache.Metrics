@@ -98,7 +98,7 @@ namespace ZiggyCreatures.FusionCaching.EventCounters.Benchmarks
                 new FusionCacheOptions { DefaultEntryOptions = new FusionCacheEntryOptions(CacheDuration) }, 
                 memoryCache))
             {
-                metrics.Wireup(cache);
+                metrics.Start(cache);
 
                 for (int i = 0; i < Rounds; i++)
                 {
@@ -122,8 +122,8 @@ namespace ZiggyCreatures.FusionCaching.EventCounters.Benchmarks
         
                     await Task.WhenAll(tasks).ConfigureAwait(false);
                 }
-        
-                // NO NEED TO CLEANUP, AUTOMATICALLY DONE WHEN DISPOSING
+
+                metrics.Stop(cache);
             }
         }
 
@@ -148,7 +148,7 @@ namespace ZiggyCreatures.FusionCaching.EventCounters.Benchmarks
                     new FusionCacheOptions { DefaultEntryOptions = new FusionCacheEntryOptions(CacheDuration) },
                     memoryCache))
                 {
-                    metrics.Wireup(cache);
+                    metrics.Start(cache);
 
                     for (int i = 0; i < Rounds; i++)
                     {
@@ -173,7 +173,7 @@ namespace ZiggyCreatures.FusionCaching.EventCounters.Benchmarks
                         await Task.WhenAll(tasks).ConfigureAwait(false);
                     }
 
-                    // NO NEED TO CLEANUP, AUTOMATICALLY DONE WHEN DISPOSING
+                    metrics.Stop(cache);
                 }
             }
         }

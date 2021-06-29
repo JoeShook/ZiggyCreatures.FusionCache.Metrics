@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.1.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\JoeShook.FusionCache.EventCounters.Plugin\ZiggyCreatures.FusionCache.EventCounters.Plugin.csproj" />
+    <ProjectReference Include="..\..\src\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj" />
   </ItemGroup>
 
 </Project>

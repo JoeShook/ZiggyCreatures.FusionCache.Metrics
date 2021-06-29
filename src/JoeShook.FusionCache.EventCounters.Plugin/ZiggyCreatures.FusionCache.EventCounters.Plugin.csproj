@@ -4,10 +4,10 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
-    <Version>0.1.0.0-EventSource</Version>
+    <Version>0.1.0.0-EventSource002</Version>
     <Authors>Joe Shook</Authors>
-    <Product>FusionCache</Product>
-    <PackageId>JoeShook.FusionCache.EventCounters</PackageId>
+    <Product>FusionCache EventSource Metrics</Product>
+    <PackageId>ZiggyCreatures.FusionCache.Metrics.EventCounters</PackageId>
     <IncludeSource>True</IncludeSource>
     <Copyright>Copyright © Jody Donetti and Joe Shook 2021</Copyright>
     <PackageIcon>logo-128x128.png</PackageIcon>
@@ -17,7 +17,7 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RootNamespace>ZiggyCreatures.Caching.Fusion.EventCounters.Plugin</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyName>ZiggyCreatures.FusionCache.EventCounters.Plugin</AssemblyName>
+    <AssemblyName>ZiggyCreatures.FusionCache.Metrics.EventCounters.Plugin</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -26,19 +26,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="artwork\logo-128x128.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+    <None Include="artwork\logo-128x128.png" Pack="true" PackagePath="\" />
+    <None Include="docs\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.13" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.1.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\ZiggyCreatures.FusionCache\src\ZiggyCreatures.FusionCache\ZiggyCreatures.FusionCache.csproj" />
-    <ProjectReference Include="..\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj" />
+    <ProjectReference Pack="true"  Include="..\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj" />
   </ItemGroup>
 
 
