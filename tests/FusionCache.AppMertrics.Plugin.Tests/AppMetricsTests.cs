@@ -132,10 +132,10 @@ namespace FusionCache.AppMertrics.Plugin.Tests
 
                     var messages = reporter.Messages.ToList();
 
-                    foreach (var message in messages)
-                    {
-                        _testOutputHelper.WriteLine(message.ToString());
-                    }
+                    // foreach (var message in messages)
+                    // {
+                    //     _testOutputHelper.WriteLine(message.ToString());
+                    // }
 
                     Assert.Equal(3, GetMetric(messages, SemanticConventions.Instance().CacheMissTagValue));
                     Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
@@ -207,10 +207,10 @@ namespace FusionCache.AppMertrics.Plugin.Tests
 
                     var messages = reporter.Messages.ToList();
 
-                    foreach (var message in messages)
-                    {
-                        _testOutputHelper.WriteLine(message.ToString());
-                    }
+                    // foreach (var message in messages)
+                    // {
+                    //     _testOutputHelper.WriteLine(message.ToString());
+                    // }
 
                     Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
                     Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
@@ -296,7 +296,7 @@ namespace FusionCache.AppMertrics.Plugin.Tests
 
 
                     var messages = reporter.Messages.ToList();
-                    messages.ForEach(c => _testOutputHelper.WriteLine(c.ToString()));
+                    // messages.ForEach(c => _testOutputHelper.WriteLine(c.ToString()));
 
                     Assert.Equal(0, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
                     Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheFailSafeActivateTagValue));
@@ -359,7 +359,7 @@ namespace FusionCache.AppMertrics.Plugin.Tests
                     await Task.Delay(1000);
 
                     var messages = reporter.Messages.ToList();
-                    messages.ForEach(c => _testOutputHelper.WriteLine(c.ToString()));
+                    // messages.ForEach(c => _testOutputHelper.WriteLine(c.ToString()));
 
                     Assert.Equal(0, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
                     Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheExpiredEvictTagValue));
@@ -422,7 +422,7 @@ namespace FusionCache.AppMertrics.Plugin.Tests
                     await Task.Delay(1000);
 
                     var messages = reporter.Messages.ToList();
-                    messages.ForEach(c => _testOutputHelper.WriteLine(c.ToString()));
+                    // messages.ForEach(c => _testOutputHelper.WriteLine(c.ToString()));
 
                     Assert.Equal(0, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
                     Assert.True(GetMetric(messages, SemanticConventions.Instance().CacheCapacityEvictTagValue) > 1899);

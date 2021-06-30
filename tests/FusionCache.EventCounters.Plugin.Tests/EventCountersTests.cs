@@ -372,7 +372,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin.Tests
                 await cache.SetAsync<int>("foo", 42);
 
                 // LET IT BECOME STALE
-                await Task.Delay(duration);
+                await Task.Delay(throttleDuration);
 
                 // HIT (STALE): +1
                 // FAIL-SAFE: +1
