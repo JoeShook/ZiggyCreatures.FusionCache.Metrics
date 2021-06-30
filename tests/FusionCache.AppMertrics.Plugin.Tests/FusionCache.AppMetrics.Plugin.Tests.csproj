@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <AssemblyName>ZiggyCreatures.Caching.Fusion.Metrics.AppMertrics.Plugin.Tests</AssemblyName>
+    <AssemblyName>ZiggyCreatures.Caching.Fusion.Metrics.AppMetrics.Plugin.Tests</AssemblyName>
+    <RootNamespace>ZiggyCreatures.Caching.Fusion.Metrics.AppMetrics.Plugin.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

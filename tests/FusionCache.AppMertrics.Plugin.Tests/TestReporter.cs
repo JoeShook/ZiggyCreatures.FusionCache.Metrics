@@ -10,7 +10,7 @@ using App.Metrics.Formatters.Ascii;
 using App.Metrics.Reporting;
 using Xunit.Abstractions;
 
-namespace FusionCache.AppMertrics.Plugin.Tests
+namespace ZiggyCreatures.Caching.Fusion.Metrics.AppMetrics.Plugin.Tests
 {
     public class TestReporter : IReportMetrics
     {
