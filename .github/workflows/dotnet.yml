@@ -22,4 +22,28 @@ jobs:
     - name: Build
       run: dotnet build JoeShook.FusionCache.Playground.Core.sln --no-restore
     - name: Test
-      run: dotnet test JoeShook.FusionCache.Playground.Core.sln --no-build --verbosity normal
+      run: dotnet test JoeShook.FusionCache.Playground.Core.sln --no-build --verbosity normal -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
+    - name: Create Test Coverage Badge for FusionCache.EventCounters.Plugin
+      uses: simon-k/dotnet-code-coverage-badge@v1.0.0
+      id: create_coverage_badge_EventCounters
+      with:
+        label: Unit Test Coverage
+        color: brightgreen
+        path: tests/FusionCache.EventCounters.Plugin.Tests/TestResults/coverage.opencover.xml
+        gist-filename: code-coverage.json
+        gist-id: 141e4a826a0a2f46dad85ccf3213a894
+        gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}
+    - name: Print code coverage FusionCache.EventCounters.Plugin
+      run: echo "Code coverage percentage for FusionCache.EventCounters.Plugin ${{steps.create_coverage_badge.outputs.percentage}}%"
+    - name: Create Test Coverage Badge for FusionCache.AppMetrics.Plugin
+      uses: simon-k/dotnet-code-coverage-badge@v1.0.0
+      id: create_coverage_badge_AppMetrics
+      with:
+        label: Unit Test Coverage
+        color: brightgreen
+        path: tests/FusionCache.AppMetrics.Plugin.Tests/TestResults/coverage.opencover.xml
+        gist-filename: code-coverage.json
+        gist-id: 141e4a826a0a2f46dad85ccf3213a894
+        gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}
+    - name: Print code coverage FusionCache.AppMetrics.Plugin
+      run: echo "Code coverage percentage for FusionCache.AppMetrics.Plugin ${{steps.create_coverage_badge.outputs.percentage}}%"
