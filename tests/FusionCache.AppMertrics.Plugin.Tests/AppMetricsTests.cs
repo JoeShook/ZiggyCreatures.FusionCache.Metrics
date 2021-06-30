@@ -98,7 +98,7 @@ namespace FusionCache.AppMertrics.Plugin.Tests
                     // HIT: +1
                     await cache.TryGetAsync<int>("foo");
 
-                    await Task.Delay(duration);
+                    await Task.Delay(throttleDuration);
 
                     // HIT (STALE): +1
                     // FAIL-SAFE: +1
@@ -356,7 +356,7 @@ namespace FusionCache.AppMertrics.Plugin.Tests
                     await cache.TryGetAsync<int>("foo"); // wake up the sloth
 
                     // Let EventListener poll for data
-                    await Task.Delay(1000);
+                    await Task.Delay(1100);
 
                     var messages = reporter.Messages.ToList();
                     // messages.ForEach(c => _testOutputHelper.WriteLine(c.ToString()));
