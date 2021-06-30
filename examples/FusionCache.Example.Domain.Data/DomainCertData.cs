@@ -5,8 +5,14 @@
     /// </summary>
     public class DomainCertData
     {
+        /// <summary>
+        /// Unique Id.
+        /// </summary>
         public int Id { get; set; }
 
+        /// <summary>
+        /// Name of the DomainCertData
+        /// </summary>
         public string Domain { get; set; }
 
         /// <summary>
@@ -14,6 +20,9 @@
         /// </summary>
         public string Certificate { get; set; }
         
+        /// <summary>
+        /// Is this a valid and enabled Domain
+        /// </summary>
         public bool Enabled { get; set; }
     }
 }

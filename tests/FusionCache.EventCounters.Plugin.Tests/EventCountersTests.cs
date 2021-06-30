@@ -109,7 +109,6 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin.Tests
 
             foreach (var eventData in messages)
             {
-                bool itemCountFlag = false;
                 for (int i = 0; i < eventData.Payload.Count; ++i)
                 {
                     if (eventData.Payload[i] is IDictionary<string, object> eventPayload)
