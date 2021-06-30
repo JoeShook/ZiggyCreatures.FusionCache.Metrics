@@ -1,13 +1,7 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Text.RegularExpressions;
-using FusionCache.Example.Domain.Model;
-using Xunit;
+﻿using System.Text.Json;
 using Xunit.Abstractions;
 
-namespace FusionCache.Etw.Plugin.Tests
+namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin.Tests
 {
 
     public class CreateTestDataUtility

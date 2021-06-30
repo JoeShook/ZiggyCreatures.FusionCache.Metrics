@@ -15,6 +15,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
     {
         private long _cacheHits;
         private long _cacheMisses;
+        private long _cacheSets;
         private long _cacheStaleHit;
         private long _cacheBackgroundRefreshed;
         private long _cacheBackgroundRefreshedError;
@@ -26,6 +27,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
         private long _cacheRemoved;
         private IncrementingPollingCounter? _cacheHitPollingCounter;
         private IncrementingPollingCounter? _cacheMissPollingCounter;
+        private IncrementingPollingCounter? __cacheSetPollingCounter;
         private IncrementingPollingCounter? _cacheStaleHitPollingCounter;
         private IncrementingPollingCounter? _cacheBackgroundRefreshedPollingCounter;
         private IncrementingPollingCounter? _cacheBackgroundRefreshedErrorPollingCounter;
@@ -75,6 +77,18 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
                 DisplayRateTimeScale = _displayRateTimeScale
             };
             _cacheMissPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
+
+
+            _cacheMissPollingCounter = new IncrementingPollingCounter(
+                _conventions.CacheSetTagValue,
+                this,
+                () => Volatile.Read(ref _cacheSets))
+            {
+                DisplayName = "Cache Sets",
+                DisplayRateTimeScale = _displayRateTimeScale
+            };
+            _cacheMissPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
+            
 
 
             _cacheStaleHitPollingCounter = new IncrementingPollingCounter(
@@ -197,13 +211,23 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
         }
 
         /// <summary>
-        /// Cache item miss counter.  When a cache item is written to local cache
+        /// Cache item miss counter.  When a cache item is not found in the local cache
         /// </summary>
         [NonEvent]
         public void CacheMiss()
         {
             Interlocked.Increment(ref _cacheMisses);
         }
+
+        /// <summary>
+        /// Cache item set counter.  When a cache item is written to local cache
+        /// </summary>
+        [NonEvent]
+        public void CacheSet()
+        {
+            Interlocked.Increment(ref _cacheSets);
+        }
+
 
         /// <summary>
         /// Cache item stale hit counter.  Cache item failed to complete within soft timeout period.
@@ -279,6 +303,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
         {
             fusionCache.Events.Hit -= HandleCacheHit();
             fusionCache.Events.Miss -= HandleCacheMiss();
+            fusionCache.Events.Set -= HandleCacheSet();
             fusionCache.Events.Remove -= HandleCacheRemoved();
             fusionCache.Events.Memory.Eviction -= HandleCacheEviction();
             fusionCache.Events.BackgroundFactorySuccess -= HandleBackgroundFactorySuccess();
@@ -292,6 +317,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
         {
             fusionCache.Events.Hit += HandleCacheHit();
             fusionCache.Events.Miss += HandleCacheMiss();
+            fusionCache.Events.Set += HandleCacheSet();
             fusionCache.Events.Remove += HandleCacheRemoved();
             fusionCache.Events.Memory.Eviction += HandleCacheEviction();
             fusionCache.Events.BackgroundFactorySuccess += HandleBackgroundFactorySuccess();
@@ -321,7 +347,12 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
         {
             return (s, e) => CacheMiss();
         }
-        
+
+        private EventHandler<FusionCacheEntryEventArgs>? HandleCacheSet()
+        {
+            return (s, e) => CacheSet();
+        }
+
         private EventHandler<FusionCacheEntryEventArgs>? HandleCacheRemoved()
         {
             return (s, e) => CacheRemoved();

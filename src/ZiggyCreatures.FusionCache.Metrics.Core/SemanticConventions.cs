@@ -2,6 +2,11 @@
 {
     public class SemanticConventions : ISemanticConventions
     {
+        public static SemanticConventions Instance()
+        {
+            return new SemanticConventions();
+        }
+
         public string ValueFieldName => "value";
 
         public string ApplicationTagName => "application";
@@ -15,6 +20,8 @@
         public string CacheHitTagValue => "HIT";
 
         public string CacheMissTagValue => "MISS";
+
+        public string CacheSetTagValue => "SET";
 
         public string CacheStaleHitTagValue => "STALE_HIT";
 

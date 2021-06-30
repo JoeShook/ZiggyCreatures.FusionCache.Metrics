@@ -33,6 +33,11 @@
         string CacheMissTagValue { get; }
 
         /// <summary>
+        /// Cache item set tag.
+        /// </summary>
+        string CacheSetTagValue { get; }
+        
+        /// <summary>
         /// Cache item stale hit tag.  Cache was pulled from Fail-Safe cache
         /// </summary>
         string CacheStaleHitTagValue { get; }
