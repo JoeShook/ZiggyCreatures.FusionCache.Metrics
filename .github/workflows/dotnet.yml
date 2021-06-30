@@ -29,7 +29,7 @@ jobs:
       with:
         label: Unit Test Coverage
         color: brightgreen
-        path: TestResults/coverage.opencover.xml
+        path: tests/FusionCache.EventCounters.Plugin.Tests/TestResults/coverage.opencover.xml
         gist-filename: code-coverage.json
         gist-id: 141e4a826a0a2f46dad85ccf3213a894
         gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}
