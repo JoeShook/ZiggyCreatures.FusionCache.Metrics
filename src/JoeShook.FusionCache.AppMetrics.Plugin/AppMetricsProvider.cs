@@ -1,7 +1,9 @@
 ﻿using System;
 using App.Metrics;
 using Microsoft.Extensions.Caching.Memory;
+using ZiggyCreatures.Caching.Fusion.Events;
 using ZiggyCreatures.Caching.Fusion.Metrics.Core;
+using ZiggyCreatures.Caching.Fusion.Plugins;
 
 namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
 {
@@ -9,7 +11,7 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
     /// Implementation of AppMetrics for caching metrics. 
     /// See https://github.com/AppMetrics/AppMetrics
     /// </summary>
-    public class AppMetricsProvider
+    public class AppMetricsProvider : IFusionCachePlugin
     {
         private IMetrics _metrics;
         private MetricTags _cacheNameMetricTag;
@@ -50,12 +52,12 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
 
             if (_cache != null)
             {
-                _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemGauge(_semanticConventions), _cacheNameMetricTag, () => _cache.Count);
+                _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemGauge(_semanticConventions), _cacheNameMetricTag, _cache.Count);
             }
         }
 
         /// <summary>
-        /// Cache item miss counter.  When a cache item is written to local cache
+        /// Cache item miss counter.  When a cache item is not found in local cache
         /// </summary>
         public void CacheMiss()
         {
@@ -63,7 +65,20 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
 
             if (_cache != null)
             {
-                _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemGauge(_semanticConventions), _cacheNameMetricTag, () => _cache.Count);
+                _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemGauge(_semanticConventions), _cacheNameMetricTag, _cache.Count);
+            }
+        }
+
+        /// <summary>
+        /// Cache item set counter.  When a cache item is written to local cache
+        /// </summary>
+        public void CacheSet()
+        {
+            _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheSetCounter(_semanticConventions), _cacheNameMetricTag);
+
+            if (_cache != null)
+            {
+                _metrics.Measure.Gauge.SetValue(FusionMetricsRegistry.CacheItemGauge(_semanticConventions), _cacheNameMetricTag, _cache.Count);
             }
         }
 
@@ -142,9 +157,85 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
     
 
 
-        public void Wireup(IFusionCache fusionCache, FusionCacheOptions? fusionCacheOptions = null)
+        // public void Start(IFusionCache fusionCache)
+        // {
+        //     fusionCache.Events.Hit += (s, e) =>
+        //     {
+        //         if (e.IsStale)
+        //         {
+        //             CacheStaleHit();
+        //         }
+        //         else
+        //         {
+        //             CacheHit();
+        //         }
+        //     };
+        //
+        //     fusionCache.Events.Miss += (s, e) => CacheMiss();
+        //     fusionCache.Events.Remove += (s, e) => CacheRemoved();
+        //     
+        //     fusionCache.Events.Memory.Eviction += (sender, e) =>
+        //     {
+        //         // If you need it...
+        //         // var cache = (IFusionCache)sender;
+        //
+        //         switch (e.Reason)
+        //
+        //         {
+        //
+        //             case EvictionReason.Expired:
+        //
+        //                 CacheExpired();
+        //                 break;
+        //
+        //             case EvictionReason.Capacity:
+        //
+        //                 CacheCapacityExpired();
+        //                 break;
+        //         }
+        //     };
+        //
+        //     fusionCache.Events.BackgroundFactorySuccess += (s, e) => CacheBackgroundRefresh();
+        //     fusionCache.Events.BackgroundFactoryError += (s, e) => CacheBackgroundRefreshError();
+        //     fusionCache.Events.FactoryError += (s, e) => CacheFactoryError();
+        //     fusionCache.Events.FactorySyntheticTimeout += (s, e) => CacheFactorySyntheticTimeout();
+        //     fusionCache.Events.FailSafeActivate += (s, e) => CacheFailSafeActivate();
+        // }
+
+
+
+        public void Stop(IFusionCache fusionCache)
         {
-            fusionCache.Events.Hit += (s, e) =>
+            fusionCache.Events.Hit -= HandleCacheHit();
+            fusionCache.Events.Miss -= HandleCacheMiss();
+            fusionCache.Events.Set -= HandleCacheSet();
+            fusionCache.Events.Remove -= HandleCacheRemoved();
+            fusionCache.Events.Memory.Eviction -= HandleCacheEviction();
+            fusionCache.Events.BackgroundFactorySuccess -= HandleBackgroundFactorySuccess();
+            fusionCache.Events.BackgroundFactoryError -= HanldeBackgroundFactoryError();
+            fusionCache.Events.FactoryError -= HanldeFactoryError();
+            fusionCache.Events.FactorySyntheticTimeout -= HandleFactorySyntheticTimeout();
+            fusionCache.Events.FailSafeActivate -= HandleFailSafeActivate();
+        }
+
+        public void Start(IFusionCache fusionCache)
+        {
+            fusionCache.Events.Hit += HandleCacheHit();
+            fusionCache.Events.Miss += HandleCacheMiss();
+            fusionCache.Events.Set += HandleCacheSet();
+            fusionCache.Events.Remove += HandleCacheRemoved();
+            fusionCache.Events.Memory.Eviction += HandleCacheEviction();
+            fusionCache.Events.BackgroundFactorySuccess += HandleBackgroundFactorySuccess();
+            fusionCache.Events.BackgroundFactoryError += HanldeBackgroundFactoryError();
+            fusionCache.Events.FactoryError += HanldeFactoryError();
+            fusionCache.Events.FactorySyntheticTimeout += HandleFactorySyntheticTimeout();
+            fusionCache.Events.FailSafeActivate += HandleFailSafeActivate();
+        }
+
+
+        private EventHandler<FusionCacheEntryHitEventArgs> HandleCacheHit()
+        {
+            return (s, e) =>
             {
                 if (e.IsStale)
                 {
@@ -155,11 +246,26 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
                     CacheHit();
                 }
             };
+        }
 
-            fusionCache.Events.Miss += (s, e) => CacheMiss();
-            fusionCache.Events.Remove += (s, e) => CacheRemoved();
-            
-            fusionCache.Events.Memory.Eviction += (sender, e) =>
+        private EventHandler<FusionCacheEntryEventArgs> HandleCacheMiss()
+        {
+            return (s, e) => CacheMiss();
+        }
+
+        private EventHandler<FusionCacheEntryEventArgs>? HandleCacheSet()
+        {
+            return (s, e) => CacheSet();
+        }
+
+        private EventHandler<FusionCacheEntryEventArgs>? HandleCacheRemoved()
+        {
+            return (s, e) => CacheRemoved();
+        }
+
+        private EventHandler<FusionCacheEntryEvictionEventArgs>? HandleCacheEviction()
+        {
+            return (sender, e) =>
             {
                 // If you need it...
                 // var cache = (IFusionCache)sender;
@@ -179,12 +285,31 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
                         break;
                 }
             };
+        }
 
-            fusionCache.Events.BackgroundFactorySuccess += (s, e) => CacheBackgroundRefresh();
-            fusionCache.Events.BackgroundFactoryError += (s, e) => CacheBackgroundRefreshError();
-            fusionCache.Events.FactoryError += (s, e) => CacheFactoryError();
-            fusionCache.Events.FactorySyntheticTimeout += (s, e) => CacheFactorySyntheticTimeout();
-            fusionCache.Events.FailSafeActivate += (s, e) => CacheFailSafeActivate();
+        private EventHandler<FusionCacheEntryEventArgs>? HandleBackgroundFactorySuccess()
+        {
+            return (s, e) => CacheBackgroundRefresh();
+        }
+
+        private EventHandler<FusionCacheEntryEventArgs>? HanldeBackgroundFactoryError()
+        {
+            return (s, e) => CacheBackgroundRefreshError();
+        }
+
+        private EventHandler<FusionCacheEntryEventArgs>? HanldeFactoryError()
+        {
+            return (s, e) => CacheFactoryError();
+        }
+
+        private EventHandler<FusionCacheEntryEventArgs>? HandleFactorySyntheticTimeout()
+        {
+            return (s, e) => CacheFactorySyntheticTimeout();
+        }
+
+        private EventHandler<FusionCacheEntryEventArgs>? HandleFailSafeActivate()
+        {
+            return (s, e) => CacheFailSafeActivate();
         }
     }
 }

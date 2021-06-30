@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Xunit;
@@ -284,7 +285,60 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin.Tests
         }
 
         [Fact]
-        public async Task BackgrouindFailSafeAsync()
+        public void TryGetStaleFailSafe()
+        {
+            var duration = TimeSpan.FromSeconds(2);
+            var maxDuration = TimeSpan.FromDays(1);
+            var throttleDuration = TimeSpan.FromSeconds(3);
+
+            using (var memoryCache = new MemoryCache(new MemoryCacheOptions()))
+            using (var eventSource = new FusionCacheEventSource("testCacheName", memoryCache))
+            using (var listener = new TestEventListener())
+            using (var cache = new FusionCache(
+                new FusionCacheOptions() { EnableSyncEventHandlersExecution = true },
+                memoryCache))
+            {
+                const long AllKeywords = -1;
+                listener.EnableEvents(eventSource, EventLevel.Verbose, (EventKeywords)AllKeywords,
+                    new Dictionary<string, string>
+                    {
+                        ["EventCounterIntervalSec"] = "1"
+                    });
+
+                cache.DefaultEntryOptions.Duration = duration;
+                cache.DefaultEntryOptions.IsFailSafeEnabled = true;
+                cache.DefaultEntryOptions.FailSafeMaxDuration = maxDuration;
+                cache.DefaultEntryOptions.FailSafeThrottleDuration = throttleDuration;
+
+                // INITIAL, NON-TRACKED SET
+                cache.Set<int>("foo", 42);
+
+                eventSource.Start(cache);
+
+                // HIT: +1
+                cache.TryGet<int>("foo");
+
+                // LET IT BECOME STALE
+                Thread.Sleep(duration);
+
+                // HIT (STALE): +1
+                cache.TryGet<int>("foo");
+
+                // REMOVE HANDLERS
+                eventSource.Stop(cache);
+
+                // Let EventListener poll for data
+                Thread.Sleep(1500);
+
+                var messages = listener.Messages.ToList();
+
+                Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
+                Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
+            }
+        }
+
+        [Fact]
+        public async Task BackgroundFailSafeAsync()
         {
             var duration = TimeSpan.FromSeconds(2);
             var softTimeout = TimeSpan.FromMilliseconds(100);
@@ -420,7 +474,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin.Tests
             var maxDuration = TimeSpan.FromDays(1);
             var throttleDuration = TimeSpan.FromSeconds(3);
 
-            using (var memoryCache = new MemoryCache(new MemoryCacheOptions(){SizeLimit = 100}))
+            using (var memoryCache = new MemoryCache(new MemoryCacheOptions {SizeLimit = 100} ))
             using (var eventSource = new FusionCacheEventSource("testCacheName", memoryCache))
             using (var listener = new TestEventListener())
             using (var cache = new FusionCache(
@@ -456,7 +510,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin.Tests
                 
                 await cache.TryGetAsync<int>("foo10"); // wake up the sloth
                 // Let EventListener poll for data
-                await Task.Delay(3500);
+                await Task.Delay(1500);
 
                 var messages = listener.Messages.ToList();
 
@@ -465,7 +519,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin.Tests
 
                 Assert.All(counts, c => Assert.True(c <= 100));
 
-                Assert.True( GetMetric(messages, SemanticConventions.Instance().CacheCapacityEvictTagValue) > 0 );
+                Assert.True( GetMetric(messages, SemanticConventions.Instance().CacheCapacityEvictTagValue) > 1899 );
             }
         }
     }

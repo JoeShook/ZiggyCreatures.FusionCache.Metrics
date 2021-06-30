@@ -103,7 +103,7 @@ namespace ZiggyCreatures.FusionCaching.AppMetrics.Benchmarks
             var metrics = new AppMetricsProvider("FusionCache", AppMetrics);
             using (var cache = new FusionCache(new FusionCacheOptions { DefaultEntryOptions = new FusionCacheEntryOptions(CacheDuration) }))
             {
-                metrics.Wireup(cache);
+                metrics.Start(cache);
 
                 for (int i = 0; i < Rounds; i++)
                 {

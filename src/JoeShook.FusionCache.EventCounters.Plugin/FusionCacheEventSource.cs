@@ -27,7 +27,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
         private long _cacheRemoved;
         private IncrementingPollingCounter? _cacheHitPollingCounter;
         private IncrementingPollingCounter? _cacheMissPollingCounter;
-        private IncrementingPollingCounter? __cacheSetPollingCounter;
+        private IncrementingPollingCounter? _cacheSetPollingCounter;
         private IncrementingPollingCounter? _cacheStaleHitPollingCounter;
         private IncrementingPollingCounter? _cacheBackgroundRefreshedPollingCounter;
         private IncrementingPollingCounter? _cacheBackgroundRefreshedErrorPollingCounter;
@@ -79,7 +79,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
             _cacheMissPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
 
 
-            _cacheMissPollingCounter = new IncrementingPollingCounter(
+            _cacheSetPollingCounter = new IncrementingPollingCounter(
                 _conventions.CacheSetTagValue,
                 this,
                 () => Volatile.Read(ref _cacheSets))
@@ -87,7 +87,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
                 DisplayName = "Cache Sets",
                 DisplayRateTimeScale = _displayRateTimeScale
             };
-            _cacheMissPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
+            _cacheSetPollingCounter.AddMetadata(_conventions.CacheNameTagName, Name);
             
 
 
@@ -343,22 +343,22 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
             };
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HandleCacheMiss()
+        private EventHandler<FusionCacheEntryEventArgs> HandleCacheMiss()
         {
             return (s, e) => CacheMiss();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HandleCacheSet()
+        private EventHandler<FusionCacheEntryEventArgs> HandleCacheSet()
         {
             return (s, e) => CacheSet();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HandleCacheRemoved()
+        private EventHandler<FusionCacheEntryEventArgs> HandleCacheRemoved()
         {
             return (s, e) => CacheRemoved();
         }
 
-        private EventHandler<FusionCacheEntryEvictionEventArgs>? HandleCacheEviction()
+        private EventHandler<FusionCacheEntryEvictionEventArgs> HandleCacheEviction()
         {
             return (sender, e) =>
             {
@@ -382,27 +382,27 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
             };
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HandleBackgroundFactorySuccess()
+        private EventHandler<FusionCacheEntryEventArgs> HandleBackgroundFactorySuccess()
         {
             return (s, e) => CacheBackgroundRefreshSuccess();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HanldeBackgroundFactoryError()
+        private EventHandler<FusionCacheEntryEventArgs> HanldeBackgroundFactoryError()
         {
             return (s, e) => CacheBackgroundRefreshError();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HanldeFactoryError()
+        private EventHandler<FusionCacheEntryEventArgs> HanldeFactoryError()
         {
             return (s, e) => CacheFactoryError();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HandleFactorySyntheticTimeout()
+        private EventHandler<FusionCacheEntryEventArgs> HandleFactorySyntheticTimeout()
         {
             return (s, e) => CacheFactorySyntheticTimeout();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HandleFailSafeActivate()
+        private EventHandler<FusionCacheEntryEventArgs> HandleFailSafeActivate()
         {
             return (s, e) => CacheFailSafeActivate();
         }

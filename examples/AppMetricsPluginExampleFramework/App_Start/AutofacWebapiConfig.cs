@@ -116,7 +116,7 @@ namespace AppMetricsPluginExample2.App_Start
                     // Future Plugin for hooking metrics ???
                     var metrics = new AppMetricsProvider("domain", appMetrics, hostNameCache);
                     var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, hostNameCache, logger);
-                    metrics.Wireup(fusionCache, fusionCacheOptions);
+                    metrics.Start(fusionCache);
 
                     return fusionCache;
                 })
@@ -141,7 +141,7 @@ namespace AppMetricsPluginExample2.App_Start
 
                 var metrics = new AppMetricsProvider("email", appMetrics, emailCache);
                 var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, emailCache, logger);
-                metrics.Wireup(fusionCache, fusionCacheOptions);
+                metrics.Start(fusionCache);
 
                 return new EmailService(c.Resolve<DataManager>(), fusionCache);
             })

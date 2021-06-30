@@ -25,12 +25,22 @@ namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
         };
 
         /// <summary>
-        /// Cache miss counter.  When a cache is written to local cache
+        /// Cache miss counter.  When a cache is not found in local cache
         /// </summary>
         public static CounterOptions CacheMissCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Name = MeasurementName,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheMissTagValue),
+            ResetOnReporting = true
+        };
+
+        /// <summary>
+        /// Cache set counter.  When a cache is written to local cache
+        /// </summary>
+        public static CounterOptions CacheSetCounter(ISemanticConventions conventions) => new CounterOptions
+        {
+            Name = MeasurementName,
+            Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheSetTagValue),
             ResetOnReporting = true
         };
 
