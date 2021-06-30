@@ -241,6 +241,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin.Tests
                 await cache.TryGetAsync<int>("foo");
 
                 await Task.Delay(throttleDuration);
+                await Task.Delay(100);
 
                 // HIT (STALE): +1
                 // FAIL-SAFE: +1
@@ -252,6 +253,7 @@ namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin.Tests
 
                 // LET THE THROTTLE DURATION PASS
                 await Task.Delay(throttleDuration);
+                await Task.Delay(100);
 
                 // HIT (STALE): +1
                 // FAIL-SAFE: +1
