@@ -22,4 +22,4 @@ jobs:
     - name: Build
       run: dotnet build JoeShook.FusionCache.Playground.Core.sln --no-restore
     - name: Test
-      run: dotnet test JoeShook.FusionCache.Playground.Core.sln --no-build --verbosity normal
+      run: dotnet test JoeShook.FusionCache.Playground.Core.sln --no-build --verbosity normal -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
