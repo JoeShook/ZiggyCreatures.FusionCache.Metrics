@@ -14,7 +14,6 @@
     <PackageTags>caching;cache;multi-level;multilevel;fusion;fusioncache;fusion-cache;performance;async;ziggy;metrics</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RootNamespace>ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins</RootNamespace>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -15,7 +15,6 @@
     <PackageTags>caching;cache;multi-level;multilevel;fusion;fusioncache;fusion-cache;performance;async;ziggy;metrics;EventSource;EventCounter;DiagnosticCounter</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RootNamespace>ZiggyCreatures.Caching.Fusion.EventCounters.Plugin</RootNamespace>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AssemblyName>ZiggyCreatures.FusionCache.Metrics.EventCounters.Plugin</AssemblyName>
   </PropertyGroup>
 
