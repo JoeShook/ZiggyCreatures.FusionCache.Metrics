@@ -60,9 +60,9 @@ jobs:
       run: echo "Code coverage percentage for FusionCache.AppMetrics.Plugin ${{steps.create_coverage_badge_AppMetrics.outputs.percentage}}%"
     - name: Pack
       run: |
-        dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCreatures.FusionCache.Metrics.Core/ZiggyCreatures.FusionCache.Metrics.Core.csproj
-        dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID src/JoeShook.FusionCache.EventCounters.Plugin/ZiggyCreatures.FusionCache.EventCounters.Plugin.csproj
-        dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID src/JoeShook.FusionCache.AppMetrics.Plugin/ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj
+        dotnet pack -v normal -c Release --no-restore --include-symbols  -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCreatures.FusionCache.Metrics.Core/ZiggyCreatures.FusionCache.Metrics.Core.csproj
+        dotnet pack -v normal -c Release --no-restore --include-symbols  -p:PackageVersion=$GITHUB_RUN_ID src/JoeShook.FusionCache.EventCounters.Plugin/ZiggyCreatures.FusionCache.EventCounters.Plugin.csproj
+        dotnet pack -v normal -c Release --no-restore --include-symbols  -p:PackageVersion=$GITHUB_RUN_ID src/JoeShook.FusionCache.AppMetrics.Plugin/ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj
     - name: Upload Artifact for Metrics.Core
       uses: actions/upload-artifact@v2
       with:
@@ -92,7 +92,7 @@ jobs:
         run: |
           dotnet tool install gpr -g
           ls ./nupkg
-          gpr push ./nupkg/*.symbols.nupkg -k $GITHUB_TOKEN --repository $GITHUB_FEED
+          gpr push ./nupkg/*.nupkg -k $GITHUB_TOKEN --repository $GITHUB_FEED
           #for f in ./nupkg/*.nupkg
           #do
             #gpr push $f -k $GITHUB_TOKEN --repository $GITHUB_FEED
