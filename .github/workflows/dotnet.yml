@@ -68,17 +68,17 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: nupkg
-        path: src/ZiggyCreatures.FusionCache.Metrics.Core/bin/Release/*.nupkg
+        path: src/ZiggyCreatures.FusionCache.Metrics.Core/bin/Release/*.symbols.nupkg
     - name: Upload Artifact for EventCounters.Plugin
       uses: actions/upload-artifact@v2
       with:
         name: nupkg
-        path: src/JoeShook.FusionCache.EventCounters.Plugin/bin/Release/*.nupkg
+        path: src/JoeShook.FusionCache.EventCounters.Plugin/bin/Release/*.symbols.nupkg
     - name: Upload Artifact for AppMetrics.Plugins
       uses: actions/upload-artifact@v2
       with:
         name: nupkg
-        path: src/JoeShook.FusionCache.AppMetrics.Plugin/bin/Release/*.nupkg
+        path: src/JoeShook.FusionCache.AppMetrics.Plugin/bin/Release/*.symbols.nupkg
   # see for inspiration::  https://dusted.codes/github-actions-for-dotnet-core-nuget-packages
   prerelease:
     needs: build
