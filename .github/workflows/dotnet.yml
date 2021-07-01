@@ -13,7 +13,7 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   
   # GitHub Packages Feed settings
-  GITHUB_FEED: https://nuget.pkg.github.com/JoeShook/
+  GITHUB_FEED: https://nuget.pkg.github.com/JoeShook/FusionCacheMetricsPlayground
   GITHUB_USER: JoeShook
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
@@ -90,7 +90,9 @@ jobs:
           name: nupkg
       - name: Push to GitHub Feed
         run: |
+          dotnet tool install gpr -g
           for f in ./nupkg/*.nupkg
           do
-            curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
+            gpr push @$f -k $GITHUB_TOKEN --repository $GITHUB_FEED
+            # curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
           done
