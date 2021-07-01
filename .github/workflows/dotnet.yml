@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  # Stop wasting time caching packages
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # Disable sending usage data to Microsoft
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  
 jobs:
   build:
 
@@ -47,3 +53,39 @@ jobs:
         gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}
     - name: Print code coverage FusionCache.AppMetrics.Plugin
       run: echo "Code coverage percentage for FusionCache.AppMetrics.Plugin ${{steps.create_coverage_badge_AppMetrics.outputs.percentage}}%"
+    - name: Pack
+      run: | 
+        dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCreatures.FusionCache.Metrics.Core/ZiggyCreatures.FusionCache.Metrics.Core.csproj
+        dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCreatures.FusionCache.EventCounters.Plugin/ZiggyCreatures.FusionCache.EventCounters.Plugin.csproj
+        dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCreatures.FusionCache.AppMetrics.Plugins/ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj
+    - name: Upload Artifact for Metrics.Core
+      uses: actions/upload-artifact@v2
+      with:
+        name: nupkg
+        path: ./src/ZiggyCreatures.FusionCache.Metrics.Core/bin/Release/netstandard2.0/*.nupkg
+    - name: Upload Artifact for EventCounters.Plugin
+      uses: actions/upload-artifact@v2
+      with:
+        name: nupkg
+        path: ./src/ZiggyCreatures.FusionCache.EventCounters.Plugin/bin/Release/netstandard2.0/*.nupkg
+    - name: Upload Artifact for AppMetrics.Plugins
+      uses: actions/upload-artifact@v2
+      with:
+        name: nupkg
+        path: ./src/ZiggyCreatures.FusionCache.AppMetrics.Plugins/bin/Release/netstandard2.0/*.nupkg
+  # see for inspiration::  https://dusted.codes/github-actions-for-dotnet-core-nuget-packages
+  prerelease:
+    needs: build
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: nupkg
+      - name: Push to GitHub Feed
+        run: |
+          for f in ./nupkg/*.nupkg
+          do
+            curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
+          done 
