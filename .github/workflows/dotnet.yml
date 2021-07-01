@@ -13,7 +13,7 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   
   # GitHub Packages Feed settings
-  GITHUB_FEED: https://nuget.pkg.github.com/JoeShook/fusionCache-Metris-Plugins/
+  GITHUB_FEED: https://nuget.pkg.github.com/JoeShook/
   GITHUB_USER: JoeShook
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
