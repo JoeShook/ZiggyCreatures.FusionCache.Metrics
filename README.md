@@ -11,6 +11,8 @@
 Metrics are missing from open-source resiliency projects in the .NET ecosystem where in equivalent Java libraries, metrics tend to be common.  
 FusionCache is a feature rich caching library addressing resiliency needs of today’s enterprise implementations.  This project is a collection of plugins that enable the collection and reporting of cache metrics.
 
+This naming convention of these projects, examples and packages are prefixed with `ZiggyCreatures.FusionCache.Metrics` to highlight that they are different from the packages produced by the [ZiggyCreatures.FusionCache repository](https://github.com/jodydonetti/ZiggyCreatures.FusionCache)
+
 # Current plugins and examples
 
 Currently two plugins and three example usages exist in the repository.  Read the docs in those areas to start using metrics in your projects.
