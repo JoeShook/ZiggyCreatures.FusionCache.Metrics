@@ -93,7 +93,7 @@ jobs:
           dotnet tool install gpr -g
           ls ./nupkg
           gpr push ./nupkg/*.nupkg -k $GITHUB_TOKEN --repository $GITHUB_FEED
-          #for f in ./nupkg/*.nupkg
+          #for f in ./nupkg/*.symbols.nupkg
           #do
             #gpr push $f -k $GITHUB_TOKEN --repository $GITHUB_FEED
             # curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
