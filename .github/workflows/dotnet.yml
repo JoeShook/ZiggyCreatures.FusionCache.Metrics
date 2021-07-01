@@ -16,7 +16,7 @@ env:
   GITHUB_FEED: https://nuget.pkg.github.com/JoeShook/FusionCacheMetricsPlayground/
   GITHUB_USER: JoeShook
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
 jobs:
   build:
 
