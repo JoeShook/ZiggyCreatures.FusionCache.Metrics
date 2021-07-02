@@ -27,10 +27,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", "{8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.EventCounters.Benchmarks", "benchmarks\ZiggyCreatures.FusionCache.EventCounters.Benchmarks\ZiggyCreatures.FusionCache.EventCounters.Benchmarks.csproj", "{500495DC-3059-4F65-85C7-830B2BDA68EB}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.AppMetrics.Benchmarks", "benchmarks\ZiggyCreatures.FusionCache.AppMetrics.Benchmarks\ZiggyCreatures.FusionCache.AppMetrics.Benchmarks.csproj", "{EB7D42E4-DA6A-451D-8D00-150762BE4B57}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "superbenchmarker", "superbenchmarker", "{57C63C6C-AB04-4C0B-8F0A-5A289AD9949A}"
 	ProjectSection(SolutionItems) = preProject
 		examples\superbenchmarker\EmailAddressData.csv = examples\superbenchmarker\EmailAddressData.csv
@@ -46,6 +42,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugins", "src\ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugin\ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugins.csproj", "{08360682-30AC-483D-ABB1-FE778FB5692A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.Metrics.EventCounters.Plugin", "src\ZiggyCreatures.FusionCache.Metrics.EventCounters.Plugin\ZiggyCreatures.FusionCache.Metrics.EventCounters.Plugin.csproj", "{BF2B2B4A-0864-4FC5-8FBB-0ACEE8154128}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.Metrics.AppMetrics.Benchmarks", "benchmarks\ZiggyCreatures.FusionCache.Metrics.AppMetrics.Benchmarks\ZiggyCreatures.FusionCache.Metrics.AppMetrics.Benchmarks.csproj", "{AFA924A0-755A-4F71-AFE6-F8DDCBB57832}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZiggyCreatures.FusionCache.Metrics.EventCounters.Benchmarks", "benchmarks\ZiggyCreatures.FusionCache.Metrics.EventCounters.Benchmarks\ZiggyCreatures.FusionCache.Metrics.EventCounters.Benchmarks.csproj", "{A6D643D0-CAA2-4668-9022-0C08E38988AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,14 +69,6 @@ Global
 		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{500495DC-3059-4F65-85C7-830B2BDA68EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{500495DC-3059-4F65-85C7-830B2BDA68EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{500495DC-3059-4F65-85C7-830B2BDA68EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{500495DC-3059-4F65-85C7-830B2BDA68EB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB7D42E4-DA6A-451D-8D00-150762BE4B57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB7D42E4-DA6A-451D-8D00-150762BE4B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB7D42E4-DA6A-451D-8D00-150762BE4B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB7D42E4-DA6A-451D-8D00-150762BE4B57}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA614682-2C5C-462B-B088-5B80600A94BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BA614682-2C5C-462B-B088-5B80600A94BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA614682-2C5C-462B-B088-5B80600A94BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -93,6 +85,14 @@ Global
 		{BF2B2B4A-0864-4FC5-8FBB-0ACEE8154128}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF2B2B4A-0864-4FC5-8FBB-0ACEE8154128}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF2B2B4A-0864-4FC5-8FBB-0ACEE8154128}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFA924A0-755A-4F71-AFE6-F8DDCBB57832}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFA924A0-755A-4F71-AFE6-F8DDCBB57832}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFA924A0-755A-4F71-AFE6-F8DDCBB57832}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFA924A0-755A-4F71-AFE6-F8DDCBB57832}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6D643D0-CAA2-4668-9022-0C08E38988AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6D643D0-CAA2-4668-9022-0C08E38988AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6D643D0-CAA2-4668-9022-0C08E38988AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6D643D0-CAA2-4668-9022-0C08E38988AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,13 +103,13 @@ Global
 		{00642705-51D1-402A-9749-130CFF041BC2} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
 		{9157CC23-95F9-4E88-978F-FE9B566C9C34} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
 		{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
-		{500495DC-3059-4F65-85C7-830B2BDA68EB} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
-		{EB7D42E4-DA6A-451D-8D00-150762BE4B57} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
 		{57C63C6C-AB04-4C0B-8F0A-5A289AD9949A} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
 		{BA614682-2C5C-462B-B088-5B80600A94BF} = {A8A86176-AAA6-4CB3-9172-16A841E32138}
 		{C869DA72-DCAE-4C6C-A5F3-E8292B99388E} = {A8A86176-AAA6-4CB3-9172-16A841E32138}
 		{08360682-30AC-483D-ABB1-FE778FB5692A} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
 		{BF2B2B4A-0864-4FC5-8FBB-0ACEE8154128} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
+		{AFA924A0-755A-4F71-AFE6-F8DDCBB57832} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
+		{A6D643D0-CAA2-4668-9022-0C08E38988AF} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32C4269F-FC33-47FA-91DA-2B6C5DF7D025}
