@@ -60,7 +60,7 @@ jobs:
       run: |
         dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCreatures.FusionCache.Metrics.Core/ZiggyCreatures.FusionCache.Metrics.Core.csproj
         dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCreatures.FusionCache.Metrics.EventCounters.Plugin/ZiggyCreatures.FusionCache.Metrics.EventCounters.Plugin.csproj
-        dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugin/ZiggyCreatures.FusionCache.Metris.AppMetrics.Plugins.csproj
+        dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugin/ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugins.csproj
     - name: Upload Artifact for Metrics.Core
       uses: actions/upload-artifact@v2
       with:
