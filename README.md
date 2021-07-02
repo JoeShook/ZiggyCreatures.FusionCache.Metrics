@@ -3,6 +3,7 @@
 ![FusionCache logo](./artwork/logo-128x128.png)
 
 </div>
+
 # FusionCache Metrics Plugins
 
 <div align="center">
