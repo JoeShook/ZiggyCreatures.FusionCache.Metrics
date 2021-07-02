@@ -27,11 +27,11 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore FusionCache.Plugins.Metrics.Core.sln
+      run: dotnet restore FusionCache.Plugins.Metrics.DotnetCore.sln
     - name: Build
-      run: dotnet build FusionCache.Plugins.Metrics.Core.sln --no-restore
+      run: dotnet build FusionCache.Plugins.Metrics.DotnetCore.sln --no-restore
     - name: Test
-      run: dotnet test FusionCache.Plugins.Metrics.Core.sln --no-build --verbosity normal -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
+      run: dotnet test FusionCache.Plugins.Metrics.DotnetCore.sln --no-build --verbosity normal -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
     - name: Create Test Coverage Badge for FusionCache.Plugins.Metrics.EventCounters
       uses: simon-k/dotnet-code-coverage-badge@v1.0.0
       id: create_coverage_badge_EventCounters
