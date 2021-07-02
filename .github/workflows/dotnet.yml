@@ -60,7 +60,7 @@ jobs:
       run: |
         dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/FusionCache.Plugins.Metrics.Core/FusionCache.Plugins.Metrics.Core.csproj
         dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/FusionCache.Plugins.Metrics.EventCounters/FusionCache.Plugins.Metrics.EventCounters.csproj
-        dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/FusionCache.Plugins.Metrics.AppMetrics/FusionCache.Plugins.Metrics.AppMetrics.Plugins.csproj
+        dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/FusionCache.Plugins.Metrics.AppMetrics/FusionCache.Plugins.Metrics.AppMetrics.csproj
     - name: Upload Artifact for Metrics.Core
       uses: actions/upload-artifact@v2
       with:
