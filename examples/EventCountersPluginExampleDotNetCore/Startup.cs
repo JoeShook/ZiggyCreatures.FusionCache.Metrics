@@ -11,9 +11,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ZiggyCreatures.Caching.Fusion;
-using ZiggyCreatures.Caching.Fusion.Metrics.EventCounters.Plugin;
-using ZiggyCreatures.Caching.Fusion.Metrics.Core;
+using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
 using ZiggyCreatures.Caching.Fusion.Plugins;
+using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.EventCounters;
 
 namespace EventCountersPluginExampleDotNetCore
 {

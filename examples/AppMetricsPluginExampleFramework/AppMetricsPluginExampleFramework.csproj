@@ -566,13 +566,13 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugin\ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugins.csproj">
-      <Project>{ff1a8d3f-51e7-4a4f-ad6d-6d1eb0137279}</Project>
-      <Name>ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugins</Name>
+    <ProjectReference Include="..\..\src\FusionCache.Plugins.Metrics.AppMetrics\FusionCache.Plugins.Metrics.AppMetrics.csproj">
+      <Project>{907d1425-3c3d-4648-81e0-f9d9e25e9a27}</Project>
+      <Name>FusionCache.Plugins.Metrics.AppMetrics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj">
-      <Project>{0D0BBC8A-A6C4-4291-99C9-9EE1EB7EF46A}</Project>
-      <Name>ZiggyCreatures.FusionCache.Metrics.Core</Name>
+    <ProjectReference Include="..\..\src\FusionCache.Plugins.Metrics.Core\FusionCache.Plugins.Metrics.Core.csproj">
+      <Project>{0cfdc9d6-71d7-4da4-bbe5-e88fca20c0d5}</Project>
+      <Name>FusionCache.Plugins.Metrics.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj">
       <Project>{a8fa9c7a-83b7-47a6-bc06-ea3c5fcec092}</Project>

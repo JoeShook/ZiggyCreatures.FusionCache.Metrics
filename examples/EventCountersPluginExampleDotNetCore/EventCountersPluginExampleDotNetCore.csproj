@@ -16,8 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj" />
-    <ProjectReference Include="..\..\src\ZiggyCreatures.FusionCache.Metrics.EventCounters.Plugin\ZiggyCreatures.FusionCache.Metrics.EventCounters.Plugin.csproj" />
+    <ProjectReference Include="..\..\src\FusionCache.Plugins.Metrics.EventCounters\FusionCache.Plugins.Metrics.EventCounters.csproj" />
     <ProjectReference Include="..\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj" />
   </ItemGroup>
 

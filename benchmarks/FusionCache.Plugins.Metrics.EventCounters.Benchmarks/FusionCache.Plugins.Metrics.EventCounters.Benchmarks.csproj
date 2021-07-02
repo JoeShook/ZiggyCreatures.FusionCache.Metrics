@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>ZiggyCreatures.Fusion.Caching.Plugins.EventCounters.Benchmarks</RootNamespace>
+    <AssemblyName>ZiggyCreatures.Fusion.Caching.Plugins.EventCounters.Benchmarks</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FusionCache.Plugins.Metrics.EventCounters\FusionCache.Plugins.Metrics.EventCounters.csproj" />
+  </ItemGroup>
+
+</Project>

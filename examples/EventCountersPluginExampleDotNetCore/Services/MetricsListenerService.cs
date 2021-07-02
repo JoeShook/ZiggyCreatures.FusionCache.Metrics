@@ -8,7 +8,7 @@ using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
 using Microsoft.Extensions.Hosting;
-using ZiggyCreatures.Caching.Fusion.Metrics.Core;
+using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
 
 namespace EventCountersPluginExampleDotNetCore.Services
 {

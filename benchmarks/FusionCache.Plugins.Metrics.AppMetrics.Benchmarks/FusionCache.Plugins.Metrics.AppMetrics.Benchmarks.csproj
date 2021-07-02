@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>ZiggyCreatures.Fusion.Caching.Plugins.AppMetrics.Benchmarks</RootNamespace>
+    <AssemblyName>ZiggyCreatures.Fusion.Caching.Plugins.AppMetrics.Benchmarks</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="App.Metrics" Version="4.2.0" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FusionCache.Plugins.Metrics.AppMetrics\FusionCache.Plugins.Metrics.AppMetrics.csproj" />
+  </ItemGroup>
+
+</Project>

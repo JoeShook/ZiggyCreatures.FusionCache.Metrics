@@ -15,7 +15,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using ZiggyCreatures.Caching.Fusion;
-using ZiggyCreatures.Caching.Fusion.Metrics.AppMetrics.Plugins;
+using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics;
 
 namespace AppMetricsPluginExample
 {
