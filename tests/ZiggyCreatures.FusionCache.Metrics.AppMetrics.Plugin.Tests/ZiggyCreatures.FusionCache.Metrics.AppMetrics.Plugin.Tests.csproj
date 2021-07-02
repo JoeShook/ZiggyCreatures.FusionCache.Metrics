@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\JoeShook.FusionCache.AppMetrics.Plugin\ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj" />
+    <ProjectReference Include="..\..\src\ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugin\ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugins.csproj" />
   </ItemGroup>
 
 </Project>
