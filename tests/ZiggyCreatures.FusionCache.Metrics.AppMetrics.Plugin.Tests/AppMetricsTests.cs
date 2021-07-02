@@ -9,7 +9,7 @@ using App.Metrics.Formatters.Json;
 using Microsoft.Extensions.Caching.Memory;
 using Xunit;
 using Xunit.Abstractions;
-using ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins;
+using ZiggyCreatures.Caching.Fusion.Metrics.AppMetrics.Plugins;
 using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 
 namespace ZiggyCreatures.Caching.Fusion.Metrics.AppMetrics.Plugin.Tests

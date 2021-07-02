@@ -9,7 +9,7 @@ using Xunit;
 using Xunit.Abstractions;
 using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 
-namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin.Tests
+namespace ZiggyCreatures.Caching.Fusion.Metrics.EventCounters.Plugin.Tests
 {
     public class EventCountersTests
     {

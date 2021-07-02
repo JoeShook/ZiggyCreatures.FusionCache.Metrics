@@ -5,13 +5,13 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
 using System.Web.Http;
-using AppMetricsPluginExample2.Areas.HelpPage.SampleGeneration;
+using AppMetricsPluginExample.Areas.HelpPage.SampleGeneration;
 
 #if Handle_PageResultOfT
 using System.Web.Http.OData;
 #endif
 
-namespace AppMetricsPluginExample2.Areas.HelpPage.App_Start
+namespace AppMetricsPluginExample.Areas.HelpPage.App_Start
 {
     /// <summary>
     /// Use this class to customize the Help Page.

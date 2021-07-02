@@ -3,7 +3,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http.Description;
 
-namespace AppMetricsPluginExample2.Areas.HelpPage
+namespace AppMetricsPluginExample.Areas.HelpPage
 {
     public static class ApiDescriptionExtensions
     {

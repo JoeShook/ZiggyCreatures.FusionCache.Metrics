@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace AppMetricsPluginExample2.Areas.HelpPage.ModelDescriptions
+namespace AppMetricsPluginExample.Areas.HelpPage.ModelDescriptions
 {
     public class ComplexTypeModelDescription : ModelDescription
     {

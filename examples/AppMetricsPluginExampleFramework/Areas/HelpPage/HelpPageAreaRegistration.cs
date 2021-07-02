@@ -1,8 +1,8 @@
 using System.Web.Http;
 using System.Web.Mvc;
-using AppMetricsPluginExample2.Areas.HelpPage.App_Start;
+using AppMetricsPluginExample.Areas.HelpPage.App_Start;
 
-namespace AppMetricsPluginExample2.Areas.HelpPage
+namespace AppMetricsPluginExample.Areas.HelpPage
 {
     public class HelpPageAreaRegistration : AreaRegistration
     {

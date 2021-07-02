@@ -7,7 +7,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using ZiggyCreatures.Caching.Fusion;
-using ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins;
+using ZiggyCreatures.Caching.Fusion.Metrics.AppMetrics.Plugins;
 
 namespace ZiggyCreatures.FusionCaching.AppMetrics.Benchmarks
 {

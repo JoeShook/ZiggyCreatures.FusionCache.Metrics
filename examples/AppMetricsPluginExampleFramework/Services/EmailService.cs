@@ -1,9 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using FusionCache.Example.Domain.Model;
+﻿using FusionCache.Example.Domain.Model;
 using ZiggyCreatures.Caching.Fusion;
 
-namespace AppMetricsPluginExample2.Services
+namespace AppMetricsPluginExample.Services
 {
     public interface IEmailService
     {

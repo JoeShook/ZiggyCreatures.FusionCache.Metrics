@@ -2,7 +2,6 @@ using System;
 using System.Text.Json;
 using EventCountersPluginExampleDotNetCore.Services;
 using InfluxDB.Client;
-using JoeShook.FusionCache.EventCounters.Plugin;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Caching.Memory;
@@ -12,7 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ZiggyCreatures.Caching.Fusion;
-using ZiggyCreatures.Caching.Fusion.EventCounters.Plugin;
+using ZiggyCreatures.Caching.Fusion.Metrics.EventCounters.Plugin;
 using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 using ZiggyCreatures.Caching.Fusion.Plugins;
 

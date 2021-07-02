@@ -5,7 +5,7 @@ using ZiggyCreatures.Caching.Fusion.Events;
 using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 using ZiggyCreatures.Caching.Fusion.Plugins;
 
-namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
+namespace ZiggyCreatures.Caching.Fusion.Metrics.AppMetrics.Plugins
 {
     /// <summary>
     /// Implementation of AppMetrics for caching metrics. 

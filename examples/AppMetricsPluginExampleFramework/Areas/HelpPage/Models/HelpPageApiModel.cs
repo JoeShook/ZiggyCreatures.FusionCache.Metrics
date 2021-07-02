@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http.Headers;
 using System.Web.Http.Description;
-using AppMetricsPluginExample2.Areas.HelpPage.ModelDescriptions;
+using AppMetricsPluginExample.Areas.HelpPage.ModelDescriptions;
 
-namespace AppMetricsPluginExample2.Areas.HelpPage.Models
+namespace AppMetricsPluginExample.Areas.HelpPage.Models
 {
     /// <summary>
     /// The model that represents an API displayed on the help page.

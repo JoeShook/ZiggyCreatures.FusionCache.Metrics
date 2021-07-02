@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Net.Mail;
 using System.Threading;
 using System.Threading.Tasks;
-using AppMetricsPluginExample.Services;
+using AppMetricsPluginExampleFrameworkOnAspNetCore.Services;
 using FusionCache.Example.Domain.Model;
+using Microsoft.AspNetCore.Mvc;
 using ZiggyCreatures.Caching.Fusion;
 
-namespace AppMetricsPluginExample.Controllers
+namespace AppMetricsPluginExampleFrameworkOnAspNetCore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

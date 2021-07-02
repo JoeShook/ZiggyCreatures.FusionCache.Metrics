@@ -1,10 +1,10 @@
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using AppMetricsPluginExample2.Areas.HelpPage.ModelDescriptions;
-using AppMetricsPluginExample2.Areas.HelpPage.Models;
+using AppMetricsPluginExample.Areas.HelpPage.ModelDescriptions;
+using AppMetricsPluginExample.Areas.HelpPage.Models;
 
-namespace AppMetricsPluginExample2.Areas.HelpPage.Controllers
+namespace AppMetricsPluginExample.Areas.HelpPage.Controllers
 {
     /// <summary>
     /// The controller that will handle requests for the help page.

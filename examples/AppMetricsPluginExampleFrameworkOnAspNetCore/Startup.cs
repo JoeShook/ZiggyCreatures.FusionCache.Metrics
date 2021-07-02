@@ -1,28 +1,25 @@
 ﻿using System;
-using System.Configuration;
-using System.Text.Json;
 using System.Threading;
 using App.Metrics;
 using App.Metrics.Extensions.Hosting;
 using App.Metrics.Filtering;
 using App.Metrics.Formatters.InfluxDB;
-using AppMetricsPluginExample.Services;
+using AppMetricsPluginExampleFrameworkOnAspNetCore.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using ZiggyCreatures.Caching.Fusion;
-using ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins;
+using ZiggyCreatures.Caching.Fusion.Metrics.AppMetrics.Plugins;
 using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 
-namespace AppMetricsPluginExample
+namespace AppMetricsPluginExampleFrameworkOnAspNetCore
 {
     public class Startup
     {

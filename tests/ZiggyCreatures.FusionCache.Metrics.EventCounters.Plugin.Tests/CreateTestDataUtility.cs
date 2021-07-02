@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Xunit.Abstractions;
 
-namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin.Tests
+namespace ZiggyCreatures.Caching.Fusion.Metrics.EventCounters.Plugin.Tests
 {
 
     public class CreateTestDataUtility

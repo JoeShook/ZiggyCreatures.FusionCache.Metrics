@@ -1,6 +1,6 @@
 using System;
 
-namespace AppMetricsPluginExample2.Areas.HelpPage.ModelDescriptions
+namespace AppMetricsPluginExample.Areas.HelpPage.ModelDescriptions
 {
     /// <summary>
     /// Describes a type model.

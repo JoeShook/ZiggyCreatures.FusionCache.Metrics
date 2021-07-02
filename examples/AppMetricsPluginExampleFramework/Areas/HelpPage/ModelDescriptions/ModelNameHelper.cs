@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace AppMetricsPluginExample2.Areas.HelpPage.ModelDescriptions
+namespace AppMetricsPluginExample.Areas.HelpPage.ModelDescriptions
 {
     internal static class ModelNameHelper
     {

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using FusionCache.Example.Domain.Model;
 using ZiggyCreatures.Caching.Fusion;
 
-namespace AppMetricsPluginExample.Services
+namespace AppMetricsPluginExampleFrameworkOnAspNetCore.Services
 {
     public interface IEmailService
     {

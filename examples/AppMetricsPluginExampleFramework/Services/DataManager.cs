@@ -4,12 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web;
-using AppMetricsPluginExample;
 using FusionCache.Example.Domain.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace AppMetricsPluginExample2.Services
+namespace AppMetricsPluginExample.Services
 {
     public class DataManager
     {

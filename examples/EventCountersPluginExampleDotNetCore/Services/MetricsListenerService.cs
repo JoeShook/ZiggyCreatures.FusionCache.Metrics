@@ -4,14 +4,13 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using EventCountersPluginExampleDotNetCore.Services;
 using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
 using Microsoft.Extensions.Hosting;
 using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 
-namespace JoeShook.FusionCache.EventCounters.Plugin
+namespace EventCountersPluginExampleDotNetCore.Services
 {
     public class ConsoleMetricsListenter : MetricsListenerService
     {

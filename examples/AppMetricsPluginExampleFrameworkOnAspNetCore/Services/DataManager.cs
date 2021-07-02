@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using AppMetricsPluginExampleFrameworkOnAspNetCore;
 using FusionCache.Example.Domain.Model;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace AppMetricsPluginExample.Services
+namespace AppMetricsPluginExampleFrameworkOnAspNetCore.Services
 {
     public class DataManager
     {

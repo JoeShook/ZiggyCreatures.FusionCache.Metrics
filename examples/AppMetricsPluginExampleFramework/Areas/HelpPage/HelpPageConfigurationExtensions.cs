@@ -11,11 +11,11 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
-using AppMetricsPluginExample2.Areas.HelpPage.ModelDescriptions;
-using AppMetricsPluginExample2.Areas.HelpPage.Models;
-using AppMetricsPluginExample2.Areas.HelpPage.SampleGeneration;
+using AppMetricsPluginExample.Areas.HelpPage.ModelDescriptions;
+using AppMetricsPluginExample.Areas.HelpPage.Models;
+using AppMetricsPluginExample.Areas.HelpPage.SampleGeneration;
 
-namespace AppMetricsPluginExample2.Areas.HelpPage
+namespace AppMetricsPluginExample.Areas.HelpPage
 {
     public static class HelpPageConfigurationExtensions
     {

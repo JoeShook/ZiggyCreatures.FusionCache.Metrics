@@ -7,7 +7,7 @@ using App.Metrics;
 using App.Metrics.Extensions.Hosting;
 using App.Metrics.Filtering;
 using App.Metrics.Formatters.InfluxDB;
-using AppMetricsPluginExample2.Services;
+using AppMetricsPluginExample.Services;
 using Autofac;
 using Autofac.Integration.WebApi;
 using AutofacSerilogIntegration;
@@ -15,9 +15,9 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using ZiggyCreatures.Caching.Fusion;
-using ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins;
+using ZiggyCreatures.Caching.Fusion.Metrics.AppMetrics.Plugins;
 
-namespace AppMetricsPluginExample2.App_Start
+namespace AppMetricsPluginExample
 {
     public class AutofacWebapiConfig
     {

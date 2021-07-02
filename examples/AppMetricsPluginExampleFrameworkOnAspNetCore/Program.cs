@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 
-namespace AppMetricsPluginExample
+namespace AppMetricsPluginExampleFrameworkOnAspNetCore
 {
     public class Program
     {

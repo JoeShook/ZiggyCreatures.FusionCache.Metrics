@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Net.Mail;
 using System.Web.Http;
-using AppMetricsPluginExample2.Services;
+using AppMetricsPluginExample.Services;
 using FusionCache.Example.Domain.Model;
 using ZiggyCreatures.Caching.Fusion;
 
-namespace AppMetricsPluginExample2.Controllers
+namespace AppMetricsPluginExample.Controllers
 {
    
     public class EmailValidatorController : ApiController

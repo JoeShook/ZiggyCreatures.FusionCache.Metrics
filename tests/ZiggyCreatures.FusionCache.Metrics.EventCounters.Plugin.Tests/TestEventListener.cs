@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Threading;
 
-namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin.Tests
+namespace ZiggyCreatures.Caching.Fusion.Metrics.EventCounters.Plugin.Tests
 {
     internal class TestEventListener : EventListener
     {

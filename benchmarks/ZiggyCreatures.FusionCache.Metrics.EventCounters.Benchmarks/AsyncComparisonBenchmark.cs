@@ -8,7 +8,7 @@ using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using Microsoft.Extensions.Caching.Memory;
 using ZiggyCreatures.Caching.Fusion;
-using ZiggyCreatures.Caching.Fusion.EventCounters.Plugin;
+using ZiggyCreatures.Caching.Fusion.Metrics.EventCounters.Plugin;
 
 namespace ZiggyCreatures.FusionCaching.EventCounters.Benchmarks
 {

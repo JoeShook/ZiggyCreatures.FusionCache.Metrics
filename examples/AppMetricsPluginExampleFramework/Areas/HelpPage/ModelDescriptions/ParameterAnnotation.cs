@@ -1,6 +1,6 @@
 using System;
 
-namespace AppMetricsPluginExample2.Areas.HelpPage.ModelDescriptions
+namespace AppMetricsPluginExample.Areas.HelpPage.ModelDescriptions
 {
     public class ParameterAnnotation
     {

@@ -1,4 +1,4 @@
-namespace AppMetricsPluginExample2.Areas.HelpPage.SampleGeneration
+namespace AppMetricsPluginExample.Areas.HelpPage.SampleGeneration
 {
     /// <summary>
     /// Indicates whether the sample is used for request or response

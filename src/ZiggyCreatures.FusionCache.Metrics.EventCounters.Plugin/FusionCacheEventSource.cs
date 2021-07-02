@@ -6,7 +6,7 @@ using ZiggyCreatures.Caching.Fusion.Events;
 using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 using ZiggyCreatures.Caching.Fusion.Plugins;
 
-namespace ZiggyCreatures.Caching.Fusion.EventCounters.Plugin
+namespace ZiggyCreatures.Caching.Fusion.Metrics.EventCounters.Plugin
 {
     /// <summary>
     /// Generic FusionCacheEventSource.  

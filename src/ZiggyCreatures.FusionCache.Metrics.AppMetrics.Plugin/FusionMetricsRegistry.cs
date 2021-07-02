@@ -3,7 +3,7 @@ using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using ZiggyCreatures.Caching.Fusion.Metrics.Core;
 
-namespace ZiggyCreatures.Caching.Fusion.AppMetrics.Plugins
+namespace ZiggyCreatures.Caching.Fusion.Metrics.AppMetrics.Plugins
 {
     /// <summary>
     /// Define FusionCache metrics

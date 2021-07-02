@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 
-namespace AppMetricsPluginExample2.App_Start
+namespace AppMetricsPluginExample
 {
     public class Bootstrapper
     {
