@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\JoeShook.FusionCache.AppMetrics.Plugin\ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj" />
+    <ProjectReference Include="..\..\src\ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugin\ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugins.csproj" />
     <ProjectReference Include="..\..\src\ZiggyCreatures.FusionCache.Metrics.Core\ZiggyCreatures.FusionCache.Metrics.Core.csproj" />
     <ProjectReference Include="..\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj" />
   </ItemGroup>
