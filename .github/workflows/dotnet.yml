@@ -27,11 +27,11 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore ZiggyCache.FusionCache.Metrics.Core.sln
+      run: dotnet restore ZiggyCreatures.FusionCache.Metrics.Core.sln
     - name: Build
-      run: dotnet build ZiggyCache.FusionCache.Metrics.Core.sln --no-restore
+      run: dotnet build ZiggyCreatures.FusionCache.Metrics.Core.sln --no-restore
     - name: Test
-      run: dotnet test ZiggyCache.FusionCache.Metrics.Core.sln --no-build --verbosity normal -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
+      run: dotnet test ZiggyCreatures.FusionCache.Metrics.Core.sln --no-build --verbosity normal -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
     - name: Create Test Coverage Badge for FusionCache.EventCounters.Plugin
       uses: simon-k/dotnet-code-coverage-badge@v1.0.0
       id: create_coverage_badge_EventCounters
@@ -59,8 +59,8 @@ jobs:
     - name: Pack
       run: |
         dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCreatures.FusionCache.Metrics.Core/ZiggyCreatures.FusionCache.Metrics.Core.csproj
-        dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCache.FusionCache.Metrics.EventCounters.Plugin/ZiggyCreatures.FusionCache.EventCounters.Plugin.csproj
-        dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCache.FusionCache.Metrics.AppMetrics.Plugin/ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj
+        dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCreatures.FusionCache.Metrics.EventCounters.Plugin/ZiggyCreatures.FusionCache.EventCounters.Plugin.csproj
+        dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugin/ZiggyCreatures.FusionCache.AppMetrics.Plugins.csproj
     - name: Upload Artifact for Metrics.Core
       uses: actions/upload-artifact@v2
       with:
@@ -70,12 +70,12 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: nupkg
-        path: src/ZiggyCache.FusionCache.Metrics.EventCounters.Plugin/bin/Release/*.symbols.nupkg
+        path: src/ZiggyCreatures.FusionCache.Metrics.EventCounters.Plugin/bin/Release/*.symbols.nupkg
     - name: Upload Artifact for AppMetrics.Plugins
       uses: actions/upload-artifact@v2
       with:
         name: nupkg
-        path: src/ZiggyCache.FusionCache.Metrics.AppMetrics.Plugin/bin/Release/*.symbols.nupkg
+        path: src/ZiggyCreatures.FusionCache.Metrics.AppMetrics.Plugin/bin/Release/*.symbols.nupkg
   # see for inspiration::  https://dusted.codes/github-actions-for-dotnet-core-nuget-packages
   prerelease:
     needs: build
