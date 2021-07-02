@@ -10,7 +10,9 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=flat&logo=twitter)](https://twitter.com/intent/tweet?hashtags=fusioncache,caching,cache,dotnet,oss,csharp,eventsource,eventlistener,appmetrics&text=🚀+FusionCache.Metrics:+FusionCche+metric+plugins&url=https%3A%2F%2Fgithub.com%2Fjoeshook%2FZiggyCreatures.FusionCache.Metrics&via=josephshook)
+
   ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/JoeShook/141e4a826a0a2f46dad85ccf3213a894/raw/FusionCache.EventCounters.Plugin-code-coverage.json)
+  
   ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/JoeShook/59e2f3ef3dddc3f86e372c161ea501cc/raw/FusionCache.AppMetrics.Plugin-code-coverage.json)
 </div>
 
