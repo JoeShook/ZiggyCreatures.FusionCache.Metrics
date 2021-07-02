@@ -4,7 +4,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Threading;
 
-namespace ZiggyCreatures.FusionCaching.EventCounters.Benchmarks
+namespace ZiggyCreatures.Caching.Fusion.Metrics.EventCounters.Benchmarks
 {
     internal class TestEventListener : EventListener
     {

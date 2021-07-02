@@ -1,4 +1,4 @@
-﻿namespace ZiggyCreatures.FusionCaching.EventCounters.Benchmarks
+﻿namespace ZiggyCreatures.Caching.Fusion.Metrics.EventCounters.Benchmarks
 {
 	public class SamplePayload
 	{

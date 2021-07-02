@@ -10,7 +10,7 @@ using Microsoft.Extensions.Caching.Memory;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Metrics.EventCounters.Plugin;
 
-namespace ZiggyCreatures.FusionCaching.EventCounters.Benchmarks
+namespace ZiggyCreatures.Caching.Fusion.Metrics.EventCounters.Benchmarks
 {
     [MemoryDiagnoser]
     [Config(typeof(Config))]

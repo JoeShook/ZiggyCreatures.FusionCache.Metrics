@@ -9,7 +9,7 @@ using BenchmarkDotNet.Configs;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Metrics.AppMetrics.Plugins;
 
-namespace ZiggyCreatures.FusionCaching.AppMetrics.Benchmarks
+namespace ZiggyCreatures.Caching.Fusion.Metrics.AppMetrics.Plugin.Benchmarks
 {
     [MemoryDiagnoser]
     [Config(typeof(Config))]

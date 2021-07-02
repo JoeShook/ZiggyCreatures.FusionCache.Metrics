@@ -2,7 +2,7 @@
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
 
-namespace ZiggyCreatures.FusionCaching.EventCounters.Benchmarks
+namespace ZiggyCreatures.Caching.Fusion.Metrics.EventCounters.Benchmarks
 {
     class Program
     {
