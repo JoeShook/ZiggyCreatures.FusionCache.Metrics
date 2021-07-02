@@ -17,14 +17,14 @@ This naming convention of these projects, examples and packages are prefixed wit
 
 Currently two plugins and three example usages exist in the repository.  Read the docs in those areas to start using metrics in your projects.
 
-- [FusionCache.EventCounters](https://github.com/JoeShook/FusionCacheMetricsPlayground/tree/main/src/JoeShook.FusionCache.EventCounters.Plugin#fusioncacheeventcounters)
-- [FusionCache.AppMetrics](https://github.com/JoeShook/FusionCacheMetricsPlayground/blob/main/src/JoeShook.FusionCache.AppMetrics.Plugin/docs/README.md#fusioncacheappmetrics)
+- [FusionCache.EventCounters](./src/JoeShook.FusionCache.EventCounters.Plugin#fusioncacheeventcounters)
+- [FusionCache.AppMetrics](./src/JoeShook.FusionCache.AppMetrics.Plugin/docs/README.md#fusioncacheappmetrics)
 
 examples
 
-- [EventCountersPluginExampleDotNetCore](https://github.com/JoeShook/FusionCacheMetricsPlayground/tree/main/examples/EventCountersPluginExampleDotNetCore)
-- [AppMetricsPluginExampleFrameworkOnAspNetCore](https://github.com/JoeShook/FusionCacheMetricsPlayground/tree/main/examples/AppMetricsPluginExampleFrameworkOnAspNetCore)
-- [AppMetricsPluginExampleFramework](https://github.com/JoeShook/FusionCacheMetricsPlayground/tree/main/examples/AppMetricsPluginExampleFramework)
+- [EventCountersPluginExampleDotNetCore](./examples/EventCountersPluginExampleDotNetCore)
+- [AppMetricsPluginExampleFrameworkOnAspNetCore](./examples/AppMetricsPluginExampleFrameworkOnAspNetCore)
+- [AppMetricsPluginExampleFramework](./examples/AppMetricsPluginExampleFramework)
 
 ## Future plugins
 
