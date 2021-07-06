@@ -30,9 +30,22 @@ namespace AppMetricsPluginExampleFrameworkOnAspNetCore.Services
         public async Task<DomainCertData> GetDomain(string name, CancellationToken cancellationToken)
         {
             int number = RandomGenerator.Next();
+
+            if (number > 40 && number < 80) // cause some FACTORY_ERROR events.
+            {
+                throw new Exception("poof");
+            }
+
+            if (number > 1400 && number < 1460) // cause some STALE_REFRESH_ERROR events.
+            {
+                await Task.Delay(number, cancellationToken);
+                throw new Exception("poof");
+            }
+
+
             await Task.Delay(number, cancellationToken);
             // Console.WriteLine(number);
-            
+
             if (cancellationToken.IsCancellationRequested)
             {
                 return null;
@@ -44,13 +57,18 @@ namespace AppMetricsPluginExampleFrameworkOnAspNetCore.Services
         public async Task<EmailToIpData> GetEmailRoute(string name, CancellationToken cancellationToken)
         {
             int number = RandomGenerator.Next();
-            
-            if (number > 1400)
+
+            if (number > 40 && number < 80) // cause some FACTORY_ERROR events.
+            {
+                throw new Exception("poof");
+            }
+
+            if (number > 1400 && number < 1460) // cause some STALE_REFRESH_ERROR events.
             {
                 await Task.Delay(number, cancellationToken);
                 throw new Exception("poof");
             }
-            
+
             await Task.Delay(number, cancellationToken);
             // Console.WriteLine(number);
 

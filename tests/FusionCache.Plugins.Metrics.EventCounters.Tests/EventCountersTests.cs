@@ -480,11 +480,11 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
             using (var eventSource = new FusionCacheEventSource("testCacheName", memoryCache))
             using (var listener = new TestEventListener())
             using (var cache = new FusionCache(
-                new FusionCacheOptions() { EnableSyncEventHandlersExecution = true },
+                new FusionCacheOptions() {EnableSyncEventHandlersExecution = true},
                 memoryCache))
             {
                 const long AllKeywords = -1;
-                listener.EnableEvents(eventSource, EventLevel.Verbose, (EventKeywords)AllKeywords,
+                listener.EnableEvents(eventSource, EventLevel.Verbose, (EventKeywords) AllKeywords,
                     new Dictionary<string, string>
                     {
                         ["EventCounterIntervalSec"] = "1"
@@ -502,14 +502,18 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
 
                 for (int i = 0; i < 2000; i++)
                 {
-                    await cache.SetAsync<int>($"foo{i}", i, options => options.SetSize(1));
-                    
+                    await cache.SetAsync<int>($"foo{i}", i, options =>
+                    {
+                        options.SetSize(1);
+                        options.Priority = CacheItemPriority.High;
+                    });
+
                     if (i % 5 == 0) // slow it down but still go fast. :)
                     {
                         await Task.Delay(TimeSpan.FromMilliseconds(1));
                     }
                 }
-                
+
                 await cache.TryGetAsync<int>("foo10"); // wake up the sloth
                 // Let EventListener poll for data
                 await Task.Delay(1500);
@@ -521,7 +525,28 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
 
                 Assert.All(counts, c => Assert.True(c <= 100));
 
-                Assert.True( GetMetric(messages, SemanticConventions.Instance().CacheCapacityEvictTagValue) > 1899 );
+                Assert.True(GetMetric(messages, SemanticConventions.Instance().CacheCapacityEvictTagValue) > 1899);
+
+                //
+                // Ensure the newest items are in the cache.
+                // Can't assert perfection here.  The capacity behavior of MemoryCache is not perfect.
+                // One would expect the last 100 items to be in cache but typically I find about 95 items from the last 200 entered.
+                // Comment out the writeline to see for yourself.
+                //
+                for (int i = 1999; i > -1; i--)
+                {
+                    var item = await cache.TryGetAsync<int>($"foo{i}", token: CancellationToken.None);
+                    var value = item.GetValueOrDefault(3000);
+                    if (value != 3000)
+                    {
+                        //_testOutputHelper.WriteLine(value.ToString());
+                    }
+
+                    if (i > 1800)
+                    {
+                        //Assert.Equal(i, item.GetValueOrDefault(3000));
+                    } 
+                }
             }
         }
     }

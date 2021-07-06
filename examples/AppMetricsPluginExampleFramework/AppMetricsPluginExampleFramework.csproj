@@ -72,6 +72,9 @@
     <Reference Include="App.Metrics.Reporting.InfluxDB, Version=4.2.0.0, Culture=neutral, PublicKeyToken=0d5193a913d1b812, processorArchitecture=MSIL">
       <HintPath>..\..\packages\App.Metrics.Reporting.InfluxDB.4.2.0\lib\netstandard2.0\App.Metrics.Reporting.InfluxDB.dll</HintPath>
     </Reference>
+    <Reference Include="App.Metrics.Reporting.TextFile, Version=4.2.0.0, Culture=neutral, PublicKeyToken=0d5193a913d1b812, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\App.Metrics.Reporting.TextFile.4.2.0\lib\netstandard2.0\App.Metrics.Reporting.TextFile.dll</HintPath>
+    </Reference>
     <Reference Include="Autofac, Version=6.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Autofac.6.0.0\lib\netstandard2.0\Autofac.dll</HintPath>
     </Reference>

@@ -47,7 +47,7 @@ namespace EventCountersPluginExampleDotNetCore
             // Register FusionCacheEventSource as a IFusionCachePlugin.
             // Note that a MemoryCache object must be created outside of AddFusionCache extension method so that
             // FusionCacheEventSource is holding the same object as FusionCache to enabled cache count reporting.
-            // See line 180 in FusionCacheEventSource.cs
+            // See line 193 in FusionCacheEventSource.cs
             //
             services.AddSingleton<IMemoryCache>(hostNameCache);
             services.AddSingleton<IFusionCachePlugin>(new FusionCacheEventSource("domain", hostNameCache));

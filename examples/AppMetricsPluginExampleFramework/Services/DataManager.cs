@@ -32,16 +32,13 @@ namespace AppMetricsPluginExample.Services
         public DomainCertData GetDomain(string name)
         {
             int number = RandomGenerator.Next();
-            Thread.Sleep(number);
 
-            return domains.SingleOrDefault(d => d.Domain.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
+            if (number > 40 && number < 80) // cause some FACTORY_ERROR events.
+            {
+                throw new Exception("poof");
+            }
 
-        public EmailToIpData GetEmailRoute(string name)
-        {
-            int number = RandomGenerator.Next();
-
-            if (number > 1400)
+            if (number > 1400 && number < 1460) // cause some STALE_REFRESH_ERROR events.
             {
                 Thread.Sleep(number);
                 throw new Exception("poof");
@@ -49,6 +46,28 @@ namespace AppMetricsPluginExample.Services
 
 
             Thread.Sleep(number);
+            // Console.WriteLine(number);
+            
+            return domains.SingleOrDefault(d => d.Domain.Equals(name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public EmailToIpData GetEmailRoute(string name)
+        {
+            int number = RandomGenerator.Next();
+
+            if (number > 40 && number < 80) // cause some FACTORY_ERROR events.
+            {
+                throw new Exception("poof");
+            }
+
+            if (number > 1400 && number < 1460) // cause some STALE_REFRESH_ERROR events.
+            {
+                Thread.Sleep(number);
+                throw new Exception("poof");
+            }
+
+            Thread.Sleep(number);
+            // Console.WriteLine(number);
 
             return emailToIpDatas.SingleOrDefault(d => d.Email.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
