@@ -49,6 +49,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.Plugins.Metrics
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.Plugins.Metrics.EventCounters.Benchmarks", "benchmarks\FusionCache.Plugins.Metrics.EventCounters.Benchmarks\FusionCache.Plugins.Metrics.EventCounters.Benchmarks.csproj", "{5286DC47-E676-4819-9632-07071F229117}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppMetricsPluginExampleDotNetCore", "examples\AppMetricsPluginExampleDotNetCore\AppMetricsPluginExampleDotNetCore.csproj", "{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{5286DC47-E676-4819-9632-07071F229117}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5286DC47-E676-4819-9632-07071F229117}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5286DC47-E676-4819-9632-07071F229117}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,6 +123,7 @@ Global
 		{4725B8F3-B898-48AF-964E-F0AF239BF421} = {A8A86176-AAA6-4CB3-9172-16A841E32138}
 		{952FDB5B-29E8-41E9-A015-347A717148DB} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
 		{5286DC47-E676-4819-9632-07071F229117} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
+		{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32C4269F-FC33-47FA-91DA-2B6C5DF7D025}
