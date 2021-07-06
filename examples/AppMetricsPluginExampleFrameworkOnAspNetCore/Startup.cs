@@ -78,14 +78,14 @@ namespace AppMetricsPluginExampleFrameworkOnAspNetCore
                                         : $"{metricContext}_{metricName}".Replace(' ', '_')
                             });
                     })
-                .Report.ToTextFile(
-                    options => {
-                        options.MetricsOutputFormatter = new MetricsJsonOutputFormatter();
-                        options.AppendMetricsToTextFile = true;
-                        // options.Filter = filter;
-                        options.FlushInterval = TimeSpan.FromSeconds(20);
-                        options.OutputPathAndFileName = @"C:\temp\metrics.txt";
-                    })
+                // .Report.ToTextFile(
+                //     options => {
+                //         options.MetricsOutputFormatter = new MetricsJsonOutputFormatter();
+                //         options.AppendMetricsToTextFile = true;
+                //         // options.Filter = filter;
+                //         options.FlushInterval = TimeSpan.FromSeconds(20);
+                //         options.OutputPathAndFileName = @"C:\temp\metrics.txt";
+                //     })
                 .Build();
 
             //
