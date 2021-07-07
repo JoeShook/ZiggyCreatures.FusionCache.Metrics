@@ -48,14 +48,6 @@ namespace AppMetricsPluginExampleDotNetCore
             var emailCache = new MemoryCache(new MemoryCacheOptions());
             var hostNameCache = new MemoryCache(new MemoryCacheOptions());
 
-            // services.AddMvc()
-            //     .AddJsonOptions(options =>
-            //
-            //         options.SerializerSettings.ContractResolver
-            //                            = new DefaultContractResolver()
-            //     )
-            //     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
             var metricsConfig = new MetricsConfig();
             var appMetricsContextLabel = $"{metricsConfig.Prefix}_{metricsConfig.ApplicationName}";
             var filter = new MetricsFilter();
