@@ -14,60 +14,72 @@ Metrics are missing from open-source resiliency projects in the .NET ecosystem w
 ## Usage
 
 ```csharp
+
     var hostNameCache = new MemoryCache(new MemoryCacheOptions());
+    var appMetricsContextLabel = "MyApplication";
 
     var appMetrics = new MetricsBuilder()
-                .Configuration.Configure(
-                    options =>
-                    {
-                        options.DefaultContextLabel = appMetricsContextLabel;
-                    })
-                .Report
-                .ToInfluxDb(
-                    options =>
-                    {
-                        var filter = new MetricsFilter();
-                        filter.WhereContext(c => c == appMetricsContextLabel); //remove default AppMetrics metrics.
-                        options.InfluxDb.BaseUri = new Uri($"http://{ Configuration["InfluxDbConfig.Host"] }:{ Configuration["InfluxDbConfig.Port"] }");
-                        options.InfluxDb.Database = Configuration["InfluxDbConfig.Database"];
-                        options.InfluxDb.RetentionPolicy = Configuration["InfluxDbConfig.RetentionPolicy"];
-                        options.InfluxDb.UserName = Configuration["InfluxDbConfig.Username"];
-                        options.InfluxDb.Password = Configuration["InfluxDbConfig.Password"];
-                        options.InfluxDb.CreateDataBaseIfNotExists = false;
-                        options.MetricsOutputFormatter = new MetricsInfluxDbLineProtocolOutputFormatter(
-                            new MetricsInfluxDbLineProtocolOptions
-                            {
-                                MetricNameFormatter = (metricContext, metricName) =>
-                                    string.IsNullOrWhiteSpace(metricContext)
-                                        ? $"{metricName}".Replace(' ', '_')
-                                        : $"{metricContext}_{metricName}".Replace(' ', '_')
-                            });
-                    })
-                .Build();
-
-    services.AddSingleton<IFusionCache>(serviceProvider =>
+        .Configuration.Configure(
+            options =>
             {
-                var logger = serviceProvider.GetService<ILogger<ZiggyCreatures.Caching.Fusion.FusionCache>>();
-
-                var fusionCacheOptions = new FusionCacheOptions
-                {
-                    DefaultEntryOptions = new FusionCacheEntryOptions
-                        {
-                            Duration = TimeSpan.FromSeconds(5),
-                            JitterMaxDuration = TimeSpan.FromSeconds(20),
-                            FailSafeThrottleDuration = TimeSpan.FromMilliseconds(10)
-                        }
-                        .SetFailSafe(true, TimeSpan.FromSeconds(10))
-                        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(3))
-                };
-
-                // Future Plugin for hooking metrics ???
-                var metrics = new AppMetricsProvider("domain", appMetrics, hostNameCache);
-                var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, hostNameCache, logger);
-                metrics.Wireup(fusionCache, fusionCacheOptions);
-
-                return fusionCache;
+                options.DefaultContextLabel = appMetricsContextLabel;
+            })
+        .Report
+        .ToInfluxDb(
+            options =>
+            {
+                var filter = new MetricsFilter();
+                filter.WhereContext(c => c == appMetricsContextLabel); //remove default AppMetrics metrics.
+                options.InfluxDb.BaseUri = new Uri($"http://{ Configuration["InfluxDbConfig.Host"] }:{ Configuration["InfluxDbConfig.Port"] }");
+                options.InfluxDb.Database = Configuration["InfluxDbConfig.Database"];
+                options.InfluxDb.RetentionPolicy = Configuration["InfluxDbConfig.RetentionPolicy"];
+                options.InfluxDb.UserName = Configuration["InfluxDbConfig.Username"];
+                options.InfluxDb.Password = Configuration["InfluxDbConfig.Password"];
+                options.InfluxDb.CreateDataBaseIfNotExists = false;
+                options.MetricsOutputFormatter = new MetricsInfluxDbLineProtocolOutputFormatter(
+                    new MetricsInfluxDbLineProtocolOptions
+                    {
+                        MetricNameFormatter = (metricContext, metricName) =>
+                            string.IsNullOrWhiteSpace(metricContext)
+                                ? $"{metricName}".Replace(' ', '_')
+                                : $"{metricContext}_{metricName}".Replace(' ', '_')
+                    });
+            })
+        // .Report.ToTextFile(
+        //     options => {
+        //         options.MetricsOutputFormatter = new MetricsJsonOutputFormatter();
+        //         options.AppendMetricsToTextFile = true;
+        //         // options.Filter = filter;
+        //         options.FlushInterval = TimeSpan.FromSeconds(20);
+        //         options.OutputPathAndFileName = @"C:\temp\metrics.txt";
+        //     })
+        .Build();
+        
+        //
+        // Cache called "domain"
+        //
+        // Register AppMetricsProvider as a IFusionCachePlugin.
+        // Note that a MemoryCache object must be created outside of AddFusionCache extension method so that
+        // AppMetricsProvider is holding the same object as FusionCache to enabled cache count reporting.
+        // See line 180 in FusionCacheEventSource.cs
+        //
+        services.AddSingleton<IMemoryCache>(hostNameCache);
+        services.AddSingleton<IFusionCachePlugin>(new AppMetricsProvider("domain", appMetrics, hostNameCache));
+        services.AddFusionCache(options =>
+            options.DefaultEntryOptions = new FusionCacheEntryOptions
+            {
+                Duration = TimeSpan.FromSeconds(1),
+                JitterMaxDuration = TimeSpan.FromMilliseconds(200),
+                IsFailSafeEnabled = true,
+                FailSafeMaxDuration = TimeSpan.FromHours(1),
+                FailSafeThrottleDuration = TimeSpan.FromSeconds(1),
+                FactorySoftTimeout = TimeSpan.FromMilliseconds(100), 
+                FactoryHardTimeout = TimeSpan.FromSeconds(1)
             });
+                
+        var metricsReporterService = new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters);
+        metricsReporterService.StartAsync(CancellationToken.None);
+        services.AddSingleton(sp => metricsReporterService );
 ```
 
 AppMetrics Plugin is an easy to use solution for .NET Framework apps.  If you already use [AppMetrics](https://github.com/AppMetrics/AppMetrics) then this would be an easy way to go.  
