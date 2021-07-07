@@ -26,7 +26,7 @@ This naming convention of these projects, examples and packages are prefixed wit
 Currently two plugins and three example usages exist in the repository.  Read the docs in those areas to start using metrics in your projects.
 
 - [FusionCache.EventCounters](./src/FusionCache.Plugins.Metrics.EventCounters)
-- [FusionCache.AppMetrics](./src/ZiggyCreatures.Plugins.Metrics.AppMetrics)
+- [FusionCache.AppMetrics](./src/FusionCache.Plugins.Metrics.AppMetrics)
 
 examples
 
