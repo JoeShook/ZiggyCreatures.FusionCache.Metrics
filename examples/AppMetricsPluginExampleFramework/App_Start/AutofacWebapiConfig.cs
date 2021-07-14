@@ -73,10 +73,7 @@ namespace AppMetricsPluginExample
                         options.MetricsOutputFormatter = new MetricsInfluxDbLineProtocolOutputFormatter(
                             new MetricsInfluxDbLineProtocolOptions
                             {
-                                MetricNameFormatter = (metricContext, metricName) =>
-                                    string.IsNullOrWhiteSpace(metricContext)
-                                        ? $"{metricName}".Replace(' ', '_')
-                                        : $"{metricContext}_{metricName}".Replace(' ', '_')
+                                MetricNameFormatter = (metricContext, metricName) => $"{appMetricsContextLabel}_{metricContext}"
                             });
                     })
                 // .Report.ToTextFile(

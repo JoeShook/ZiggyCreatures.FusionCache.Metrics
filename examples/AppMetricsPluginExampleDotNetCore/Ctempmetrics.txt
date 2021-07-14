@@ -1,0 +1,458 @@
+{
+  "contexts": [
+    {
+      "apdexScores": [
+        {
+          "frustrating": 0,
+          "sampleSize": 0,
+          "satisfied": 0,
+          "score": 1,
+          "tolerating": 0,
+          "name": "Apdex|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          }
+        }
+      ],
+      "context": "Application.HttpRequests",
+      "counters": [],
+      "gauges": [],
+      "histograms": [],
+      "bucketHistograms": [],
+      "meters": [],
+      "timers": [
+        {
+          "activeSessions": 0,
+          "count": 0,
+          "durationUnit": "ms",
+          "histogram": {
+            "lastValue": 0,
+            "max": 0,
+            "mean": 0,
+            "median": 0,
+            "min": 0,
+            "percentile75": 0,
+            "percentile95": 0,
+            "percentile98": 0,
+            "percentile99": 0,
+            "percentile999": 0,
+            "sampleSize": 0,
+            "stdDev": 0,
+            "sum": 0
+          },
+          "rate": {
+            "fifteenMinuteRate": 0,
+            "fiveMinuteRate": 0,
+            "meanRate": 0,
+            "oneMinuteRate": 0
+          },
+          "rateUnit": "min",
+          "name": "Transactions|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "req"
+        }
+      ],
+      "bucketTimers": []
+    },
+    {
+      "apdexScores": [],
+      "context": "Dotnet.Gc",
+      "counters": [],
+      "gauges": [
+        {
+          "value": 0,
+          "name": "Gen 0 Collections|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "event"
+        },
+        {
+          "value": 0,
+          "name": "Gen 1 Collections|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "event"
+        },
+        {
+          "value": 0,
+          "name": "Gen 2 Collections|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "event"
+        },
+        {
+          "value": 5156904,
+          "name": "Live Objects Size|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        }
+      ],
+      "histograms": [],
+      "bucketHistograms": [],
+      "meters": [],
+      "timers": [],
+      "bucketTimers": []
+    },
+    {
+      "apdexScores": [],
+      "context": "System",
+      "counters": [],
+      "gauges": [
+        {
+          "value": 102723584,
+          "name": "Memory Working Set|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        },
+        {
+          "value": 0,
+          "name": "Non Paged System Memory|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        },
+        {
+          "value": 0,
+          "name": "Paged Memory|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        },
+        {
+          "value": 0,
+          "name": "Paged System Memory|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        },
+        {
+          "value": 233037824,
+          "name": "Private Memory|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        },
+        {
+          "value": 0.17525503375394424,
+          "name": "Privileged CPU Percentage Used|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "percent"
+        },
+        {
+          "value": 0.6352994973580479,
+          "name": "Total CPU Percentage Used|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "percent"
+        },
+        {
+          "value": 0.46004446360410367,
+          "name": "User CPU Percentage Used|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "percent"
+        },
+        {
+          "value": 30371971072,
+          "name": "Virtual Memory|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        }
+      ],
+      "histograms": [],
+      "bucketHistograms": [],
+      "meters": [],
+      "timers": [],
+      "bucketTimers": []
+    },
+    {
+      "apdexScores": [],
+      "context": "appMetrics_AppMetricsPluginExampleDotNetCore",
+      "counters": [],
+      "gauges": [],
+      "histograms": [],
+      "bucketHistograms": [],
+      "meters": [],
+      "timers": [],
+      "bucketTimers": []
+    },
+    {
+      "apdexScores": [],
+      "context": "appmetrics.internal",
+      "counters": [
+        {
+          "count": 1,
+          "items": [
+            {
+              "count": 1,
+              "item": "App.Metrics.Reporting.InfluxDB.InfluxDbMetricsReporter",
+              "percent": 100
+            }
+          ],
+          "name": "report_success|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "items"
+        }
+      ],
+      "gauges": [],
+      "histograms": [],
+      "bucketHistograms": [],
+      "meters": [],
+      "timers": [],
+      "bucketTimers": []
+    }
+  ],
+  "timestamp": "2021-07-08T06:03:52.1162695Z"
+}{
+  "contexts": [
+    {
+      "apdexScores": [
+        {
+          "frustrating": 0,
+          "sampleSize": 0,
+          "satisfied": 0,
+          "score": 1,
+          "tolerating": 0,
+          "name": "Apdex|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          }
+        }
+      ],
+      "context": "Application.HttpRequests",
+      "counters": [],
+      "gauges": [],
+      "histograms": [],
+      "bucketHistograms": [],
+      "meters": [],
+      "timers": [
+        {
+          "activeSessions": 0,
+          "count": 0,
+          "durationUnit": "ms",
+          "histogram": {
+            "lastValue": 0,
+            "max": 0,
+            "mean": 0,
+            "median": 0,
+            "min": 0,
+            "percentile75": 0,
+            "percentile95": 0,
+            "percentile98": 0,
+            "percentile99": 0,
+            "percentile999": 0,
+            "sampleSize": 0,
+            "stdDev": 0,
+            "sum": 0
+          },
+          "rate": {
+            "fifteenMinuteRate": 0,
+            "fiveMinuteRate": 0,
+            "meanRate": 0,
+            "oneMinuteRate": 0
+          },
+          "rateUnit": "min",
+          "name": "Transactions|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "req"
+        }
+      ],
+      "bucketTimers": []
+    },
+    {
+      "apdexScores": [],
+      "context": "Dotnet.Gc",
+      "counters": [],
+      "gauges": [
+        {
+          "value": 0,
+          "name": "Gen 0 Collections|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "event"
+        },
+        {
+          "value": 0,
+          "name": "Gen 1 Collections|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "event"
+        },
+        {
+          "value": 0,
+          "name": "Gen 2 Collections|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "event"
+        },
+        {
+          "value": 8871392,
+          "name": "Live Objects Size|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        }
+      ],
+      "histograms": [],
+      "bucketHistograms": [],
+      "meters": [],
+      "timers": [],
+      "bucketTimers": []
+    },
+    {
+      "apdexScores": [],
+      "context": "System",
+      "counters": [],
+      "gauges": [
+        {
+          "value": 122961920,
+          "name": "Memory Working Set|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        },
+        {
+          "value": 0,
+          "name": "Non Paged System Memory|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        },
+        {
+          "value": 0,
+          "name": "Paged Memory|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        },
+        {
+          "value": 0,
+          "name": "Paged System Memory|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        },
+        {
+          "value": 331771904,
+          "name": "Private Memory|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        },
+        {
+          "value": 0.012490035574519005,
+          "name": "Privileged CPU Percentage Used|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "percent"
+        },
+        {
+          "value": 0.037470106723557016,
+          "name": "Total CPU Percentage Used|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "percent"
+        },
+        {
+          "value": 0.02498007114903801,
+          "name": "User CPU Percentage Used|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "percent"
+        },
+        {
+          "value": 31127715840,
+          "name": "Virtual Memory|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "B"
+        }
+      ],
+      "histograms": [],
+      "bucketHistograms": [],
+      "meters": [],
+      "timers": [],
+      "bucketTimers": []
+    },
+    {
+      "apdexScores": [],
+      "context": "appMetrics_AppMetricsPluginExampleDotNetCore",
+      "counters": [],
+      "gauges": [],
+      "histograms": [],
+      "bucketHistograms": [],
+      "meters": [],
+      "timers": [],
+      "bucketTimers": []
+    },
+    {
+      "apdexScores": [],
+      "context": "appmetrics.internal",
+      "counters": [
+        {
+          "count": 1,
+          "items": [
+            {
+              "count": 0,
+              "item": "App.Metrics.Reporting.TextFile.TextFileMetricsReporter",
+              "percent": 0
+            },
+            {
+              "count": 1,
+              "item": "App.Metrics.Reporting.InfluxDB.InfluxDbMetricsReporter",
+              "percent": 100
+            }
+          ],
+          "name": "report_success|app_name:AppMetricsPluginExampleDotNetCore",
+          "tags": {
+            "app_name": "AppMetricsPluginExampleDotNetCore"
+          },
+          "unit": "items"
+        }
+      ],
+      "gauges": [],
+      "histograms": [],
+      "bucketHistograms": [],
+      "meters": [],
+      "timers": [],
+      "bucketTimers": []
+    }
+  ],
+  "timestamp": "2021-07-08T06:04:12.549953Z"
+}

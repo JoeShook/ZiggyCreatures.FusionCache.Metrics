@@ -5,7 +5,8 @@
     <RootNamespace>ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core</RootNamespace>
     <Authors>Joe Shook</Authors>
     <Product>FusionCache EventSource Metrics</Product>
-    <PackageId>ZiggyCreatures.FusionCache.Metrics.Core</PackageId>
+    <PackageId>ZiggyCreatures.FusionCache.Plugins.Metrics.Core</PackageId>
+    <Version>0.1.0-PreRelease003</Version>
     <Copyright>Copyright © Jody Donetti and Joe Shook 2021</Copyright>
     <PackageIcon>logo-128x128.png</PackageIcon>
     <Description>EventSource metrics provider implementation.</Description>

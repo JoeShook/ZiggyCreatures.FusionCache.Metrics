@@ -9,7 +9,7 @@
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "EventCountersPluginExampleDotNetCore": {
+    "AppMetricsPluginExampleDotNetCore": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "EmailValidator/EmailRoute/umceniry1@stumbleupon.com",

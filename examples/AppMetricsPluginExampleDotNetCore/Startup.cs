@@ -2,11 +2,13 @@ using System;
 using System.Text.Json;
 using App.Metrics;
 using App.Metrics.Filtering;
+using App.Metrics.Formatters;
 using App.Metrics.Formatters.InfluxDB;
 using App.Metrics.Formatters.Json;
 using AppMetricsPluginExampleDotNetCore.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,71 +34,24 @@ namespace AppMetricsPluginExampleDotNetCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddJsonOptions(options =>
+            var mvcBuilder = services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                 options.JsonSerializerOptions.WriteIndented = true;
             });
-            
+               
+
             services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EventCountersPluginExampleDotNetCore", Version = "v1" });
-            });
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "AppMetricsPluginExampleDotNetCore", Version = "v1" });
+                });
 
             services.AddSingleton(new DataManager());
 
             var emailCache = new MemoryCache(new MemoryCacheOptions());
             var hostNameCache = new MemoryCache(new MemoryCacheOptions());
 
-            var metricsConfig = new MetricsConfig();
-            var appMetricsContextLabel = $"{metricsConfig.Prefix}_{metricsConfig.ApplicationName}";
-            var filter = new MetricsFilter();
-            filter.WhereContext(c => 
-                c == appMetricsContextLabel); //remove default AppMetrics metrics.
-
-            var appMetrics = new MetricsBuilder()
-                .Configuration.Configure(
-                    options =>
-                    {
-                        options.DefaultContextLabel = appMetricsContextLabel;
-                        options.WithGlobalTags(
-                            (globalTags, envInfo) =>
-                            {
-                                // globalTags.Add("machine_name", envInfo.MachineName);
-                                globalTags.Add("app_name", envInfo.EntryAssemblyName);
-                                // globalTags.Add("app_version", envInfo.EntryAssemblyVersion);
-                            });
-                    })
-                .Report
-                .ToInfluxDb(
-                    options =>
-                    {
-                        // options.Filter = filter;
-                        options.InfluxDb.BaseUri = new Uri($"http://{ Configuration["InfluxDbConfig.Host"] }:{ Configuration["InfluxDbConfig.Port"] }");
-                        options.InfluxDb.Database = Configuration["InfluxDbConfig.Database"];
-                        options.InfluxDb.RetentionPolicy = Configuration["InfluxDbConfig.RetentionPolicy"];
-                        options.InfluxDb.UserName = Configuration["InfluxDbConfig.Username"];
-                        options.InfluxDb.Password = Configuration["InfluxDbConfig.Password"];
-                        options.InfluxDb.CreateDataBaseIfNotExists = false;
-                        options.MetricsOutputFormatter = new MetricsInfluxDbLineProtocolOutputFormatter(
-                            new MetricsInfluxDbLineProtocolOptions
-                            {
-                                MetricNameFormatter = (metricContext, metricName) =>
-                                    string.IsNullOrWhiteSpace(metricContext)
-                                        ? $"{metricName}".Replace(' ', '_')
-                                        : $"{metricContext}_{metricName}".Replace(' ', '_')
-                            });
-                    })
-                .Report.ToTextFile(
-                    options => {
-                        options.MetricsOutputFormatter = new MetricsJsonOutputFormatter();
-                        options.AppendMetricsToTextFile = true;
-                        // options.Filter = filter;
-                        options.FlushInterval = TimeSpan.FromSeconds(20);
-                        options.OutputPathAndFileName = @"C:\temp\metrics.txt";
-                    });
-
-            services.AddMetrics(appMetrics);
+            ConfigureAppMetrics(services,  mvcBuilder);
 
             //
             // Cache called "domain"
@@ -162,6 +117,62 @@ namespace AppMetricsPluginExampleDotNetCore
             services.AddMetricsReportingHostedService();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="mvcBuilder">Get from services.AddControllers()</param>
+        private void ConfigureAppMetrics(IServiceCollection services, IMvcBuilder mvcBuilder)
+        {
+            mvcBuilder.AddMetrics();
+
+            var metricsConfig = new MetricsConfig();
+            var appMetricsContextLabel = $"{metricsConfig.Prefix}_{metricsConfig.ApplicationName}";
+            var filter = new MetricsFilter();
+            filter.WhereContext(c =>
+                c != "appmetrics.internal"); //remove default AppMetrics metrics.
+
+            var appMetrics = new MetricsBuilder()
+                .OutputMetrics.AsJson()
+                .OutputMetrics.AsPlainText()
+                .Configuration.Configure(
+                    options =>
+                    {
+                        options.DefaultContextLabel = appMetricsContextLabel;
+                    })
+                .Report
+                .ToInfluxDb(
+                    options =>
+                    {
+                        options.Filter = filter;
+                        options.InfluxDb.BaseUri =
+                            new Uri($"http://{Configuration["InfluxDbConfig.Host"]}:{Configuration["InfluxDbConfig.Port"]}");
+                        options.InfluxDb.Database = Configuration["InfluxDbConfig.Database"];
+                        options.InfluxDb.RetentionPolicy = Configuration["InfluxDbConfig.RetentionPolicy"];
+                        options.InfluxDb.UserName = Configuration["InfluxDbConfig.Username"];
+                        options.InfluxDb.Password = Configuration["InfluxDbConfig.Password"];
+                        options.InfluxDb.CreateDataBaseIfNotExists = false;
+                        options.MetricsOutputFormatter = new MetricsInfluxDbLineProtocolOutputFormatter(
+                            new MetricsInfluxDbLineProtocolOptions
+                            {
+                                MetricNameFormatter = (metricContext, metricName) => $"{appMetricsContextLabel}_{metricContext}"
+                            });
+                    })
+                // .Report.ToTextFile(
+                //     options => {
+                //         options.MetricsOutputFormatter = new MetricsJsonOutputFormatter();
+                //         options.AppendMetricsToTextFile = true;
+                //         // options.Filter = filter;
+                //         options.FlushInterval = TimeSpan.FromSeconds(20);
+                //         options.OutputPathAndFileName = @"C:\temp\metrics.txt";
+                //     })
+                .Build();
+
+            services.AddMetrics(appMetrics)
+                .AddMetricsTrackingMiddleware()
+                .AddMetricsEndpoints();
+        }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -169,17 +180,25 @@ namespace AppMetricsPluginExampleDotNetCore
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EtwPluginExampleDotNetCore v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AppMetricsPluginExampleDotNetCore v1"));
             }
+
+            app.UseMetricsAllMiddleware();
+
+            // Or to cherry-pick the tracking of interest
+            // app.UseMetricsActiveRequestMiddleware();
+            // app.UseMetricsErrorTrackingMiddleware();
+            // app.UseMetricsPostAndPutSizeTrackingMiddleware();
+            // app.UseMetricsRequestTrackingMiddleware();
+            // app.UseMetricsOAuth2TrackingMiddleware();
+            // app.UseMetricsApdexTrackingMiddleware();
 
             app.UseRouting();
 
             // app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseMetricsAllEndpoints();
         }
     }
 }

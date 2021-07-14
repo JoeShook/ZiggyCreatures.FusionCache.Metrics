@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using EventCountersPluginExampleDotNetCore.Services;
+using Grpc.Core;
 using InfluxDB.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +10,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Resources;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
 using ZiggyCreatures.Caching.Fusion.Plugins;
@@ -127,6 +132,38 @@ namespace EventCountersPluginExampleDotNetCore
 
                     break;
 
+                case "otlp":
+                    // Adding the OtlpExporter creates a GrpcChannel.
+                    // This switch must be set before creating a GrpcChannel/HttpClient when calling an insecure gRPC service.
+                    // See: https://docs.microsoft.com/aspnet/core/grpc/troubleshoot#call-insecure-grpc-services-with-net-core-client
+                    AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+                    services.AddOpenTelemetryTracing((builder) => builder
+                        .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(this.Configuration.GetValue<string>("OtelCollector:ServiceName")))
+                        .AddAspNetCoreInstrumentation()
+                        // .AddHttpClientInstrumentation()
+                        .AddOtlpExporter(otlpOptions =>
+                        {
+                            otlpOptions.Endpoint = new Uri(this.Configuration.GetValue<string>("OtelCollector:Endpoint"));
+                        }));
+                    break;
+
+                case "lightstep":
+                    //
+                    // Open new free LightStep account and this logs ASP.NET Core requests.
+                    // Still need to write a OTEL plugin for FusionCache to make this more interesting.
+                    //
+                    services.AddOpenTelemetryTracing((builder) => builder
+                        .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(this.Configuration.GetValue<string>("LightStep.ServiceName")))
+                        .AddAspNetCoreInstrumentation()
+                        // .AddHttpClientInstrumentation()
+                        .AddOtlpExporter(otlpOptions =>
+                        {
+                            otlpOptions.Endpoint = new Uri("https://ingest.lightstep.com:443");
+                            otlpOptions.Headers = $"lightstep-access-token={Configuration["LightStep.AccessToken"]}";
+                        }));
+                    break;
+
                 default:
                     services.AddSingleton(sp =>
                         InfluxDBClientFactory.Create(
@@ -136,9 +173,6 @@ namespace EventCountersPluginExampleDotNetCore
 
                     break;
             }
-
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -148,7 +182,7 @@ namespace EventCountersPluginExampleDotNetCore
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EtwPluginExampleDotNetCore v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EventCountersPluginExampleDotNetCore v1"));
             }
 
             app.UseRouting();
