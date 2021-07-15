@@ -1,6 +1,8 @@
 using System;
 using System.Text.Json;
 using App.Metrics;
+using App.Metrics.Extensions.Collectors.MetricsRegistries;
+using App.Metrics.Extensions.HealthChecks;
 using App.Metrics.Filtering;
 using App.Metrics.Formatters.InfluxDB;
 using AppMetricsPluginExampleDotNetCore.Services;
@@ -153,7 +155,12 @@ namespace AppMetricsPluginExampleDotNetCore
                         options.MetricsOutputFormatter = new MetricsInfluxDbLineProtocolOutputFormatter(
                             new MetricsInfluxDbLineProtocolOptions
                             {
-                                MetricNameFormatter = (metricContext, metricName) => $"{appMetricsContextLabel}_{metricContext}"
+                                MetricNameFormatter = (metricContext, metricName) =>
+                                    metricContext == SystemUsageMetricsRegistry.ContextName ||
+                                        metricContext == GcMetricsRegistry.ContextName ||
+                                        metricContext == "Application.HttpRequests" ?
+                                        $"{appMetricsContextLabel}_{metricContext}.{metricName}" : //  AppMetrics namespace convention
+                                        $"{appMetricsContextLabel}_{metricContext}"  // FusionCache namespace convention
                             });
                     })
                 // .Report.ToTextFile(
