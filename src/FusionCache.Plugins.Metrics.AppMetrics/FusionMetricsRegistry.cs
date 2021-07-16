@@ -141,7 +141,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         {
             Context = GaugeName,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheItemCountTagValue),
-            ResetOnReporting = true,
+            ResetOnReporting = false,
         };
     }
 }

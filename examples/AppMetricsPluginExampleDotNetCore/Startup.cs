@@ -159,8 +159,10 @@ namespace AppMetricsPluginExampleDotNetCore
                                     metricContext == SystemUsageMetricsRegistry.ContextName ||
                                         metricContext == GcMetricsRegistry.ContextName ||
                                         metricContext == "Application.HttpRequests" ?
-                                        $"{appMetricsContextLabel}_{metricContext}.{metricName}" : //  AppMetrics namespace convention
-                                        $"{appMetricsContextLabel}_{metricContext}"  // FusionCache namespace convention
+                                        $"{appMetricsContextLabel}_{metricContext}.{metricName}"
+                                            .Replace(' ', '_').Replace('.', '_') : //  AppMetrics namespace convention
+                                        $"{appMetricsContextLabel}_{metricContext}"
+                                            .Replace(' ', '_').Replace('.', '_')// FusionCache namespace convention
                             });
                     })
                 // .Report.ToTextFile(
