@@ -1,3 +1,9 @@
+<div align="center">
+
+![FusionCache logo](../../../artwork/logo-plugin-128x128.png)
+
+</div>
+
 # Example usage of FusionCache.EventCounters.Plugin
 
 <div align="center">

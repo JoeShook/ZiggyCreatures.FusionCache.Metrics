@@ -1,0 +1,23 @@
+on:
+  push:
+    tags:
+    - "v[0-9]+.[0-9]+.[0-9]+-preview[0-9][0-9][0-9]"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set VERSION variable from tag
+      run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+    - name: Pack
+      run: |
+        dotnet pack -v normal -c Release -p:PackageVersion=${VERSION} src/FusionCache.Plugins.Metrics.Core/FusionCache.Plugins.Metrics.Core.csproj --output .
+        dotnet pack -v normal -c Release -p:PackageVersion=${VERSION} src/FusionCache.Plugins.Metrics.EventCounters/FusionCache.Plugins.Metrics.EventCounters.csproj --output .
+        dotnet pack -v normal -c Release -p:PackageVersion=${VERSION} src/FusionCache.Plugins.Metrics.AppMetrics/FusionCache.Plugins.Metrics.AppMetrics.csproj --output .
+    - name: Push
+      run: |
+        dotnet nuget push JoeShook.ZiggyCreatures.FusionCache.Metrics.Core.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+        dotnet nuget push JoeShook.ZiggyCreatures.FusionCache.Metrics.EventCounters.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+        dotnet nuget push JoeShook.ZiggyCreatures.FusionCache.Metrics.AppMetrics.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}

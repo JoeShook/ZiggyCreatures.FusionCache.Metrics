@@ -7,7 +7,6 @@ using App.Metrics;
 using App.Metrics.Extensions.Hosting;
 using App.Metrics.Filtering;
 using App.Metrics.Formatters.InfluxDB;
-using App.Metrics.Formatters.Json;
 using AppMetricsPluginExample.Services;
 using Autofac;
 using Autofac.Integration.WebApi;

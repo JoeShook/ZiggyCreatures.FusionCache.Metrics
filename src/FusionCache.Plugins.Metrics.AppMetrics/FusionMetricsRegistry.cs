@@ -11,8 +11,8 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
     public class FusionMetricsRegistry
     {
         // In time series database the MetricsOptions.DefaultContextLabel will be prefixed to the MeasurementName
-        private static string MeasurementName = "cache-events";
-        private static string GaugeName = "cache-gauges";
+        public static readonly string MeasurementName = "Cache-Events";
+        public static readonly string GaugeName = "Cache-Gauges";
 
         /// <summary>
         /// Cache hit counter
@@ -20,7 +20,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         public static CounterOptions CacheHitCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Context = MeasurementName,
+            Name = conventions.CacheHitTagValue,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheHitTagValue),
+            MeasurementUnit = Unit.Events,
             ResetOnReporting = true
         };
 
@@ -30,7 +32,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         public static CounterOptions CacheMissCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Context = MeasurementName,
+            Name = conventions.CacheMissTagValue,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheMissTagValue),
+            MeasurementUnit = Unit.Events,
             ResetOnReporting = true
         };
 
@@ -40,7 +44,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         public static CounterOptions CacheSetCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Context = MeasurementName,
+            Name = conventions.CacheSetTagValue,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheSetTagValue),
+            MeasurementUnit = Unit.Events,
             ResetOnReporting = true
         };
 
@@ -50,7 +56,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         public static CounterOptions CacheStaleHitCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Context = MeasurementName,
+            Name = conventions.CacheStaleHitTagValue,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheStaleHitTagValue),
+            MeasurementUnit = Unit.Events,
             ResetOnReporting = true
         };
 
@@ -60,7 +68,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         public static CounterOptions CacheBackgroundRefreshed(ISemanticConventions conventions) => new CounterOptions
         {
             Context = MeasurementName,
+            Name = conventions.CacheBackgroundRefreshedTagValue,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheBackgroundRefreshedTagValue),
+            MeasurementUnit = Unit.Events,
             ResetOnReporting = true
         };
 
@@ -70,7 +80,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         public static CounterOptions CacheBackgroundRefreshError(ISemanticConventions conventions) => new CounterOptions
         {
             Context = MeasurementName,
+            Name = conventions.CacheBackgroundFailedRefreshedTagValue,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheBackgroundFailedRefreshedTagValue),
+            MeasurementUnit = Unit.Events,
             ResetOnReporting = true
         };
 
@@ -80,7 +92,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         public static CounterOptions CacheFactoryError(ISemanticConventions conventions) => new CounterOptions
         {
             Context = MeasurementName,
+            Name = conventions.CacheCacheFactoryErrorTagValue,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheCacheFactoryErrorTagValue),
+            MeasurementUnit = Unit.Events,
             ResetOnReporting = true
         };
 
@@ -90,7 +104,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         public static CounterOptions CacheFactorySyntheticTimeout(ISemanticConventions conventions) => new CounterOptions
         {
             Context = MeasurementName,
+            Name = conventions.CacheFactorySyntheticTimeoutTagValue,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheFactorySyntheticTimeoutTagValue),
+            MeasurementUnit = Unit.Events,
             ResetOnReporting = true
         };
 
@@ -100,7 +116,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         public static CounterOptions CacheFailSafeActivate(ISemanticConventions conventions) => new CounterOptions
         {
             Context = MeasurementName,
+            Name = conventions.CacheFailSafeActivateTagValue,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheFailSafeActivateTagValue),
+            MeasurementUnit = Unit.Events,
             ResetOnReporting = true
         };
 
@@ -110,7 +128,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         public static CounterOptions CacheExpireCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Context = MeasurementName,
+            Name = conventions.CacheExpiredEvictTagValue,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheExpiredEvictTagValue),
+            MeasurementUnit = Unit.Events,
             ResetOnReporting = true
         };
 
@@ -120,7 +140,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         public static CounterOptions CacheCapacityCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Context = MeasurementName,
+            Name = conventions.CacheCapacityEvictTagValue,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheCapacityEvictTagValue),
+            MeasurementUnit = Unit.Events,
             ResetOnReporting = true
         };
 
@@ -130,7 +152,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         public static CounterOptions CacheRemoveCounter(ISemanticConventions conventions) => new CounterOptions
         {
             Context = MeasurementName,
+            Name = conventions.CacheRemovedTagValue,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheRemovedTagValue),
+            MeasurementUnit = Unit.Events,
             ResetOnReporting = true
         };
 
@@ -140,7 +164,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         public static GaugeOptions CacheItemGauge(ISemanticConventions conventions) => new GaugeOptions
         {
             Context = GaugeName,
+            Name = conventions.CacheItemCountTagValue,
             Tags = new MetricTags(conventions.CacheEventTagName, conventions.CacheItemCountTagValue),
+            MeasurementUnit = Unit.Events,
             ResetOnReporting = false,
         };
     }

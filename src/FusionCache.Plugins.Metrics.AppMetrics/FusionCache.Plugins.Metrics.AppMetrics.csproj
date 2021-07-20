@@ -5,10 +5,11 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <Authors>Joe Shook</Authors>
-    <Product>FusionCache</Product>
-    <PackageId>ZiggyCreatures.FusionCache.AppMetrics</PackageId>
-    <Copyright>Copyright © Jody Donetti and Joe Shook 2021</Copyright>
-    <PackageIcon>logo-128x128.png</PackageIcon>
+    <Product>Metrics Plugins for FusionCache based on AppMetrics</Product>
+    <PackageId>JoeShook.ZiggyCreatures.FusionCache.Metrics.AppMetric</PackageId>
+    <Version>1.0.0</Version>
+    <Copyright>Copyright © Joe Shook 2021</Copyright>
+    <PackageIcon>logo-plugin-128x128.png</PackageIcon>
     <Description>App.Metrics provider implementation of IFusionMetrics</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>caching;cache;multi-level;multilevel;fusion;fusioncache;fusion-cache;performance;async;ziggy;metrics</PackageTags>
@@ -27,11 +28,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="artwork\logo-128x128.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+		<None Include="artwork\logo-plugin-128x128.png" Pack="true" PackagePath="\" />
+		<None Include="docs\README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>    
 
   <ItemGroup>
     <PackageReference Include="App.Metrics" Version="4.2.0" />

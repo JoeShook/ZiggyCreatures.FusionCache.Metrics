@@ -1,6 +1,6 @@
 <div align="center">
 
-![FusionCache logo](./artwork/logo-128x128.png)
+![FusionCache logo](./artwork/logo-plugin-128x128.png)
 
 </div>
 

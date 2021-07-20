@@ -1,8 +1,5 @@
-using System;
-using System.Text.Json;
 using App.Metrics;
 using App.Metrics.Extensions.Collectors.MetricsRegistries;
-using App.Metrics.Extensions.HealthChecks;
 using App.Metrics.Filtering;
 using App.Metrics.Formatters.InfluxDB;
 using AppMetricsPluginExampleDotNetCore.Services;
@@ -15,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Text.Json;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Plugins;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics;
@@ -132,6 +131,8 @@ namespace AppMetricsPluginExampleDotNetCore
             filter.WhereContext(c =>
                 c != "appmetrics.internal"); //remove default AppMetrics metrics.
 
+            var formatterChoice = Configuration.GetValue<string>("UseMetricNameFormatter");
+
             var appMetrics = new MetricsBuilder()
                 .OutputMetrics.AsJson()
                 .OutputMetrics.AsPlainText()
@@ -139,6 +140,12 @@ namespace AppMetricsPluginExampleDotNetCore
                     options =>
                     {
                         options.DefaultContextLabel = appMetricsContextLabel;
+                        options.WithGlobalTags(
+                            (globalTags, envInfo) =>
+                            {
+                                globalTags.Add("application", metricsConfig.ApplicationName);
+                                globalTags.Add("applicationVersion", metricsConfig.ApplicationVersion);
+                            });
                     })
                 .Report
                 .ToInfluxDb(
@@ -152,18 +159,14 @@ namespace AppMetricsPluginExampleDotNetCore
                         options.InfluxDb.UserName = Configuration["InfluxDbConfig.Username"];
                         options.InfluxDb.Password = Configuration["InfluxDbConfig.Password"];
                         options.InfluxDb.CreateDataBaseIfNotExists = false;
-                        options.MetricsOutputFormatter = new MetricsInfluxDbLineProtocolOutputFormatter(
-                            new MetricsInfluxDbLineProtocolOptions
-                            {
-                                MetricNameFormatter = (metricContext, metricName) =>
-                                    metricContext == SystemUsageMetricsRegistry.ContextName ||
-                                        metricContext == GcMetricsRegistry.ContextName ||
-                                        metricContext == "Application.HttpRequests" ?
-                                        $"{appMetricsContextLabel}_{metricContext}.{metricName}"
-                                            .Replace(' ', '_').Replace('.', '_') : //  AppMetrics namespace convention
-                                        $"{appMetricsContextLabel}_{metricContext}"
-                                            .Replace(' ', '_').Replace('.', '_')// FusionCache namespace convention
-                            });
+                        if (! string.IsNullOrEmpty(formatterChoice))
+                        {
+                            options.MetricsOutputFormatter = new MetricsInfluxDbLineProtocolOutputFormatter(
+                                new MetricsInfluxDbLineProtocolOptions
+                                {
+                                    MetricNameFormatter = GetMetricNameFormatter(appMetricsContextLabel, formatterChoice)
+                                });
+                        }
                     })
                 // .Report.ToTextFile(
                 //     options => {
@@ -178,6 +181,42 @@ namespace AppMetricsPluginExampleDotNetCore
             services.AddMetrics(appMetrics)
                 .AddMetricsTrackingMiddleware()
                 .AddMetricsEndpoints();
+        }
+
+        private Func<string, string, string> GetMetricNameFormatter(string appMetricsContextLabel, string formatterChoice)
+        {
+            if (formatterChoice == "MetricNameFormatterByMeasurementName")
+            {
+                return MetricNameFormatterByMeasurementName(appMetricsContextLabel);
+            }
+
+            return MetricNameFormatterByContextName();
+        }
+
+
+        private static Func<string, string, string> MetricNameFormatterByMeasurementName(string appMetricsContextLabel)
+        {
+            return (metricContext, metricName) =>
+                metricContext == SystemUsageMetricsRegistry.ContextName ||
+                metricContext == GcMetricsRegistry.ContextName ||
+                metricContext == "Application.HttpRequests" ?
+                    $"{appMetricsContextLabel}_{metricContext}_{metricName}"
+                        .Replace(' ', '_').Replace('.', '_') :  //  AppMetrics namespace convention
+                    $"{appMetricsContextLabel}_{metricContext}"
+                        .Replace(' ', '_');  // FusionCache namespace convention
+        }
+
+        private static Func<string, string, string> MetricNameFormatterByContextName()
+        {
+            return (metricContext, metricName) =>
+
+                metricContext == SystemUsageMetricsRegistry.ContextName ||
+                metricContext == GcMetricsRegistry.ContextName ||
+                metricContext == "Application.HttpRequests" ?
+                    $"{metricContext}_{metricName}"
+                        .Replace(' ', '_').Replace('.', '_') :  //  AppMetrics namespace convention
+                    $"{metricContext}"
+                        .Replace(' ', '_');  // FusionCache namespace convention
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

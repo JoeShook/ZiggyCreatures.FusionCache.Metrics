@@ -4,11 +4,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core</RootNamespace>
     <Authors>Joe Shook</Authors>
-    <Product>FusionCache EventSource Metrics</Product>
-    <PackageId>ZiggyCreatures.FusionCache.Metrics.Core</PackageId>
-    <Copyright>Copyright © Jody Donetti and Joe Shook 2021</Copyright>
-    <PackageIcon>logo-128x128.png</PackageIcon>
-    <Description>EventSource metrics provider implementation.</Description>
+    <Product>Metrics Plugin Core for FusionCache</Product>
+    <PackageId>JoeShook.ZiggyCreatures.FusionCache.Metrics.Core</PackageId>
+    <Version>1.0.0</Version>
+    <Copyright>Copyright © Joe Shook 2021</Copyright>
+    <PackageIcon>logo-plugin-128x128.png</PackageIcon>
+    <Description>Core metrics provider library.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>caching;cache;multi-level;multilevel;fusion;fusioncache;fusion-cache;performance;async;ziggy;metrics</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -21,6 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="artwork\logo-128x128.png" Pack="true" PackagePath="\" />
+    <None Include="artwork\logo-plugin-128x128.png" Pack="true" PackagePath="\" />
   </ItemGroup>
+
 </Project>
