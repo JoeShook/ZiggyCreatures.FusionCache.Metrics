@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 using System.Threading;
 using System.Threading.Tasks;
 using AppMetricsPluginExampleDotNetCore.Services;
@@ -71,7 +70,7 @@ namespace AppMetricsPluginExampleDotNetCore.Controllers
             {
                 return new MailAddress(emailAddress).Host;
             }
-            catch (Exception ex)
+            catch
             {
                 //log
             }

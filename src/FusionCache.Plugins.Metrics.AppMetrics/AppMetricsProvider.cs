@@ -12,8 +12,8 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
     /// </summary>
     public class AppMetricsProvider : IFusionCachePlugin
     {
-        private IMetrics _metrics;
-        private MetricTags _cacheNameMetricTag;
+        private readonly IMetrics _metrics;
+        private readonly MetricTags _cacheNameMetricTag;
         private readonly MemoryCache? _cache;
         private readonly ISemanticConventions _semanticConventions;
 
@@ -211,8 +211,8 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
             fusionCache.Events.Remove -= HandleCacheRemoved();
             fusionCache.Events.Memory.Eviction -= HandleCacheEviction();
             fusionCache.Events.BackgroundFactorySuccess -= HandleBackgroundFactorySuccess();
-            fusionCache.Events.BackgroundFactoryError -= HanldeBackgroundFactoryError();
-            fusionCache.Events.FactoryError -= HanldeFactoryError();
+            fusionCache.Events.BackgroundFactoryError -= HandleBackgroundFactoryError();
+            fusionCache.Events.FactoryError -= HandleFactoryError();
             fusionCache.Events.FactorySyntheticTimeout -= HandleFactorySyntheticTimeout();
             fusionCache.Events.FailSafeActivate -= HandleFailSafeActivate();
         }
@@ -225,8 +225,8 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
             fusionCache.Events.Remove += HandleCacheRemoved();
             fusionCache.Events.Memory.Eviction += HandleCacheEviction();
             fusionCache.Events.BackgroundFactorySuccess += HandleBackgroundFactorySuccess();
-            fusionCache.Events.BackgroundFactoryError += HanldeBackgroundFactoryError();
-            fusionCache.Events.FactoryError += HanldeFactoryError();
+            fusionCache.Events.BackgroundFactoryError += HandleBackgroundFactoryError();
+            fusionCache.Events.FactoryError += HandleFactoryError();
             fusionCache.Events.FactorySyntheticTimeout += HandleFactorySyntheticTimeout();
             fusionCache.Events.FailSafeActivate += HandleFailSafeActivate();
         }
@@ -252,17 +252,17 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
             return (s, e) => CacheMiss();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HandleCacheSet()
+        private EventHandler<FusionCacheEntryEventArgs> HandleCacheSet()
         {
             return (s, e) => CacheSet();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HandleCacheRemoved()
+        private EventHandler<FusionCacheEntryEventArgs> HandleCacheRemoved()
         {
             return (s, e) => CacheRemoved();
         }
 
-        private EventHandler<FusionCacheEntryEvictionEventArgs>? HandleCacheEviction()
+        private EventHandler<FusionCacheEntryEvictionEventArgs> HandleCacheEviction()
         {
             return (sender, e) =>
             {
@@ -286,27 +286,27 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
             };
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HandleBackgroundFactorySuccess()
+        private EventHandler<FusionCacheEntryEventArgs> HandleBackgroundFactorySuccess()
         {
             return (s, e) => CacheBackgroundRefresh();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HanldeBackgroundFactoryError()
+        private EventHandler<FusionCacheEntryEventArgs> HandleBackgroundFactoryError()
         {
             return (s, e) => CacheBackgroundRefreshError();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HanldeFactoryError()
+        private EventHandler<FusionCacheEntryEventArgs> HandleFactoryError()
         {
             return (s, e) => CacheFactoryError();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HandleFactorySyntheticTimeout()
+        private EventHandler<FusionCacheEntryEventArgs> HandleFactorySyntheticTimeout()
         {
             return (s, e) => CacheFactorySyntheticTimeout();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs>? HandleFailSafeActivate()
+        private EventHandler<FusionCacheEntryEventArgs> HandleFailSafeActivate()
         {
             return (s, e) => CacheFailSafeActivate();
         }

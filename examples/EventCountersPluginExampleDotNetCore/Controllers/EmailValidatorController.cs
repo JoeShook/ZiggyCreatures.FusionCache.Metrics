@@ -71,7 +71,7 @@ namespace EventCountersPluginExampleDotNetCore.Controllers
             {
                 return new MailAddress(emailAddress).Host;
             }
-            catch (Exception ex)
+            catch
             {
                 //log
             }

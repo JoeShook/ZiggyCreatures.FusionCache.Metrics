@@ -58,7 +58,7 @@ namespace EventCountersPluginExampleDotNetCore.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _dataSource = Task.Run(async () =>
+            _dataSource = Task.Run(() =>
             {
                 while (true)
                 {

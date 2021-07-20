@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 using System.Web.Http;
 using AppMetricsPluginExample.Services;
 using FusionCache.Example.Domain.Model;
@@ -61,7 +60,7 @@ namespace AppMetricsPluginExample.Controllers
             {
                 return new MailAddress(emailAddress).Host;
             }
-            catch (Exception ex)
+            catch
             {
                 //log
             }
