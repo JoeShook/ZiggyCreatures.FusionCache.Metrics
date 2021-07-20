@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <Authors>Joe Shook</Authors>
     <Product>Metrics Plugins for FusionCache based on AppMetrics</Product>
-    <PackageId>JoeShook.ZiggyCreatures.FusionCache.Metrics.AppMetric</PackageId>
+    <PackageId>JoeShook.ZiggyCreatures.FusionCache.Metrics.AppMetrics</PackageId>
     <Version>1.0.0</Version>
     <Copyright>Copyright © Joe Shook 2021</Copyright>
     <PackageIcon>logo-plugin-128x128.png</PackageIcon>
