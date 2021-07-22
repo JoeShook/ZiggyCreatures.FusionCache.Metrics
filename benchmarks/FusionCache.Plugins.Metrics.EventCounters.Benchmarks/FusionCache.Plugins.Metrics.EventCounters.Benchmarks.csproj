@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>ZiggyCreatures.Fusion.Caching.Plugins.EventCounters.Benchmarks</RootNamespace>
-    <AssemblyName>ZiggyCreatures.Fusion.Caching.Plugins.EventCounters.Benchmarks</AssemblyName>
+    <AssemblyName>FusionCache.Plugins.Metrics.EventCounters.Benchmarks</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
