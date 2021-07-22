@@ -153,82 +153,34 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
         {
             _metrics.Measure.Counter.Increment(FusionMetricsRegistry.CacheRemoveCounter(_semanticConventions), _cacheNameMetricTag);
         }
-    
-
-
-        // public void Start(IFusionCache fusionCache)
-        // {
-        //     fusionCache.Events.Hit += (s, e) =>
-        //     {
-        //         if (e.IsStale)
-        //         {
-        //             CacheStaleHit();
-        //         }
-        //         else
-        //         {
-        //             CacheHit();
-        //         }
-        //     };
-        //
-        //     fusionCache.Events.Miss += (s, e) => CacheMiss();
-        //     fusionCache.Events.Remove += (s, e) => CacheRemoved();
-        //     
-        //     fusionCache.Events.Memory.Eviction += (sender, e) =>
-        //     {
-        //         // If you need it...
-        //         // var cache = (IFusionCache)sender;
-        //
-        //         switch (e.Reason)
-        //
-        //         {
-        //
-        //             case EvictionReason.Expired:
-        //
-        //                 CacheExpired();
-        //                 break;
-        //
-        //             case EvictionReason.Capacity:
-        //
-        //                 CacheCapacityExpired();
-        //                 break;
-        //         }
-        //     };
-        //
-        //     fusionCache.Events.BackgroundFactorySuccess += (s, e) => CacheBackgroundRefresh();
-        //     fusionCache.Events.BackgroundFactoryError += (s, e) => CacheBackgroundRefreshError();
-        //     fusionCache.Events.FactoryError += (s, e) => CacheFactoryError();
-        //     fusionCache.Events.FactorySyntheticTimeout += (s, e) => CacheFactorySyntheticTimeout();
-        //     fusionCache.Events.FailSafeActivate += (s, e) => CacheFailSafeActivate();
-        // }
-
-
+        
 
         public void Stop(IFusionCache fusionCache)
         {
-            fusionCache.Events.Hit -= HandleCacheHit();
-            fusionCache.Events.Miss -= HandleCacheMiss();
-            fusionCache.Events.Set -= HandleCacheSet();
-            fusionCache.Events.Remove -= HandleCacheRemoved();
-            fusionCache.Events.Memory.Eviction -= HandleCacheEviction();
-            fusionCache.Events.BackgroundFactorySuccess -= HandleBackgroundFactorySuccess();
-            fusionCache.Events.BackgroundFactoryError -= HandleBackgroundFactoryError();
-            fusionCache.Events.FactoryError -= HandleFactoryError();
-            fusionCache.Events.FactorySyntheticTimeout -= HandleFactorySyntheticTimeout();
-            fusionCache.Events.FailSafeActivate -= HandleFailSafeActivate();
+            fusionCache.Events.Hit -= HandleCacheHit;
+            fusionCache.Events.Miss -= HandleCacheMiss;
+            fusionCache.Events.Set -= HandleCacheSet;
+            fusionCache.Events.Remove -= HandleCacheRemoved;
+            fusionCache.Events.Memory.Eviction -= HandleCacheEviction;
+            fusionCache.Events.BackgroundFactorySuccess -= HandleBackgroundFactorySuccess;
+            fusionCache.Events.BackgroundFactoryError -= HanldeBackgroundFactoryError;
+            fusionCache.Events.FactoryError -= HanldeFactoryError;
+            fusionCache.Events.FactorySyntheticTimeout -= HandleFactorySyntheticTimeout;
+            fusionCache.Events.FailSafeActivate -= HandleFailSafeActivate;
         }
 
         public void Start(IFusionCache fusionCache)
         {
-            fusionCache.Events.Hit += HandleCacheHit();
-            fusionCache.Events.Miss += HandleCacheMiss();
-            fusionCache.Events.Set += HandleCacheSet();
-            fusionCache.Events.Remove += HandleCacheRemoved();
-            fusionCache.Events.Memory.Eviction += HandleCacheEviction();
-            fusionCache.Events.BackgroundFactorySuccess += HandleBackgroundFactorySuccess();
-            fusionCache.Events.BackgroundFactoryError += HandleBackgroundFactoryError();
-            fusionCache.Events.FactoryError += HandleFactoryError();
-            fusionCache.Events.FactorySyntheticTimeout += HandleFactorySyntheticTimeout();
-            fusionCache.Events.FailSafeActivate += HandleFailSafeActivate();
+            fusionCache.Events.Hit += HandleCacheHit;
+            fusionCache.Events.Miss += HandleCacheMiss;
+            fusionCache.Events.Set += HandleCacheSet;
+            fusionCache.Events.Remove += HandleCacheRemoved;
+            fusionCache.Events.Memory.Eviction += HandleCacheEviction;
+            fusionCache.Events.BackgroundFactorySuccess += HandleBackgroundFactorySuccess;
+            fusionCache.Events.BackgroundFactoryError += HanldeBackgroundFactoryError;
+            fusionCache.Events.FactoryError += HanldeFactoryError;
+            fusionCache.Events.FactorySyntheticTimeout += HandleFactorySyntheticTimeout;
+            fusionCache.Events.FailSafeActivate += HandleFailSafeActivate;
         }
 
 
@@ -247,68 +199,74 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
             };
         }
 
-        private EventHandler<FusionCacheEntryEventArgs> HandleCacheMiss()
+        private void HandleCacheHit(object sender, FusionCacheEntryHitEventArgs e)
         {
-            return (s, e) => CacheMiss();
-        }
-
-        private EventHandler<FusionCacheEntryEventArgs> HandleCacheSet()
-        {
-            return (s, e) => CacheSet();
-        }
-
-        private EventHandler<FusionCacheEntryEventArgs> HandleCacheRemoved()
-        {
-            return (s, e) => CacheRemoved();
-        }
-
-        private EventHandler<FusionCacheEntryEvictionEventArgs> HandleCacheEviction()
-        {
-            return (sender, e) =>
+            if (e.IsStale)
             {
-                // If you need it...
-                // var cache = (IFusionCache)sender;
-
-                switch (e.Reason)
-
-                {
-
-                    case EvictionReason.Expired:
-
-                        CacheExpired();
-                        break;
-
-                    case EvictionReason.Capacity:
-
-                        CacheCapacityExpired();
-                        break;
-                }
-            };
+                CacheStaleHit();
+            }
+            else
+            {
+                CacheHit();
+            }
         }
 
-        private EventHandler<FusionCacheEntryEventArgs> HandleBackgroundFactorySuccess()
+        private void HandleCacheMiss(object sender, FusionCacheEntryEventArgs e)
         {
-            return (s, e) => CacheBackgroundRefresh();
+            CacheMiss();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs> HandleBackgroundFactoryError()
+        private void HandleCacheSet(object sender, FusionCacheEntryEventArgs e)
         {
-            return (s, e) => CacheBackgroundRefreshError();
+            CacheSet();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs> HandleFactoryError()
+        private void HandleCacheRemoved(object sender, FusionCacheEntryEventArgs e)
         {
-            return (s, e) => CacheFactoryError();
+            CacheRemoved();
         }
 
-        private EventHandler<FusionCacheEntryEventArgs> HandleFactorySyntheticTimeout()
+        private void HandleCacheEviction(object sender, FusionCacheEntryEvictionEventArgs e)
         {
-            return (s, e) => CacheFactorySyntheticTimeout();
+            switch (e.Reason)
+
+            {
+
+                case EvictionReason.Expired:
+
+                    CacheExpired();
+                    break;
+
+                case EvictionReason.Capacity:
+
+                    CacheCapacityExpired();
+                    break;
+            }
         }
 
-        private EventHandler<FusionCacheEntryEventArgs> HandleFailSafeActivate()
+        private void HandleBackgroundFactorySuccess(object sender, FusionCacheEntryEventArgs e)
         {
-            return (s, e) => CacheFailSafeActivate();
+            CacheBackgroundRefresh();
+        }
+
+        private void HanldeBackgroundFactoryError(object sender, FusionCacheEntryEventArgs e)
+        {
+            CacheBackgroundRefreshError();
+        }
+
+        private void HanldeFactoryError(object sender, FusionCacheEntryEventArgs e)
+        {
+            CacheFactoryError();
+        }
+
+        private void HandleFactorySyntheticTimeout(object sender, FusionCacheEntryEventArgs e)
+        {
+            CacheFactorySyntheticTimeout();
+        }
+
+        private void HandleFailSafeActivate(object sender, FusionCacheEntryEventArgs e)
+        {
+            CacheFailSafeActivate();
         }
     }
 }
