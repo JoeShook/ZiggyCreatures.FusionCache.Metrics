@@ -11,8 +11,8 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics
     public class FusionMetricsRegistry
     {
         // In time series database the MetricsOptions.DefaultContextLabel will be prefixed to the MeasurementName
-        public static readonly string MeasurementName = "Cache-Events";
-        public static readonly string GaugeName = "Cache-Gauges";
+        public static readonly string MeasurementName = "Cache.Events";
+        public static readonly string GaugeName = "Cache.Gauges";
 
         /// <summary>
         /// Cache hit counter

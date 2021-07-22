@@ -94,7 +94,7 @@ Metrics plugins are created by subscribing to FusionCache [Events](https://githu
 - `ApplicationName` is defaulted to the executing assembly name.
 - `ApplicationVersion` is defaulted to the executing assembly version.
 - `Prefix` is defaulted to "appMetrics"
-- `MeasurementName` is defaulted to "cache-events"
+- `MeasurementName` is defaulted to "Cache-Events"
   
   see Examples for usage
 
