@@ -1,4 +1,5 @@
-﻿using System.Net.Mail;
+﻿using System;
+using System.Net.Mail;
 using System.Threading;
 using System.Threading.Tasks;
 using AppMetricsPluginExampleDotNetCore.Services;
@@ -42,18 +43,27 @@ namespace AppMetricsPluginExampleDotNetCore.Controllers
 
             if (_cache != null)
             {
-                var domain = await _cache.GetOrSetAsync(
-                    hostPart,
-                    _ => _dataManager.GetDomain(hostPart, _), 
-                    token: cancellationToken);
-                
-                if (domain != null && domain.Enabled)
+                try
                 {
-                    result = await _emailService.GetEmailRoute(emailAddress, cancellationToken);
+                    var domain = await _cache.GetOrSetAsync(
+                        hostPart,
+                        _ => _dataManager.GetDomain(hostPart, _),
+                        token: cancellationToken);
+
+                    if (domain != null && domain.Enabled)
+                    {
+                        result = await _emailService.GetEmailRoute(emailAddress, cancellationToken);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    return NotFound();
+                    //log
+                    
+                    return NotFound(ex.ToString());
                 }
             }
             else

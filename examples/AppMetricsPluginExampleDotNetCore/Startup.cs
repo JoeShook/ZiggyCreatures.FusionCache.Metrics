@@ -63,6 +63,7 @@ namespace AppMetricsPluginExampleDotNetCore
             services.AddSingleton<IMemoryCache>(hostNameCache);
             services.AddSingleton<IFusionCachePlugin>(serviceProvider => new AppMetricsProvider("domain", serviceProvider.GetService<IMetrics>(), hostNameCache));
             services.AddFusionCache(options =>
+            {
                 options.DefaultEntryOptions = new FusionCacheEntryOptions
                 {
                     Duration = TimeSpan.FromSeconds(1),
@@ -72,7 +73,18 @@ namespace AppMetricsPluginExampleDotNetCore
                     FailSafeThrottleDuration = TimeSpan.FromSeconds(1),
                     FactorySoftTimeout = TimeSpan.FromMilliseconds(100),
                     FactoryHardTimeout = TimeSpan.FromSeconds(1)
-                });
+                };
+                //
+                // Event logs are very noisy when testing this example mostly because the example is designed to 
+                // demonstrate all cache events and to track them with the AppMetrics library.  
+                //
+                // options.FailSafeActivationLogLevel = LogLevel.None;
+                // options.SerializationErrorsLogLevel = LogLevel.None;
+                // options.DistributedCacheSyntheticTimeoutsLogLevel = LogLevel.None;
+                // options.DistributedCacheErrorsLogLevel = LogLevel.None;
+                // options.FactorySyntheticTimeoutsLogLevel = LogLevel.None;
+                // options.FactoryErrorsLogLevel = LogLevel.None;
+            });
 
             //
             // Cache called "email"

@@ -67,7 +67,12 @@ namespace AppMetricsPluginExampleDotNetCore.Services
                 await Task.Delay(number, cancellationToken);
                 throw new Exception("poof");
             }
-            
+
+            if (name == "mrowlands4@ibm.com" || name == "umceniry1@stumbleupon.com1")
+            {
+                await Task.Delay(5000, cancellationToken);
+            }
+
             await Task.Delay(number, cancellationToken);
             // Console.WriteLine(number);
             

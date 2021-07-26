@@ -2,6 +2,9 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/AppMetricsPluginExampleDotNetCore"
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:15109",
       "sslPort": 0
@@ -29,6 +32,14 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IIS": {
+      "commandName": "IIS",
+      "launchBrowser": true,
+      "launchUrl": "EmailValidator/EmailRoute/umceniry1%40stumbleupon.com",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
