@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using ZiggyCreatures.Caching.Fusion;
@@ -137,10 +138,13 @@ namespace AppMetricsPluginExampleFrameworkOnAspNetCore
             });
 
 
-            var metricsReporterService = new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters);
-            metricsReporterService.StartAsync(CancellationToken.None);
-
-            services.AddSingleton(sp => metricsReporterService );
+            services.AddSingleton(sp =>
+            {
+                var metricsReporterService = new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters,
+                        sp.GetService<IHostApplicationLifetime>());
+                metricsReporterService.StartAsync(CancellationToken.None);
+                return metricsReporterService;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
