@@ -16,9 +16,9 @@ jobs:
     - name: Set VERSION variable from tag
       run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
     - name: Build
-      run: dotnet build --configuration Release /p:Version=${VERSION}
+      run: dotnet build FusionCache.Plugins.Metrics.DotnetCore.sln --configuration Release /p:Version=${VERSION}
     - name: Test
-      run: dotnet test --configuration Release /p:Version=${VERSION} --no-build
+      run: dotnet test FusionCache.Plugins.Metrics.DotnetCore.sln --configuration Release /p:Version=${VERSION} --no-build
     - name: Pack
       run: |
         dotnet pack -v normal -c Release --no-build --include-source -p:PackageVersion=${VERSION} src/FusionCache.Plugins.Metrics.Core/FusionCache.Plugins.Metrics.Core.csproj --output .
