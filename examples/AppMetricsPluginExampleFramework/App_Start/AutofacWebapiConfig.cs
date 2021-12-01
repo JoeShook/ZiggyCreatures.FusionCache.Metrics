@@ -12,6 +12,7 @@ using Autofac;
 using Autofac.Integration.WebApi;
 using AutofacSerilogIntegration;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using ZiggyCreatures.Caching.Fusion;
@@ -85,9 +86,13 @@ namespace AppMetricsPluginExample
                 //     })
                 .Build();
 
-            var metricsReporterService = new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters);
-            metricsReporterService.StartAsync(CancellationToken.None);
-            builder.Register(c => metricsReporterService)
+            builder.Register(c =>
+                {
+                    var metricsReporterService  = new MetricsReporterBackgroundService(appMetrics, appMetrics.Options,
+                            appMetrics.Reporters, c.Resolve<IHostApplicationLifetime>());
+                    metricsReporterService.StartAsync(CancellationToken.None);
+                    return metricsReporterService;
+                })
                 .SingleInstance();
 
             builder.RegisterType<LoggerFactory>()

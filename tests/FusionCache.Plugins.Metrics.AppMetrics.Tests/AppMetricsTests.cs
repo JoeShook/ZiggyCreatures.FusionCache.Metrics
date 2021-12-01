@@ -7,6 +7,9 @@ using App.Metrics;
 using App.Metrics.Extensions.Hosting;
 using App.Metrics.Formatters.Json;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
+using Moq;
 using Xunit;
 using Xunit.Abstractions;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
@@ -65,7 +68,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
                     new FusionCacheOptions(),
                     memoryCache))
                 using (var metricsReporterService =
-                    new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters))
+                    new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters, new Mock<IHostApplicationLifetime>().Object))
                 {
                     var appMetricsProvider = new AppMetricsProvider("testCacheName", appMetrics, memoryCache);
                     appMetricsProvider.Start(cache);
@@ -173,7 +176,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
                     new FusionCacheOptions(),
                     memoryCache))
                 using (var metricsReporterService =
-                    new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters))
+                    new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters, new Mock<IHostApplicationLifetime>().Object))
                 {
                     cache.DefaultEntryOptions.Duration = duration;
                     cache.DefaultEntryOptions.IsFailSafeEnabled = true;
@@ -246,7 +249,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
                     new FusionCacheOptions(),
                     memoryCache))
                 using (var metricsReporterService =
-                    new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters))
+                    new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters, new Mock<IHostApplicationLifetime>().Object))
                 {
                     var appMetricsProvider = new AppMetricsProvider("testCacheName", appMetrics, memoryCache);
                     appMetricsProvider.Start(cache);
@@ -332,7 +335,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
                     new FusionCacheOptions(),
                     memoryCache))
                 using (var metricsReporterService =
-                    new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters))
+                    new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters, new Mock<IHostApplicationLifetime>().Object))
                 {
                     var appMetricsProvider = new AppMetricsProvider("testCacheName", appMetrics, memoryCache);
                     appMetricsProvider.Start(cache);
@@ -394,7 +397,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
                     new FusionCacheOptions(),
                     memoryCache))
                 using (var metricsReporterService =
-                    new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters))
+                    new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters, new Mock<IHostApplicationLifetime>().Object))
                 {
                     var appMetricsProvider = new AppMetricsProvider("testCacheName", appMetrics, memoryCache);
                     appMetricsProvider.Start(cache);

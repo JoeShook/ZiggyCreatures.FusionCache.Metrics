@@ -76,7 +76,7 @@ namespace ZiggyCreatures.Fusion.Caching.Plugins.EventCounters.Benchmarks
                                     return new SamplePayload();
                                 }
                             );
-                            tasks.Add(t);
+                            tasks.Add(t.AsTask());
                         });
                     });
         
@@ -116,7 +116,7 @@ namespace ZiggyCreatures.Fusion.Caching.Plugins.EventCounters.Benchmarks
                                     return new SamplePayload();
                                 }
                             );
-                            tasks.Add(t);
+                            tasks.Add(t.AsTask());
                         });
                     });
         
@@ -166,7 +166,7 @@ namespace ZiggyCreatures.Fusion.Caching.Plugins.EventCounters.Benchmarks
                                         return new SamplePayload();
                                     }
                                 );
-                                tasks.Add(t);
+                                tasks.Add(t.AsTask());
                             });
                         });
 
