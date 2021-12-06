@@ -1,10 +1,16 @@
-﻿namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core
+﻿using System.Dynamic;
+
+namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core
 {
     /// <summary>
     /// Implement this interface to change cache measurement semantics
     /// </summary>
     public interface ISemanticConventions
     {
+        string MeasurementName { get; }
+
+        string GaugeName { get; }
+
         /// <summary>
         /// Cache metric field value name
         /// </summary>

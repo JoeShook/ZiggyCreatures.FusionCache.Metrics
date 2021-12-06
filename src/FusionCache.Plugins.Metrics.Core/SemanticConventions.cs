@@ -2,10 +2,27 @@
 {
     public class SemanticConventions : ISemanticConventions
     {
+        public SemanticConventions(string measurementName, string GaugeName)
+        {
+            _measurementName = measurementName;
+            _gaugeName = GaugeName;
+        }
+
+        public SemanticConventions()
+        {
+        }
+
         public static SemanticConventions Instance()
         {
             return new SemanticConventions();
         }
+
+        private readonly string _measurementName = "Cache.Events";
+        private readonly string _gaugeName = "Cache.Gauges";
+
+        public string MeasurementName => _measurementName;
+
+        public string GaugeName => _gaugeName;
 
         public string ValueFieldName => "value";
 

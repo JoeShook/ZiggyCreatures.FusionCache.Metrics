@@ -52,6 +52,8 @@ namespace AppMetricsPluginExampleDotNetCore
 
             ConfigureAppMetrics(services, mvcBuilder);
 
+            var mySemantics = new SemanticConventions("my_cache_events", "my_cache_gauges");
+
             //
             // Cache called "domain"
             //
@@ -61,7 +63,7 @@ namespace AppMetricsPluginExampleDotNetCore
             // See line 180 in FusionCacheEventSource.cs
             //
             services.AddSingleton<IMemoryCache>(hostNameCache);
-            services.AddSingleton<IFusionCachePlugin>(serviceProvider => new AppMetricsProvider("domain", serviceProvider.GetService<IMetrics>(), hostNameCache));
+            services.AddSingleton<IFusionCachePlugin>(serviceProvider => new AppMetricsProvider("domain", serviceProvider.GetService<IMetrics>(), hostNameCache, mySemantics));
             services.AddFusionCache(options =>
             {
                 options.DefaultEntryOptions = new FusionCacheEntryOptions
@@ -108,7 +110,7 @@ namespace AppMetricsPluginExampleDotNetCore
                         .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
                 };
 
-                var metrics = new AppMetricsProvider("email", serviceProvider.GetService<IMetrics>(), emailCache);
+                var metrics = new AppMetricsProvider("email", serviceProvider.GetService<IMetrics>(), emailCache, mySemantics);
                 var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, emailCache, logger);
                 metrics.Start(fusionCache);
 
@@ -211,7 +213,7 @@ namespace AppMetricsPluginExampleDotNetCore
             return (metricContext, metricName) =>
                 metricContext == SystemUsageMetricsRegistry.ContextName ||
                 metricContext == GcMetricsRegistry.ContextName ||
-                metricContext == "Application.HttpRequests" ?
+                metricContext == "Application.HttpRequests" ? 
                     $"{appMetricsContextLabel}_{metricContext}_{metricName}"
                         .Replace(' ', '_').Replace('.', '_') :  //  AppMetrics namespace convention
                     $"{appMetricsContextLabel}_{metricContext}"
