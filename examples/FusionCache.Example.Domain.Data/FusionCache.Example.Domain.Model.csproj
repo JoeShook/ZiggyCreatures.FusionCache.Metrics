@@ -6,8 +6,5 @@
     <RootNamespace>FusionCache.Example.Domain.Model</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Source\GitHub\JoeShook\FusionCacheMetricsPlayground\examples\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.xml</DocumentationFile>
-  </PropertyGroup>
 
 </Project>
