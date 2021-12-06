@@ -83,8 +83,8 @@ AppMetrics Plugin is an easy to use solution for .NET Framework apps.  If you al
 
 There are two example WebApi style projects included:
 
-- [AppMetricsPluginExampleFrameworkOnAspNetCore](https://github.com/JoeShook/FusionCacheMetricsPlayground/tree/main/examples/AppMetricsPluginExampleFrameworkOnAspNetCore) 
-- [AppMetricsPluginExampleFramework](https://github.com/JoeShook/FusionCacheMetricsPlayground/tree/main/examples/AppMetricsPluginExampleFramework)
+- [AppMetricsPluginExampleFrameworkOnAspNetCore](../../../examples/AppMetricsPluginExampleFrameworkOnAspNetCore)
+- [AppMetricsPluginExampleFramework](../../../examples/AppMetricsPluginExampleFramework)
 
 Metrics plugins are created by subscribing to FusionCache [Events](https://github.com/jodydonetti/ZiggyCreatures.FusionCache/blob/cecba47e773d799a6b978d43858915cc8fb018d8/docs/Events.md).
 
@@ -98,7 +98,7 @@ Metrics plugins are created by subscribing to FusionCache [Events](https://githu
   
   see Examples for usage
 
-The following Events are subscribed to.  Each event includes a Tag named "cacheEvent" and a tag value.  Both the "cacheEvent" name and Tag values are defined in the [`SemanticConventions`](https://github.com/JoeShook/FusionCacheMetricsPlayground/blob/main/src/ZiggyCreatures.FusionCache.Metrics.Core/SemanticConventions.cs) class.  These conventions can be changed by implementing a new [`ISemanticConventions`](https://github.com/JoeShook/FusionCacheMetricsPlayground/blob/main/src/ZiggyCreatures.FusionCache.Metrics.Core/ISemanticConventions.cs) interface and registering in you dependency injection framework.  Tags are typical in time series databases and are indexed making them friendly to searching and grouping over time.  
+The following Events are subscribed to.  Each event includes a Tag named "cacheEvent" and a tag value.  Both the "cacheEvent" name and Tag values are defined in the [`SemanticConventions`](../../FusionCache.Plugins.Metrics.Core/SemanticConventions.cs) class.  These conventions can be changed by implementing a new [`ISemanticConventions`](../../FusionCache.Plugins.Metrics.Core/ISemanticConventions.cs) interface and registering in you dependency injection framework.  Tags are typical in time series databases and are indexed making them friendly to searching and grouping over time.  
 
 ## Events:: Incrementing Polling Counters for Hits and Misses
 

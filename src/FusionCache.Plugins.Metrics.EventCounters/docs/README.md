@@ -124,7 +124,7 @@ To make reporting seemless implent a [EventListener](https://docs.microsoft.com/
 
 ## Listenting for events
 
-See this [EventListener](examples/EventCountersPluginExampleDotNetCore/Services/MetricsListenerService.cs) in action in the example project [EventCountersPluginExampleDotNetCore](https://github.com/JoeShook/FusionCacheMetricsPlayground/tree/main/examples/EventCountersPluginExampleDotNetCore)
+See this [EventListener](../../../examples/EventCountersPluginExampleDotNetCore/Services/MetricsListenerService.cs) in action in the example project [EventCountersPluginExampleDotNetCore](../../../examples/EventCountersPluginExampleDotNetCore)
 
 ```csharp
 
