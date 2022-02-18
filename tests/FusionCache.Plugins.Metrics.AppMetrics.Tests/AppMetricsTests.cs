@@ -104,7 +104,6 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
 
                     // HIT (STALE): +1
                     // FAIL-SAFE: +1
-                    // SET: +1
                     _ = await cache.GetOrSetAsync<int>("foo", _ => throw new Exception("Sloths are cool"));
 
                     // MISS: +1
@@ -116,7 +115,6 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
 
                     // HIT (STALE): +1
                     // FAIL-SAFE: +1
-                    // SET: +1
                     _ = await cache.GetOrSetAsync<int>("foo", _ => throw new Exception("Sloths are cool"));
 
                     // REMOVE: +1
@@ -143,7 +141,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
                     Assert.Equal(3, GetMetric(messages, SemanticConventions.Instance().CacheMissTagValue));
                     Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
                     Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
-                    Assert.Equal(3, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
+                    Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
                     Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheRemovedTagValue));
                     Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheFailSafeActivateTagValue));
                 }
@@ -265,10 +263,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
 
                     // INITIAL, NON-TRACKED SET
                     await cache.SetAsync<int>("foo", 42);
-
-                    // LET IT BECOME STALE
+                     // LET IT BECOME STALE
                     await Task.Delay(throttleDuration);
-
+                    
                     // HIT (STALE): +1
                     // FAIL-SAFE: +1
                     // SET: +1
@@ -278,14 +275,12 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
                         return 42;
                     });
 
-
                     //await cache.SetAsync<int>("foo", 42);
                     // LET IT BECOME STALE
                     await Task.Delay(throttleDuration);
-
+                    
                     // HIT (STALE): +1
                     // FAIL-SAFE: +1
-                    // SET: +1
                     // STALE_REFRESH_ERROR: +1
                     _ = await cache.GetOrSetAsync<int>("foo", async _ =>
                     {
@@ -296,14 +291,13 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
 
                     // Let EventListener poll for data
                     await Task.Delay(1000);
-
-
+                    
                     var messages = reporter.Messages.ToList();
                     // messages.ForEach(c => _testOutputHelper.WriteLine(c.ToString()));
 
                     Assert.Equal(0, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
                     Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheFailSafeActivateTagValue));
-                    Assert.Equal(3, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
+                    Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
                     Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
                     Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheBackgroundRefreshedTagValue));
                     Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheBackgroundFailedRefreshedTagValue));
