@@ -30,7 +30,7 @@
     <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
     <PackageReference Include="Serilog.Settings.AppSettings" Version="2.2.2" />
     <PackageReference Include="System.Text.Json" Version="6.0.2" />
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.1.9" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.9.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -246,7 +246,6 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
 
                 // HIT (STALE): +1
                 // FAIL-SAFE: +1
-                // SET: +1
                 _ = await cache.GetOrSetAsync<int>("foo", _ => throw new Exception("Sloths are cool"));
 
                 // MISS: +1
@@ -258,7 +257,6 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
 
                 // HIT (STALE): +1
                 // FAIL-SAFE: +1
-                // SET: +1
                 _ = await cache.GetOrSetAsync<int>("foo", _ => throw new Exception("Sloths are cool"));
 
                 // REMOVE: +1
@@ -280,7 +278,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
                 Assert.Equal(3, GetMetric(messages, SemanticConventions.Instance().CacheMissTagValue));
                 Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
                 Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
-                Assert.Equal(3, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
+                Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
                 Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheRemovedTagValue));
                 Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheFailSafeActivateTagValue));
             }
@@ -393,7 +391,6 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
 
                 // HIT (STALE): +1
                 // FAIL-SAFE: +1
-                // SET: +1
                 // STALE_REFRESH_ERROR: +1
                 _ = await cache.GetOrSetAsync<int>("foo", async _ =>
                 {
@@ -409,7 +406,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
 
                 Assert.Equal(0, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
                 Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheFailSafeActivateTagValue));
-                Assert.Equal(3, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
+                Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
                 Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
                 Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheBackgroundRefreshedTagValue));
                 Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheBackgroundFailedRefreshedTagValue));
