@@ -16,6 +16,10 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RootNamespace>ZiggyCreatures.Caching.Fusion.Plugins.Metrics.EventCounters</RootNamespace>
     <AssemblyName>ZiggyCreatures.Caching.Fusion.Plugins.Metrics.EventCounters</AssemblyName>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -25,7 +29,7 @@
 
   <ItemGroup>
     <None Include="artwork\logo-plugin-128x128.png" Pack="true" PackagePath="\" />
-    <None Include="docs\README.md" Pack="true" PackagePath="\" />
+    <None Include="docs\README.md" Pack="True" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>

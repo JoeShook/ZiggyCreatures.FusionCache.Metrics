@@ -15,6 +15,11 @@
     <PackageTags>caching;cache;multi-level;multilevel;fusion;fusioncache;fusion-cache;performance;async;ziggy;metrics</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RootNamespace>ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics</RootNamespace>
+    <AssemblyName>ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics</AssemblyName>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -22,14 +27,9 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <DocumentationFile></DocumentationFile>
-    <AssemblyName>ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics</AssemblyName>
-  </PropertyGroup>
-
   <ItemGroup>
 		<None Include="artwork\logo-plugin-128x128.png" Pack="true" PackagePath="\" />
-		<None Include="docs\README.md" Pack="true" PackagePath="\" />
+		<None Include="docs\README.md" Pack="True" PackagePath="\" />
 	</ItemGroup>    
 
   <ItemGroup>

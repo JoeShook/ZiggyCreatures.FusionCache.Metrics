@@ -7,7 +7,7 @@
 ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/JoeShook/141e4a826a0a2f46dad85ccf3213a894/raw/FusionCache.EventCounters.Plugin-code-coverage.json)
 </div>
 
-## FusionCache.EventCounters is a plugin to capture caching metrics using [FusionCache](https://github.com/jodydonetti/ZiggyCreatures.FusionCache).
+## [FusionCache.EventCounters](https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics/tree/main/src/FusionCache.Plugins.Metrics.EventCounters) is a plugin to capture caching metrics using [FusionCache](https://github.com/jodydonetti/ZiggyCreatures.FusionCache).
 
 Metrics are missing from open-source resiliency projects in the .NET ecosystem where in equivalent Java libraries, metrics tend to be common.  FusionCache is a feature rich caching library addressing resiliency needs of today’s enterprise implementations.  [EventCounters](https://docs.microsoft.com/en-us/dotnet/core/diagnostics/event-counters) is a lightweight .NET Core API library that works in .NET Core.  Joining these two excellent libraries together you can easily be caching and writing metrics to your favorite timeseries database or use the dotnet-counters tool to monitor from the console.
 

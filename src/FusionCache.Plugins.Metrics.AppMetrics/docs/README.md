@@ -7,7 +7,7 @@
 ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/JoeShook/59e2f3ef3dddc3f86e372c161ea501cc/raw/FusionCache.AppMetrics.Plugin-code-coverage.json)
 </div>
 
-## FusionCache.AppMetrics is a plugin to capture caching metrics using [FusionCache](https://github.com/jodydonetti/ZiggyCreatures.FusionCache)
+## [FusionCache.AppMetrics](https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics/tree/main/src/FusionCache.Plugins.Metrics.AppMetrics) is a plugin to capture caching metrics using [FusionCache](https://github.com/jodydonetti/ZiggyCreatures.FusionCache)
 
 Metrics are missing from open-source resiliency projects in the .NET ecosystem where in equivalent Java libraries, metrics tend to be common.  FusionCache is a feature rich caching library addressing resiliency needs of today’s enterprise implementations.  [Appmetrics](https://github.com/AppMetrics/AppMetrics) is an easy-to-use metrics library that works in .NET Framework and .NET Core.  Joining these two excellent libraries together you can easily be caching and writing metrics to your favorite timeseries database.
 
