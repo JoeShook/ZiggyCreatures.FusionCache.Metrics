@@ -2,6 +2,8 @@
 
 <div align="center">
 
+![FusionCache logo](https://raw.githubusercontent.com/JoeShook/ZiggyCreatures.FusionCache.Metrics/main/artwork/logo-plugin-128x128.png)
+
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=flat&logo=twitter)](https://twitter.com/intent/tweet?hashtags=fusioncache,caching,cache,dotnet,oss,csharp,appmetrics&text=🚀+FusionCache+Metrics+Plugin:+a+new+FusionCache+metrics+plugin+based+on+AppMetrics&url=https%3A%2F%2Fgithub.com%2Fjoeshook%2FZiggyCreatures.FusionCache.Metrics&via=josephshook)
 ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/JoeShook/59e2f3ef3dddc3f86e372c161ea501cc/raw/FusionCache.AppMetrics.Plugin-code-coverage.json)
