@@ -7,8 +7,14 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core
     /// </summary>
     public interface ISemanticConventions
     {
+        /// <summary>
+        /// Measurement name property for standard counter style metrics.
+        /// </summary>
         string MeasurementName { get; }
 
+        /// <summary>
+        /// Measurement name property for gauge style metrics
+        /// </summary>
         string GaugeName { get; }
 
         /// <summary>
@@ -16,9 +22,16 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core
         /// </summary>
         string ValueFieldName { get; }
 
+        /// <summary>
+        /// Tag metric with application name
+        /// </summary>
         string ApplicationTagName { get; }
 
+        /// <summary>
+        /// Tag metric with application version
+        /// </summary>
         string ApplicationVersionTagName { get; }
+
         /// <summary>
         /// Cache name tag.  
         /// </summary>
