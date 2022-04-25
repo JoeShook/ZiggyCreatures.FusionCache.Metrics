@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31205.134
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}"
 EndProject
@@ -50,6 +50,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.Plugins.Metrics.EventCounters.Benchmarks", "benchmarks\FusionCache.Plugins.Metrics.EventCounters.Benchmarks\FusionCache.Plugins.Metrics.EventCounters.Benchmarks.csproj", "{5286DC47-E676-4819-9632-07071F229117}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppMetricsPluginExampleDotNetCore", "examples\AppMetricsPluginExampleDotNetCore\AppMetricsPluginExampleDotNetCore.csproj", "{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "opentelemetry", "opentelemetry", "{298F7E7F-BE15-408B-AA26-347EE3811556}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailRouteService", "examples\openTelemetry\EmailRouteService\EmailRouteService.csproj", "{7F34C29C-BB8B-4738-9AEC-A356E7590401}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +109,10 @@ Global
 		{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F34C29C-BB8B-4738-9AEC-A356E7590401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F34C29C-BB8B-4738-9AEC-A356E7590401}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F34C29C-BB8B-4738-9AEC-A356E7590401}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F34C29C-BB8B-4738-9AEC-A356E7590401}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +132,8 @@ Global
 		{952FDB5B-29E8-41E9-A015-347A717148DB} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
 		{5286DC47-E676-4819-9632-07071F229117} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
 		{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
+		{298F7E7F-BE15-408B-AA26-347EE3811556} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
+		{7F34C29C-BB8B-4738-9AEC-A356E7590401} = {298F7E7F-BE15-408B-AA26-347EE3811556}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32C4269F-FC33-47FA-91DA-2B6C5DF7D025}
