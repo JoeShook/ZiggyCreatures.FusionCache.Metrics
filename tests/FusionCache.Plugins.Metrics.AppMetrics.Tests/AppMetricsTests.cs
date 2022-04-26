@@ -175,6 +175,132 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
         }
 
         [Fact]
+        public async Task EntryEventsWorkAdaptiveCacheAsync()
+        {
+            var duration = TimeSpan.FromSeconds(2);
+            var maxDuration = TimeSpan.FromDays(1);
+            var throttleDuration = TimeSpan.FromSeconds(3);
+
+            using (var memoryCache = new MemoryCache(new MemoryCacheOptions()))
+            {
+                var reporter = new TestReporter(_testOutputHelper);
+                reporter.Formatter = new MetricsJsonOutputFormatter();
+
+                var appMetrics = new MetricsBuilder()
+                    .Configuration.Configure(
+                        options => { options.DefaultContextLabel = "appMetricsContextLabel"; })
+                    .Report.Using(reporter)
+                    .Build();
+
+
+                using (var cache = new ZiggyCreatures.Caching.Fusion.FusionCache(
+                           new FusionCacheOptions(),
+                           memoryCache))
+                using (var metricsReporterService =
+                       new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters,
+                           new Mock<IHostApplicationLifetime>().Object))
+                {
+                    var appMetricsProvider = new AppMetricsProvider("testCacheName", appMetrics, memoryCache);
+                    appMetricsProvider.Start(cache);
+                    await metricsReporterService.StartAsync(CancellationToken.None);
+
+
+                    cache.DefaultEntryOptions.Duration = duration;
+                    cache.DefaultEntryOptions.IsFailSafeEnabled = true;
+                    cache.DefaultEntryOptions.FailSafeMaxDuration = maxDuration;
+                    cache.DefaultEntryOptions.FailSafeThrottleDuration = throttleDuration;
+
+                    // MISS: +1
+                    await cache.TryGetAsync<int>("foo");
+
+                    // MISS: +1
+                    await cache.TryGetAsync<int>("bar");
+
+                    // SET: +1
+                    await cache.GetOrSetAsync<int>(
+                        "foo",
+                        async (ctx, _) =>
+                        {
+                            await Task.Delay(1, _);
+                            return 123;
+                        });
+
+                    // HIT: +1
+                    await cache.GetOrSetAsync<int>(
+                        "foo",
+                        async (ctx, _) =>
+                        {
+                            await Task.Delay(1, _);
+                            throw new Exception("Should not be here");
+                        });
+
+                    // HIT: +1
+                    await cache.GetOrSetAsync<int>(
+                        "foo",
+                        async (ctx, _) =>
+                        {
+                            await Task.Delay(1, _);
+                            throw new Exception("Should not be here");
+                        });
+
+                    await Task.Delay(throttleDuration);
+                    await Task.Delay(100);
+
+                    // HIT (STALE): +1
+                    // FAIL-SAFE: +1
+                    await cache.GetOrSetAsync<int>(
+                        "foo",
+                        async (ctx, _) =>
+                        {
+                            await Task.Delay(1, _);
+                            throw new Exception("Sloths are cool");
+                        });
+
+
+                    // MISS: +1
+                    await cache.TryGetAsync<int>("bar");
+
+                    // LET THE THROTTLE DURATION PASS
+                    await Task.Delay(throttleDuration);
+                    await Task.Delay(100);
+
+                    // HIT (STALE): +1
+                    // FAIL-SAFE: +1
+                    _ = await cache.GetOrSetAsync<int>(
+                        "foo",
+                        async (ctx, _) =>
+                        {
+                            await Task.Delay(1, _);
+                            throw new Exception("Sloths are cool");
+                        });
+
+                    // REMOVE: +1
+                    await cache.RemoveAsync("foo");
+
+                    // REMOVE: +1
+                    await cache.RemoveAsync("bar");
+
+                    await Task.Delay(TimeSpan.FromSeconds(5));
+
+                    // REMOVE HANDLERS
+                    appMetricsProvider.Stop(cache);
+
+                    // Let EventListener poll for data
+                    await Task.Delay(1000);
+
+                    var messages = reporter.Messages.ToList();
+
+                    Assert.Equal(3, GetMetric(messages, SemanticConventions.Instance().CacheMissTagValue));
+                    Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
+                    Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
+                    Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
+                    Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheRemovedTagValue));
+                    Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheFailSafeActivateTagValue));
+                }
+            }
+        }
+
+        [Fact]
         public async Task TryGetStaleFailSafe()
         {
             var duration = TimeSpan.FromSeconds(2);
@@ -245,6 +371,99 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
             }
         }
 
+        [Fact]
+        public async Task TryGetStaleFailSafeAdaptive()
+        {
+            var duration = TimeSpan.FromMinutes(2);
+            var maxDuration = TimeSpan.FromDays(1);
+            var throttleDuration = TimeSpan.FromSeconds(1);
+            var softTimeout = TimeSpan.FromMilliseconds(100);
+            var hardTimeout = TimeSpan.FromMilliseconds(500);
+            var adaptiveDuration = TimeSpan.FromSeconds(2);
+
+            using (var memoryCache = new MemoryCache(new MemoryCacheOptions()))
+            {
+                var reporter = new TestReporter(_testOutputHelper);
+                reporter.Formatter = new MetricsJsonOutputFormatter();
+
+                var appMetrics = new MetricsBuilder()
+                    .Configuration.Configure(
+                        options =>
+                        {
+                            options.DefaultContextLabel = "appMetricsContextLabel";
+                        })
+                    .Report.Using(reporter)
+                    .Build();
+
+
+                using (var cache = new ZiggyCreatures.Caching.Fusion.FusionCache(
+                    new FusionCacheOptions(),
+                    memoryCache))
+                using (var metricsReporterService =
+                    new MetricsReporterBackgroundService(appMetrics, appMetrics.Options, appMetrics.Reporters, new Mock<IHostApplicationLifetime>().Object))
+                {
+                    cache.DefaultEntryOptions.Duration = duration;
+                    cache.DefaultEntryOptions.IsFailSafeEnabled = true;
+                    cache.DefaultEntryOptions.FailSafeMaxDuration = maxDuration;
+                    cache.DefaultEntryOptions.FailSafeThrottleDuration = throttleDuration;
+                    cache.DefaultEntryOptions.FactorySoftTimeout = softTimeout;
+                    cache.DefaultEntryOptions.FactoryHardTimeout = hardTimeout;
+
+                    var appMetricsProvider = new AppMetricsProvider("testCacheName", appMetrics);
+                    appMetricsProvider.Start(cache);
+                    await metricsReporterService.StartAsync(CancellationToken.None);
+
+
+                    // SET: +1
+                    cache.GetOrSet<int>("foo", (ctx, _) =>
+                    {
+                        // Duration set by factory return value
+                        ctx.Options.SetDuration(adaptiveDuration).SetFailSafe(true);
+
+                        return 42;
+                    });
+
+                    // HIT: +1
+                    cache.GetOrSet<int>("foo", (ctx, _) =>
+                    {
+                        // Duration overriden in factory from minutes to seconds.
+                        ctx.Options.SetDuration(adaptiveDuration).SetFailSafe(true);
+
+                        return 42;
+                    });
+
+                    // LET IT BECOME STALE
+                    Thread.Sleep(adaptiveDuration);
+
+                    // HIT (STALE): +1
+                    cache.GetOrSet<int>("foo", (ctx, _) =>
+                    {
+                        Thread.Sleep(throttleDuration);
+                        // Duration overriden in factory from minutes to seconds.
+                        ctx.Options.SetDuration(adaptiveDuration).SetFailSafe(true);
+
+                        return 42;
+                    });
+                    
+                    // REMOVE HANDLERS
+                    appMetricsProvider.Stop(cache);
+
+                    // Let EventListener poll for data
+                    await Task.Delay(1000);
+
+                    var messages = reporter.Messages.ToList();
+
+                    // foreach (var message in messages)
+                    // {
+                    //     _testOutputHelper.WriteLine(message.ToString());
+                    // }
+
+                    Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
+                    Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
+                    Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
+                }
+            }
+        }
 
         [Fact]
         public async Task BackgroundFailSafeAsync()
