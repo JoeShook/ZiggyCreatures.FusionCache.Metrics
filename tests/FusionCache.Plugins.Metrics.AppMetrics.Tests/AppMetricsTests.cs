@@ -40,8 +40,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
             Assert.Throws<ArgumentNullException>(() => new AppMetricsProvider(null, appMetrics));
 
         }
-
-
+        
         [Theory]
         [InlineData(false)]
         [InlineData(true)]
@@ -608,8 +607,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
                 }
             }
         }
-
-
+        
         [Fact]
         public async Task EvictExpiredCapacityAsync()
         {
