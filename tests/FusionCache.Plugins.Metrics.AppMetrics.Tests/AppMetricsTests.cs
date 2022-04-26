@@ -432,7 +432,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
                     });
 
                     // LET IT BECOME STALE
-                    Thread.Sleep(adaptiveDuration);
+                    Thread.Sleep(TimeSpan.FromSeconds(3));
 
                     // HIT (STALE): +1
                     cache.GetOrSet<int>("foo", (ctx, _) =>
