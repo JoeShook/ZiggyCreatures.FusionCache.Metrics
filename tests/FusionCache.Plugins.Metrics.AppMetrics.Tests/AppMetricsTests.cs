@@ -42,8 +42,10 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
         }
 
 
-        [Fact]
-        public async Task EntryEventsWorkAsync()
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public async Task EntryEventsWorkAsync(bool adaptive)
         {
             var duration = TimeSpan.FromSeconds(2);
             var maxDuration = TimeSpan.FromDays(1);
@@ -104,7 +106,19 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
 
                     // HIT (STALE): +1
                     // FAIL-SAFE: +1
-                    _ = await cache.GetOrSetAsync<int>("foo", _ => throw new Exception("Sloths are cool"));
+                    if (adaptive)
+                    {
+                        _ = await cache.GetOrSetAsync<int>(
+                            "foo",
+                            async (ctx, _) =>
+                            {
+                                throw new Exception("Sloths are cool");
+                            });
+                    }
+                    else
+                    {
+                        _ = await cache.GetOrSetAsync<int>("foo", _ => throw new Exception("Sloths are cool"));
+                    }
 
                     // MISS: +1
                     await cache.TryGetAsync<int>("bar");
@@ -115,7 +129,19 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
 
                     // HIT (STALE): +1
                     // FAIL-SAFE: +1
-                    _ = await cache.GetOrSetAsync<int>("foo", _ => throw new Exception("Sloths are cool"));
+                    if (adaptive)
+                    {
+                        _ = await cache.GetOrSetAsync<int>(
+                            "foo",
+                            async (ctx, _) =>
+                            {
+                                throw new Exception("Sloths are cool");
+                            });
+                    }
+                    else
+                    {
+                        _ = await cache.GetOrSetAsync<int>("foo", _ => throw new Exception("Sloths are cool"));
+                    }
 
                     // REMOVE: +1
                     await cache.RemoveAsync("foo");

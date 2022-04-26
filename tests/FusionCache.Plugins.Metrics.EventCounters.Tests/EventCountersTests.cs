@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.VisualStudio.TestPlatform.Common.DataCollection;
 using Xunit;
 using Xunit.Abstractions;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
@@ -198,8 +199,10 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
         }
 
 
-        [Fact]
-        public async Task EntryEventsWorkAsync()
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public async Task EntryEventsWorkAsync(bool adaptive)
         {
             var duration = TimeSpan.FromSeconds(2);
             var maxDuration = TimeSpan.FromDays(1);
@@ -246,7 +249,19 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
 
                 // HIT (STALE): +1
                 // FAIL-SAFE: +1
-                _ = await cache.GetOrSetAsync<int>("foo", _ => throw new Exception("Sloths are cool"));
+                if (adaptive)
+                {
+                    _ = await cache.GetOrSetAsync<int>(
+                        "foo",
+                        async (ctx, _) =>
+                        {
+                            throw new Exception("Sloths are cool");
+                        });
+                }
+                else
+                {
+                    _ = await cache.GetOrSetAsync<int>("foo", _ => throw new Exception("Sloths are cool"));
+                }
 
                 // MISS: +1
                 await cache.TryGetAsync<int>("bar");
@@ -257,7 +272,19 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
 
                 // HIT (STALE): +1
                 // FAIL-SAFE: +1
-                _ = await cache.GetOrSetAsync<int>("foo", _ => throw new Exception("Sloths are cool"));
+                if (adaptive)
+                {
+                    _ = await cache.GetOrSetAsync<int>(
+                        "foo",
+                        async (ctx, _) =>
+                        {
+                            throw new Exception("Sloths are cool");
+                        });
+                }
+                else
+                {
+                    _ = await cache.GetOrSetAsync<int>("foo", _ => throw new Exception("Sloths are cool"));
+                }
 
                 // REMOVE: +1
                 await cache.RemoveAsync("foo");
@@ -338,6 +365,82 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
         }
 
         [Fact]
+        public void TryGetStaleFailSafeAdaptive()
+        {
+            var duration = TimeSpan.FromMinutes(2);
+            var maxDuration = TimeSpan.FromDays(1);
+            var throttleDuration = TimeSpan.FromSeconds(3);
+
+            var adaptiveDuration = TimeSpan.FromSeconds(2);
+
+            using (var memoryCache = new MemoryCache(new MemoryCacheOptions()))
+            using (var eventSource = new FusionCacheEventSource("testCacheName", memoryCache))
+            using (var listener = new TestEventListener())
+            using (var cache = new FusionCache(
+                new FusionCacheOptions() { EnableSyncEventHandlersExecution = true },
+                memoryCache))
+            {
+                const long AllKeywords = -1;
+                listener.EnableEvents(eventSource, EventLevel.Verbose, (EventKeywords)AllKeywords,
+                    new Dictionary<string, string>
+                    {
+                        ["EventCounterIntervalSec"] = "1"
+                    });
+
+                cache.DefaultEntryOptions.Duration = duration;
+                cache.DefaultEntryOptions.IsFailSafeEnabled = true;
+                cache.DefaultEntryOptions.FailSafeMaxDuration = maxDuration;
+                cache.DefaultEntryOptions.FailSafeThrottleDuration = throttleDuration;
+
+                // INITIAL, NON-TRACKED SET
+                cache.GetOrSet<int>("foo", (ctx, _) =>
+                {
+                    // Duration set by factory return value
+                    ctx.Options.SetDuration(adaptiveDuration).SetFailSafe(true);
+
+                    return 42;
+                });
+
+                eventSource.Start(cache);
+
+                // HIT: +1
+                cache.GetOrSet<int>("foo", (ctx, _) =>
+                {
+                    // Duration set by factory return value
+                    ctx.Options.SetDuration(adaptiveDuration).SetFailSafe(true);
+
+                    return 42;
+                });
+
+                // LET IT BECOME STALE
+                Thread.Sleep(adaptiveDuration);
+
+                // HIT (STALE): +1
+                
+                //cache.TryGet<int>("foo"); 
+
+                cache.GetOrSet<int>("foo", (ctx, _) =>
+                {
+                    // Duration set by factory return value
+                    ctx.Options.SetDuration(adaptiveDuration).SetFailSafe(true);
+
+                    return 42;
+                });
+
+                // REMOVE HANDLERS
+                eventSource.Stop(cache);
+
+                // Let EventListener poll for data
+                Thread.Sleep(1500);
+
+                var messages = listener.Messages.ToList();
+
+                Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
+                Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
+            }
+        }
+
+        [Fact]
         public async Task BackgroundFailSafeAsync()
         {
             var duration = TimeSpan.FromSeconds(2);
@@ -395,6 +498,95 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
                 _ = await cache.GetOrSetAsync<int>("foo", async _ =>
                 {
                     await Task.Delay(hardTimeout, _);
+                    throw new Exception("Sloths are cool");
+                });
+
+
+                // Let EventListener poll for data
+                await Task.Delay(3500);
+
+                var messages = listener.Messages.ToList();
+
+                Assert.Equal(0, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
+                Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheFailSafeActivateTagValue));
+                Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
+                Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
+                Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheBackgroundRefreshedTagValue));
+                Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheBackgroundFailedRefreshedTagValue));
+            }
+        }
+
+        [Fact]
+        public async Task BackgroundFailSafeAdaptiveAsync()
+        {
+            var duration = TimeSpan.FromMinutes(2);
+            var softTimeout = TimeSpan.FromMilliseconds(100);
+            var hardTimeout = TimeSpan.FromMilliseconds(500);
+            var maxDuration = TimeSpan.FromDays(1);
+            var throttleDuration = TimeSpan.FromSeconds(3);
+
+            using (var memoryCache = new MemoryCache(new MemoryCacheOptions()))
+            using (var eventSource = new FusionCacheEventSource("testCacheName", memoryCache))
+            using (var listener = new TestEventListener())
+            using (var cache = new FusionCache(
+                new FusionCacheOptions() { EnableSyncEventHandlersExecution = true },
+                memoryCache))
+            {
+                const long AllKeywords = -1;
+                listener.EnableEvents(eventSource, EventLevel.Verbose, (EventKeywords)AllKeywords,
+                    new Dictionary<string, string>
+                    {
+                        ["EventCounterIntervalSec"] = "1"
+                    });
+
+                cache.DefaultEntryOptions.Duration = duration;
+                cache.DefaultEntryOptions.IsFailSafeEnabled = true;
+                cache.DefaultEntryOptions.FailSafeMaxDuration = maxDuration;
+                cache.DefaultEntryOptions.FactorySoftTimeout = softTimeout;
+                cache.DefaultEntryOptions.FactoryHardTimeout = hardTimeout;
+                cache.DefaultEntryOptions.FailSafeThrottleDuration = throttleDuration;
+
+                eventSource.Start(cache);
+
+                // INITIAL
+                // SET: +1
+                await cache.GetOrSetAsync<int>("foo", async (ctx, _) =>
+                {
+                    await Task.Delay(1, _);
+                    // Duration set by factory return value
+                    ctx.Options.SetDuration(TimeSpan.FromSeconds(2));
+
+                    return 42;
+                });
+
+                // LET IT BECOME STALE
+                await Task.Delay(throttleDuration);
+
+                // HIT (STALE): +1
+                // FAIL-SAFE: +1
+                _ = await cache.GetOrSetAsync<int>("foo", async (ctx, _) =>
+                {
+                    await Task.Delay(hardTimeout, _);
+                    // Duration set by factory return value
+                    ctx.Options.SetDuration(TimeSpan.FromSeconds(2));
+
+                    return 42;
+                });
+
+
+                //await cache.SetAsync<int>("foo", 42);
+                // LET IT BECOME STALE
+                await Task.Delay(throttleDuration);
+
+                // HIT (STALE): +1
+                // FAIL-SAFE: +1
+                // STALE_REFRESH_ERROR: +1
+                _ = await cache.GetOrSetAsync<int>("foo", async (ctx, _) =>
+                {
+                    await Task.Delay(hardTimeout, _);
+                    // Duration set by factory return value
+                    ctx.Options.SetDuration(TimeSpan.FromSeconds(2));
+
                     throw new Exception("Sloths are cool");
                 });
 
