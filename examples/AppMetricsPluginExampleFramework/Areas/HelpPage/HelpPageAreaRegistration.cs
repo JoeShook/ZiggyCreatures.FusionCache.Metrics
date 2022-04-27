@@ -1,6 +1,5 @@
 using System.Web.Http;
 using System.Web.Mvc;
-using AppMetricsPluginExample.Areas.HelpPage.App_Start;
 
 namespace AppMetricsPluginExample.Areas.HelpPage
 {
