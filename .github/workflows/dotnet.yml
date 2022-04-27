@@ -56,38 +56,38 @@ jobs:
         gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}
     - name: Print code coverage FusionCache.Plugins.Metrics.AppMetrics
       run: echo "Code coverage percentage for FusionCache.Plugins.Metrics.AppMetrics ${{steps.create_coverage_badge_AppMetrics.outputs.percentage}}%"
-    - name: Pack
-      run: |
-        dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/FusionCache.Plugins.Metrics.Core/FusionCache.Plugins.Metrics.Core.csproj
-        dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/FusionCache.Plugins.Metrics.EventCounters/FusionCache.Plugins.Metrics.EventCounters.csproj
-        dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/FusionCache.Plugins.Metrics.AppMetrics/FusionCache.Plugins.Metrics.AppMetrics.csproj
-    - name: Upload Artifact for Metrics.Core
-      uses: actions/upload-artifact@v2
-      with:
-        name: nupkg
-        path: src/FusionCache.Plugins.Metrics.Core/bin/Release/*.symbols.nupkg
-    - name: Upload Artifact for EventCounters
-      uses: actions/upload-artifact@v2
-      with:
-        name: nupkg
-        path: src/FusionCache.Plugins.Metrics.EventCounters/bin/Release/*.symbols.nupkg
-    - name: Upload Artifact for AppMetrics.Plugins
-      uses: actions/upload-artifact@v2
-      with:
-        name: nupkg
-        path: src/FusionCache.Plugins.Metrics.AppMetrics/bin/Release/*.symbols.nupkg
+    # - name: Pack
+    #   run: |
+    #     dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/FusionCache.Plugins.Metrics.Core/FusionCache.Plugins.Metrics.Core.csproj
+    #     dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/FusionCache.Plugins.Metrics.EventCounters/FusionCache.Plugins.Metrics.EventCounters.csproj
+    #     dotnet pack -v normal -c Release --no-restore --include-source -p:PackageVersion=$GITHUB_RUN_ID src/FusionCache.Plugins.Metrics.AppMetrics/FusionCache.Plugins.Metrics.AppMetrics.csproj
+    # - name: Upload Artifact for Metrics.Core
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: nupkg
+    #     path: src/FusionCache.Plugins.Metrics.Core/bin/Release/*.symbols.nupkg
+    # - name: Upload Artifact for EventCounters
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: nupkg
+    #     path: src/FusionCache.Plugins.Metrics.EventCounters/bin/Release/*.symbols.nupkg
+    # - name: Upload Artifact for AppMetrics.Plugins
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: nupkg
+    #     path: src/FusionCache.Plugins.Metrics.AppMetrics/bin/Release/*.symbols.nupkg
   # see for inspiration::  https://dusted.codes/github-actions-for-dotnet-core-nuget-packages
-  prerelease:
-    needs: build
-    if: github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: nupkg
-      - name: Push to GitHub Feed
-        run: |
-          dotnet tool install gpr -g
-          ls ./nupkg
-          gpr push ./nupkg/*.nupkg -k $GITHUB_TOKEN --repository $REPOSITORY_URL          
+  # prerelease:
+  #   needs: build
+  #   if: github.ref == 'refs/heads/develop'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Download Artifact
+  #       uses: actions/download-artifact@v1
+  #       with:
+  #         name: nupkg
+  #     - name: Push to GitHub Feed
+  #       run: |
+  #         dotnet tool install gpr -g
+  #         ls ./nupkg
+  #         gpr push ./nupkg/*.nupkg -k $GITHUB_TOKEN --repository $REPOSITORY_URL          

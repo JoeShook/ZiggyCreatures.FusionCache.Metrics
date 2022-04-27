@@ -13,7 +13,6 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 using AppMetricsPluginExample.Areas.HelpPage.ModelDescriptions;
 using AppMetricsPluginExample.Areas.HelpPage.Models;
-using AppMetricsPluginExample.Areas.HelpPage.SampleGeneration;
 
 namespace AppMetricsPluginExample.Areas.HelpPage
 {
