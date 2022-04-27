@@ -6,19 +6,19 @@
 version: 2
 updates:
   - package-ecosystem: "nuget" # See documentation for possible values
-    directory: "/src" # Location of package manifests
+    directory: "/src/" # Location of package manifests
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10
     target-branch: "develop"
   - package-ecosystem: "nuget" # See documentation for possible values
-    directory: "/tests" # Location of package manifests
+    directory: "/tests/" # Location of package manifests
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10
     target-branch: "develop"  
   - package-ecosystem: "nuget" # See documentation for possible values
-    directory: "/benchmarks" # Location of package manifests
+    directory: "/benchmarks/" # Location of package manifests
     schedule:
       interval: "daily"
     open-pull-requests-limit: 10
