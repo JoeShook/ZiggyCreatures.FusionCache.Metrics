@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\FusionCache.Plugins.Metrics.OpenTelemetry\FusionCache.Plugins.Metrics.OpenTelemetry.csproj" />
+    <ProjectReference Include="..\..\AppMetricsPluginExampleFramework\AppMetricsPluginExampleFramework.csproj" />
     <ProjectReference Include="..\..\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj" />
   </ItemGroup>
 

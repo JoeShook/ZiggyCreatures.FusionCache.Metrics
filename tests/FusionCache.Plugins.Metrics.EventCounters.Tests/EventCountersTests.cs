@@ -253,6 +253,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
                         "foo",
                         async (ctx, _) =>
                         {
+                            await Task.Delay(1, _);
                             throw new Exception("Sloths are cool");
                         });
                 }
@@ -276,6 +277,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
                         "foo",
                         async (ctx, _) =>
                         {
+                            await Task.Delay(1, _);
                             throw new Exception("Sloths are cool");
                         });
                 }
@@ -757,10 +759,10 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
                 eventSource.Start(cache);
 
                 // INITIAL, NON-TRACKED SET
-                await cache.SetAsync<int>("foo", 42, options => options.FailSafeMaxDuration = TimeSpan.FromSeconds(5));
+                await cache.SetAsync<int>("foo", 42, options => options.FailSafeMaxDuration = TimeSpan.FromSeconds(2));
 
                 // LET IT BECOME STALE
-                await Task.Delay(TimeSpan.FromSeconds(10));
+                await Task.Delay(TimeSpan.FromSeconds(4));
                 
                 await cache.TryGetAsync<int>("foo"); // wake up the sloth
 
@@ -787,7 +789,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
             using (var eventSource = new FusionCacheEventSource("testCacheName", memoryCache))
             using (var listener = new TestEventListener())
             using (var cache = new FusionCache(
-                new FusionCacheOptions() {EnableSyncEventHandlersExecution = true},
+                new FusionCacheOptions(),
                 memoryCache))
             {
                 const long AllKeywords = -1;
@@ -798,7 +800,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
                     });
 
                 cache.DefaultEntryOptions.Duration = duration;
-                //cache.DefaultEntryOptions.SetSize(100);  // Doesn't respect this when sending in you own cache?
+                //cache.DefaultEntryOptions.SetSize(100);  // Doesn't respect this when sending in your own cache?
                 cache.DefaultEntryOptions.IsFailSafeEnabled = true;
                 cache.DefaultEntryOptions.FailSafeMaxDuration = maxDuration;
                 cache.DefaultEntryOptions.FactorySoftTimeout = softTimeout;
@@ -838,7 +840,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
                 // Ensure the newest items are in the cache.
                 // Can't assert perfection here.  The capacity behavior of MemoryCache is not perfect.
                 // One would expect the last 100 items to be in cache but typically I find about 95 items from the last 200 entered.
-                // Comment out the writeline to see for yourself.
+                // Comment out the WriteLine to see for yourself.
                 //
                 for (int i = 1999; i > -1; i--)
                 {
