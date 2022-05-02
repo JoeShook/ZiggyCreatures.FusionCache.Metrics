@@ -467,6 +467,8 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
 
                 // HIT (STALE): +1
                 cache.TryGet<int>("foo");
+                // HIT (STALE): +1
+                cache.TryGet<int>("foo");
 
                 // REMOVE HANDLERS
                 eventSource.Stop(cache);
@@ -477,7 +479,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
                 var messages = listener.Messages.ToList();
 
                 Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
-                Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
+                Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
             }
         }
 
@@ -546,6 +548,15 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
                     return 42;
                 });
 
+                // HIT (STALE): +1
+                cache.GetOrSet<int>("foo", (ctx, _) =>
+                {
+                    Thread.Sleep(throttleDuration);
+                    // Duration overriden in factory from minutes to seconds.
+                    ctx.Options.SetDuration(adaptiveDuration).SetFailSafe(true);
+
+                    return 42;
+                });
 
                 // REMOVE HANDLERS
                 eventSource.Stop(cache);
@@ -557,7 +568,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
 
                 Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
                 Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
-                Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
+                Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
             }
         }
 
