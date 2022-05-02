@@ -348,6 +348,8 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
 
                     // HIT (STALE): +1
                     cache.TryGet<int>("foo");
+                    // HIT (STALE): +1
+                    cache.TryGet<int>("foo");
 
                     await Task.Delay(TimeSpan.FromSeconds(5));
 
@@ -364,7 +366,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
                     //     _testOutputHelper.WriteLine(message.ToString());
                     // }
 
-                    Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
+                    Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
                     Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
                 }
             }
@@ -443,7 +445,16 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
 
                         return 42;
                     });
-                    
+                    // HIT (STALE): +1
+                    cache.GetOrSet<int>("foo", (ctx, _) =>
+                    {
+                        Thread.Sleep(throttleDuration);
+                        // Duration overriden in factory from minutes to seconds.
+                        ctx.Options.SetDuration(adaptiveDuration).SetFailSafe(true);
+
+                        return 42;
+                    });
+
                     // REMOVE HANDLERS
                     appMetricsProvider.Stop(cache);
 
@@ -459,7 +470,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
 
                     Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
                     Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
-                    Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
+                    Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
                 }
             }
         }
