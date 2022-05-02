@@ -46,6 +46,8 @@ public class StaleTests : BaseTest
 
         // HIT (STALE): +1
         cache.TryGet<int>("foo");
+        // HIT (STALE): +1
+        cache.TryGet<int>("foo");
 
         Thread.Sleep(600);
 
@@ -56,7 +58,7 @@ public class StaleTests : BaseTest
         Assert.Equal(1, metricPoint.GetSumLong());
 
         metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheStaleHitTagValue);
-        Assert.Equal(1, metricPoint.GetSumLong());
+        Assert.Equal(2, metricPoint.GetSumLong());
     }
 
     [Fact]
@@ -123,6 +125,16 @@ public class StaleTests : BaseTest
             return 42;
         });
 
+        // HIT (STALE): +1
+        cache.GetOrSet<int>("foo", (ctx, _) =>
+        {
+            Thread.Sleep(throttleDuration);
+            // Duration overriden in factory from minutes to seconds.
+            ctx.Options.SetDuration(adaptiveDuration).SetFailSafe(true);
+
+            return 42;
+        });
+
         Thread.Sleep(600);
 
         // Assert
@@ -135,6 +147,6 @@ public class StaleTests : BaseTest
         Assert.Equal(1, metricPoint.GetSumLong());
 
         metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheStaleHitTagValue);
-        Assert.Equal(1, metricPoint.GetSumLong());
+        Assert.Equal(2, metricPoint.GetSumLong());
     }
 }

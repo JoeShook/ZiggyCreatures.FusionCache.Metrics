@@ -2,7 +2,7 @@ name: .NET
 
 on:
   push:
-    branches: [ main, develop, feature/adaptive_caching ]
+    branches: [ main, develop, otelWithExample ]
   pull_request:
     branches: [ main ]
 
