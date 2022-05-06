@@ -1,0 +1,73 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+        cors:
+          allowed_origins: "*"
+          allowed_headers: "*"
+  zipkin:
+    cors:
+      allowed_origins: "*"
+      allowed_headers: "*"
+
+# Dummy receiver that's never used, because a pipeline is required to have one.
+  otlp/spanmetrics:
+    protocols:
+      grpc:
+        endpoint: "localhost:65535"
+
+
+exporters:
+  jaeger:   #https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/jaegerexporter
+    endpoint: jaeger-all-in-one:14250
+    tls:
+      insecure: true
+  prometheus:
+    endpoint: :8889
+  otlp:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+    format: json
+    labels:
+      resource:
+        service.name: "service_name"
+        service.instance.id: "service_instance_id"
+  logging:
+    loglevel: debug
+
+processors:
+  batch:
+  spanmetrics:
+    metrics_exporter: prometheus
+
+service:
+  pipelines:
+    metrics:
+      receivers: [ otlp ]
+      exporters: [ prometheus ]
+    traces:
+      receivers: [ otlp, zipkin ]
+      processors: [spanmetrics, batch]
+      exporters: [ otlp, jaeger ]
+    logs:
+      receivers: [ otlp ]
+      exporters: [ loki, logging ]
+    # The exporter name in this pipeline must match the spanmetrics.metrics_exporter name.
+    # The receiver is just a dummy and never used; added to pass validation requiring at least one receiver in a pipeline.
+    metrics/spanmetrics:
+      receivers: [otlp/spanmetrics]
+      exporters: [prometheus]
+  telemetry:
+    logs:
+      level: "debug"
+
+  extensions: [health_check, zpages]
+  
+extensions:
+      health_check: {}
+      zpages: {}
+      

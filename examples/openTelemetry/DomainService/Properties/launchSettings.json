@@ -1,14 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "EmailRouteService": {
+    "DomainService": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:5211",
+      "applicationUrl": "http://localhost:5298",
       "dotnetRunMessages": true
     },
     "Docker": {

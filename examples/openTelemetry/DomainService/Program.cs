@@ -1,27 +1,26 @@
 using System.Reflection;
-using EmailRouteService.Services;
 using Microsoft.Extensions.Caching.Memory;
 using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using TelemetryExampleServices;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Plugins;
-using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry;
 
 var builder = WebApplication.CreateBuilder(args);
-var serviceName = "EmailRouteService";
+var serviceName = "DomainService";
 
 // OpenTelemetry
 var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown";
 
-var resourceBuilder  = ResourceBuilder
+var resourceBuilder = ResourceBuilder
     .CreateDefault()
     .AddService(
         serviceName,
-        serviceVersion: assemblyVersion, 
+        serviceVersion: assemblyVersion,
         serviceInstanceId: Environment.MachineName);
 
 // Traces
@@ -44,7 +43,7 @@ builder.Services.AddOpenTelemetryTracing(options =>
 builder.Services
     .Configure<AspNetCoreInstrumentationOptions>(
         builder.Configuration.GetSection("AspNetCoreInstrumentation")
-        );
+    );
 
 // Logging
 builder.Logging.ClearProviders();
@@ -52,7 +51,7 @@ builder.Logging.ClearProviders();
 builder.Logging.AddOpenTelemetry(options =>
 {
     options.SetResourceBuilder(resourceBuilder);
-    
+
     options.AddOtlpExporter(otlpOptions =>
     {
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
@@ -85,65 +84,22 @@ builder.Services.AddOpenTelemetryMetrics(options =>
 
 // Add services to the container.
 
-var emailCache = new MemoryCache(new MemoryCacheOptions());
-var hostNameCache = new MemoryCache(new MemoryCacheOptions());
-
-//
-// Cache called "domain"
-//
-// Register FusionCacheEventSource as a IFusionCachePlugin.
-// Note that a MemoryCache object must be created outside of AddFusionCache extension method so that
-// FusionCacheEventSource is holding the same object as FusionCache to enabled cache count reporting.
-// See line 193 in FusionCacheEventSource.cs
-//
-builder.Services.AddSingleton<IMemoryCache>(hostNameCache);
-builder.Services.AddSingleton<IFusionCachePlugin>(new FusionMeter("domain", hostNameCache));
+var memoryCache = new MemoryCache(new MemoryCacheOptions());
+builder.Services.AddSingleton<IMemoryCache>(memoryCache);
+builder.Services.AddSingleton<IFusionCachePlugin>(new FusionMeter("domain", memoryCache));
 builder.Services.AddFusionCache(options =>
     options.DefaultEntryOptions = new FusionCacheEntryOptions
     {
-        Duration = TimeSpan.FromSeconds(1),
-        JitterMaxDuration = TimeSpan.FromMilliseconds(200)
+        Duration = TimeSpan.FromSeconds(60)
     }
-        .SetFailSafe(true, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(1))
+        .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(5))
         .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
-    );
-
-//
-// Cache called "email"
-//
-// Can't register IFusionCachePlugin here because it is already registered above.  
-// This is a second cache and a second instance of FusionMeter to collect metrics for a 
-// different cache called "email".
-//
-
-builder.Services.AddSingleton(serviceProvider =>
-{
-    var logger = serviceProvider.GetService<ILogger<ZiggyCreatures.Caching.Fusion.FusionCache>>();
-
-    var fusionCacheOptions = new FusionCacheOptions
-    {
-        DefaultEntryOptions = new FusionCacheEntryOptions
-            {
-                Duration = TimeSpan.FromSeconds(1),
-                JitterMaxDuration = TimeSpan.FromMilliseconds(200)
-            }
-            .SetFailSafe(true, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(1))
-            .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
-    };
-
-    var metrics = new FusionMeter("email", emailCache);
-    var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, emailCache, logger);
-    metrics.Start(fusionCache);
-
-    return new DnsServiceCache(fusionCache);
-});
+);
 
 
 
 
-// Register typed client https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-6.0#typed-clients
-builder.Services.AddHttpClient<DnsService>();
-builder.Services.AddHttpClient<DomainService>();
+builder.Services.AddSingleton<IDataManager>(new DataManager());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

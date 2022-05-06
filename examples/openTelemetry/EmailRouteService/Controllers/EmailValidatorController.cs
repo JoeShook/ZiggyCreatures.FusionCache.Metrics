@@ -1,4 +1,5 @@
 ﻿using System.Net.Mail;
+using EmailRouteService.Services;
 using FusionCache.Example.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 using ZiggyCreatures.Caching.Fusion;
@@ -6,59 +7,99 @@ using ZiggyCreatures.Caching.Fusion;
 namespace EmailRouteService.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class EmailValidatorController : ControllerBase
     {
+        private readonly IFusionCache? _domainCache;
+        private readonly DnsServiceCache _dnsServiceCache;
+        private readonly DnsService _dnsService;
+        private readonly DomainService _domainService;
+        private readonly ILogger<EmailValidatorController> _logger;
         
-        private readonly IFusionCache _cache;
 
-        public EmailValidatorController(IFusionCache cache = null)
+        public EmailValidatorController(
+            DnsService dnsService, 
+            DomainService domainService,
+            ILogger<EmailValidatorController> logger,
+            IFusionCache? cache = null,
+            DnsServiceCache? dnsServiceCache = null)
         {
-            _cache = cache;
+            _domainCache = cache;
+            _dnsServiceCache = dnsServiceCache;
+            _dnsService = dnsService;
+            _domainService = domainService;
+            _logger = logger;
+
         }
+
 
         [Route("EmailRoute/{emailAddress}")]
         [HttpGet]
-        public async Task<IActionResult> GetEmailRoute([FromRoute] string emailAddress, CancellationToken cancellationToken)
+        public async Task<IActionResult?> GetEmailRoute([FromRoute] string emailAddress, CancellationToken ct)
         {
-            if (cancellationToken.IsCancellationRequested)
+            if (ct.IsCancellationRequested)
             {
+                _logger.LogInformation("Cancelled by cancellationToken");
                 return null;
             }
 
-            EmailToIpData result;
+            EmailToIpData? result;
             var hostPart = GetHostPart(emailAddress);
 
             if (hostPart == null)
             {
                 return BadRequest("Invalid email address.");
             }
+            
+            if (_domainCache != null)
+            {
+                var domain = await _domainCache.GetOrSetAsync(
+                    hostPart,
+                    _ => _domainService.GetDomainCertData(hostPart, _), 
+                    token: ct);
+                
+                if (domain != null && domain.Enabled)
+                {
+                    // Adaptive Caching.  Duration set by ttl of data from dns service
+                    result = await _dnsServiceCache.FusionCache.GetOrSetAsync(
+                        emailAddress, async (ctx, ct) =>
+                        {
+                            var emailToIpData = await _dnsService.GetDnsData(emailAddress, ct);
+                            if (emailToIpData != null)
+                            {
+                                ctx.Options.SetDurationMs(emailToIpData.Ttl);
+                            }
 
-            // if (_cache != null)
-            // {
-            //     var domain = await _cache.GetOrSetAsync(
-            //         hostPart,
-            //         _ => _dataManager.GetDomain(hostPart, _), 
-            //         token: cancellationToken);
-            //     
-            //     if (domain != null && domain.Enabled)
-            //     {
-            //         result = await _emailService.GetEmailRoute(emailAddress, cancellationToken);
-            //     }
-            //     else
-            //     {
-            //         return NotFound();
-            //     }
-            // }
-            // else
-            // {
-            //     result = await _dataManager.GetEmailRoute(emailAddress, cancellationToken);
-            // }
+                            return emailToIpData;
+                        },
+                        options => options.SetDuration(TimeSpan.FromSeconds(10)) // DEFAULT: 10 SEC
+                    );
+                }
+                else
+                {
+                    _logger.LogInformation("{emailAddress} not found", emailAddress);
+                    return NotFound();
+                }
+            }
+            else
+            {
+                var domain = await _domainService.GetDomainCertData(hostPart, ct);
 
-            return Ok();
+                if (domain != null && domain.Enabled)
+                {
+                    result = await _dnsService.GetDnsData(emailAddress, ct);
+                }
+                else
+                {
+                    _logger.LogInformation("{emailAddress} not found", emailAddress);
+                    return NotFound();
+                }
+            }
+
+            return Ok(result);
         }
 
-        private static string GetHostPart(string emailAddress)
+        private string? GetHostPart(string emailAddress)
         {
             try
             {
@@ -66,7 +107,7 @@ namespace EmailRouteService.Controllers
             }
             catch
             {
-                //log
+                _logger.LogError("Invalid emailAddress: {emailAddress}", emailAddress);
             }
 
             return null;
@@ -74,23 +115,29 @@ namespace EmailRouteService.Controllers
 
         [Route("Domain/{domainName}")]
         [HttpGet]
-        public async Task<IActionResult> GetDomain([FromRoute] string domainName, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetDomain([FromRoute] string domainName, CancellationToken ct)
         {
-            DomainCertData result;
+            DomainCertData? result;
 
-            // if (_cache != null)
-            // {
-            //     result = await _cache.GetOrSetAsync(
-            //         domainName, 
-            //         _ => _dataManager.GetDomain(domainName, _), 
-            //         token: cancellationToken);
-            // }
-            // else
-            // {
-            //     result = await _dataManager.GetDomain(domainName, cancellationToken);
-            // }
+            if (_domainCache != null)
+            {
+                result = await _domainCache.GetOrSetAsync(
+                    domainName, 
+                    _ => _domainService.GetDomainCertData(domainName, _), 
+                    token: ct);
+            }
+            else
+            {
+                result = await _domainService.GetDomainCertData(domainName, ct);
+            }
 
-            return Ok();
+            if (result == null)
+            {
+                _logger.LogInformation($"{domainName} not found");
+                return NotFound();
+            }
+
+            return Ok(result);
         }
     }
 }

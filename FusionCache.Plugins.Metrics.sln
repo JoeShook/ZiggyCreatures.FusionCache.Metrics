@@ -53,13 +53,39 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppMetricsPluginExampleDotN
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "opentelemetry", "opentelemetry", "{298F7E7F-BE15-408B-AA26-347EE3811556}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailRouteService", "examples\openTelemetry\EmailRouteService\EmailRouteService.csproj", "{7F34C29C-BB8B-4738-9AEC-A356E7590401}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.Plugins.Metrics.OpenTelemetry", "src\FusionCache.Plugins.Metrics.OpenTelemetry\FusionCache.Plugins.Metrics.OpenTelemetry.csproj", "{C3D35539-6C64-4DFA-8347-F7D72A06A8B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.Plugins.Metrics.OpenTelemetry.Tests", "tests\FusionCache.Plugins.Metrics.OpenTelemetry.Tests\FusionCache.Plugins.Metrics.OpenTelemetry.Tests.csproj", "{58E424DC-1D55-4707-A000-D6A88FA66EB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FusionCache.Plugins.Metrics.OpenTelemetry.Benchmarks", "benchmarks\FusionCache.Plugins.Metrics.OpenTelemetry.Benchmarks\FusionCache.Plugins.Metrics.OpenTelemetry.Benchmarks.csproj", "{AC31A2E9-CE16-4BE0-9FA9-6D910AB8640B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.Plugins.Metrics.OpenTelemetry.Benchmarks", "benchmarks\FusionCache.Plugins.Metrics.OpenTelemetry.Benchmarks\FusionCache.Plugins.Metrics.OpenTelemetry.Benchmarks.csproj", "{AC31A2E9-CE16-4BE0-9FA9-6D910AB8640B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{695C6C26-8455-4CBD-9C71-FD54080D46DB}"
+	ProjectSection(SolutionItems) = preProject
+		examples\openTelemetry\docs\README.md = examples\openTelemetry\docs\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{DAA381A3-84CF-4B8E-8FDB-397D16BB0A30}"
+	ProjectSection(SolutionItems) = preProject
+		examples\openTelemetry\docs\images\MultiServiceExampleSequence.png = examples\openTelemetry\docs\images\MultiServiceExampleSequence.png
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainService", "examples\openTelemetry\DomainService\DomainService.csproj", "{489BE803-AE9E-4895-AFB7-C4E771E177D7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnsService", "examples\openTelemetry\DnsService\DnsService.csproj", "{E4114B72-2EF1-4C0D-BCBD-A1C2B3AA2519}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailRouteService", "examples\openTelemetry\EmailRouteService\EmailRouteService.csproj", "{74D6F597-E8FA-40EF-91C3-E7E0565DF750}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelemetryExampleServices", "examples\openTelemetry\TelemetryExampleServices\TelemetryExampleServices.csproj", "{CD41241C-EC8F-4719-BF81-B94B190A685C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{ADC1DC53-BB72-435D-9AA1-69837B48AA38}"
+	ProjectSection(SolutionItems) = preProject
+		examples\openTelemetry\Docker\collector.yaml = examples\openTelemetry\Docker\collector.yaml
+		examples\openTelemetry\Docker\docker-compose.yml = examples\openTelemetry\Docker\docker-compose.yml
+		examples\openTelemetry\Docker\grafana-datasources.yaml = examples\openTelemetry\Docker\grafana-datasources.yaml
+		examples\openTelemetry\Docker\jaeger-ui.json = examples\openTelemetry\Docker\jaeger-ui.json
+		examples\openTelemetry\Docker\prometheus.yml = examples\openTelemetry\Docker\prometheus.yml
+		examples\openTelemetry\Docker\tempo.yaml = examples\openTelemetry\Docker\tempo.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,10 +141,6 @@ Global
 		{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F34C29C-BB8B-4738-9AEC-A356E7590401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F34C29C-BB8B-4738-9AEC-A356E7590401}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F34C29C-BB8B-4738-9AEC-A356E7590401}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F34C29C-BB8B-4738-9AEC-A356E7590401}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C3D35539-6C64-4DFA-8347-F7D72A06A8B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C3D35539-6C64-4DFA-8347-F7D72A06A8B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3D35539-6C64-4DFA-8347-F7D72A06A8B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -131,6 +153,22 @@ Global
 		{AC31A2E9-CE16-4BE0-9FA9-6D910AB8640B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC31A2E9-CE16-4BE0-9FA9-6D910AB8640B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC31A2E9-CE16-4BE0-9FA9-6D910AB8640B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{489BE803-AE9E-4895-AFB7-C4E771E177D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{489BE803-AE9E-4895-AFB7-C4E771E177D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{489BE803-AE9E-4895-AFB7-C4E771E177D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{489BE803-AE9E-4895-AFB7-C4E771E177D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4114B72-2EF1-4C0D-BCBD-A1C2B3AA2519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4114B72-2EF1-4C0D-BCBD-A1C2B3AA2519}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4114B72-2EF1-4C0D-BCBD-A1C2B3AA2519}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4114B72-2EF1-4C0D-BCBD-A1C2B3AA2519}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74D6F597-E8FA-40EF-91C3-E7E0565DF750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74D6F597-E8FA-40EF-91C3-E7E0565DF750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74D6F597-E8FA-40EF-91C3-E7E0565DF750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74D6F597-E8FA-40EF-91C3-E7E0565DF750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD41241C-EC8F-4719-BF81-B94B190A685C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD41241C-EC8F-4719-BF81-B94B190A685C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD41241C-EC8F-4719-BF81-B94B190A685C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD41241C-EC8F-4719-BF81-B94B190A685C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -151,10 +189,16 @@ Global
 		{5286DC47-E676-4819-9632-07071F229117} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
 		{C3A5D0A4-1765-4105-B0DC-19C380F9C1CF} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
 		{298F7E7F-BE15-408B-AA26-347EE3811556} = {3B2A9861-652E-4A23-AA07-3B5A6ACF1859}
-		{7F34C29C-BB8B-4738-9AEC-A356E7590401} = {298F7E7F-BE15-408B-AA26-347EE3811556}
 		{C3D35539-6C64-4DFA-8347-F7D72A06A8B8} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
 		{58E424DC-1D55-4707-A000-D6A88FA66EB0} = {A8A86176-AAA6-4CB3-9172-16A841E32138}
 		{AC31A2E9-CE16-4BE0-9FA9-6D910AB8640B} = {8A6243FE-A9BE-4DE1-8CB1-EAA510B88BC9}
+		{695C6C26-8455-4CBD-9C71-FD54080D46DB} = {298F7E7F-BE15-408B-AA26-347EE3811556}
+		{DAA381A3-84CF-4B8E-8FDB-397D16BB0A30} = {695C6C26-8455-4CBD-9C71-FD54080D46DB}
+		{489BE803-AE9E-4895-AFB7-C4E771E177D7} = {298F7E7F-BE15-408B-AA26-347EE3811556}
+		{E4114B72-2EF1-4C0D-BCBD-A1C2B3AA2519} = {298F7E7F-BE15-408B-AA26-347EE3811556}
+		{74D6F597-E8FA-40EF-91C3-E7E0565DF750} = {298F7E7F-BE15-408B-AA26-347EE3811556}
+		{CD41241C-EC8F-4719-BF81-B94B190A685C} = {298F7E7F-BE15-408B-AA26-347EE3811556}
+		{ADC1DC53-BB72-435D-9AA1-69837B48AA38} = {298F7E7F-BE15-408B-AA26-347EE3811556}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32C4269F-FC33-47FA-91DA-2B6C5DF7D025}
