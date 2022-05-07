@@ -166,29 +166,38 @@ public class StandardTests
             await cache.TryGetAsync<int>("bar");
 
             // SET: +1
-            await cache.GetOrSetAsync(
+            // cache.GetOrSet<int>(
+            //     "foo",
+            //     (_) =>
+            //     {
+            //         return 123;
+            //     });
+
+            // SET: +1
+            // SHOULD get a MISS: +1 here with an updated to FusionCache. https://github.com/jodydonetti/ZiggyCreatures.FusionCache/issues/49
+            await cache.GetOrSetAsync<int>(
                 "foo",
-                async (ctx, _) =>
+                async (_) =>
                 {
-                    await Task.Delay(1, _);
+                    await Task.Delay(1);
                     return 123;
                 });
 
             // HIT: +1
             await cache.GetOrSetAsync<int>(
                 "foo",
-                async (ctx, _) =>
+                async (_) =>
                 {
-                    await Task.Delay(1, _);
+                    await Task.Delay(1);
                     throw new Exception("Should not be here");
                 });
 
             // HIT: +1
             await cache.GetOrSetAsync<int>(
                 "foo",
-                async (ctx, _) =>
+                async (_) =>
                 {
-                    await Task.Delay(1, _);
+                    await Task.Delay(1);
                     throw new Exception("Should not be here");
                 });
 
@@ -199,9 +208,9 @@ public class StandardTests
             // FAIL-SAFE: +1
             await cache.GetOrSetAsync<int>(
                 "foo",
-                async (ctx, _) =>
+                async (_) =>
                 {
-                    await Task.Delay(1, _);
+                    await Task.Delay(1);
                     throw new Exception("Sloths are cool");
                 });
 
@@ -217,9 +226,9 @@ public class StandardTests
             // FAIL-SAFE: +1
             _ = await cache.GetOrSetAsync<int>(
                 "foo",
-                async (ctx, _) =>
+                async (_) =>
                 {
-                    await Task.Delay(1, _);
+                    await Task.Delay(1);
                     throw new Exception("Sloths are cool");
                 });
 

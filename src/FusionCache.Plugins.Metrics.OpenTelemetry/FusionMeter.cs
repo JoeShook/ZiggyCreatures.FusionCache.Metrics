@@ -26,6 +26,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         private readonly MemoryCache? _cache;
         private readonly ISemanticConventions _conventions;
         private readonly string _name;
+        private KeyValuePair<string, object?> _cacheNameTag;
 
         public FusionMeter(string cacheName, IMemoryCache? cache, ISemanticConventions? semanticConventions = null)
         {
@@ -39,6 +40,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
 
             _meter = new Meter(cacheName);
             CreateCounters();
+            _cacheNameTag = new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name);
         }
 
         private void CreateCounters()
@@ -56,9 +58,9 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
             _cacheCapacityEvictCounter = _meter.CreateCounter<int>(_conventions.CacheCapacityEvictTagValue, description: "Cache Capacity Eviction");
             _cacheRemovedCounter = _meter.CreateCounter<int>(_conventions.CacheRemovedTagValue, description: "Cache Removed");
             
-            _meter.CreateObservableGauge<long>(
-                _conventions.CacheItemCountTagValue, 
-                () => _cache?.Count ?? 0,
+            var gauge = _meter.CreateObservableGauge<long>(
+                _conventions.CacheItemCountTagValue,
+                () => new Measurement<long>(_cache?.Count ?? 0, _cacheNameTag),
                 description: "Cache Size");
         }
 
@@ -67,7 +69,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         /// <summary>Cache item hit counter.</summary>
         public void CacheHit()
         {
-            _cacheHitCounter?.Add(1, new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name));
+            _cacheHitCounter?.Add(1, _cacheNameTag);
         }
 
         /// <summary>
@@ -75,7 +77,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         /// </summary>
         public void CacheMiss()
         {
-            _cacheMissCounter?.Add(1, new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name));
+            _cacheMissCounter?.Add(1, _cacheNameTag);
         }
 
         /// <summary>
@@ -83,7 +85,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         /// </summary>
         public void CacheSet()
         {
-            _cacheSetCounter?.Add(1, new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name));
+            _cacheSetCounter?.Add(1, _cacheNameTag);
         }
 
         /// <summary>
@@ -91,55 +93,55 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         /// </summary>
         public void CacheStaleHit()
         {
-            _cacheStaleHitCounter?.Add(1, new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name));
+            _cacheStaleHitCounter?.Add(1, _cacheNameTag);
         }
 
         /// <summary>Cache item refresh in background.</summary>
         public void CacheBackgroundRefreshSuccess()
         {
-            _cacheBackgroundRefreshedCounter?.Add(1, new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name));
+            _cacheBackgroundRefreshedCounter?.Add(1, _cacheNameTag);
         }
 
         /// <summary>Cache item refresh in background failed.</summary>
         public void CacheBackgroundRefreshError()
         {
-            _cacheBackgroundRefreshedErrorCounter?.Add(1, new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name));
+            _cacheBackgroundRefreshedErrorCounter?.Add(1, _cacheNameTag);
         }
 
         /// <summary>Generic cache factory error.</summary>
         public void CacheFactoryError()
         {
-            _cacheCacheFactoryErrorCounter?.Add(1, new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name));
+            _cacheCacheFactoryErrorCounter?.Add(1, _cacheNameTag);
         }
 
         /// <summary>Cache factory synthetic timeout</summary>
         public void CacheFactorySyntheticTimeout()
         {
-            _cacheFactorySyntheticTimeoutCounter?.Add(1, new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name));
+            _cacheFactorySyntheticTimeoutCounter?.Add(1, _cacheNameTag);
         }
 
         /// <summary>The event for a fail-safe activation.</summary>
         public void CacheFailSafeActivate()
         {
-            _cacheFailSafeActivateCounter?.Add(1, new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name));
+            _cacheFailSafeActivateCounter?.Add(1, _cacheNameTag);
         }
 
         /// <summary>Cache item expired</summary>
         public void CacheExpired()
         {
-            _cacheExpiredEvictCounter?.Add(1, new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name));
+            _cacheExpiredEvictCounter?.Add(1, _cacheNameTag);
         }
 
         /// <summary>Cache item removed due to capacity</summary>
         public void CacheCapacityExpired()
         {
-            _cacheCapacityEvictCounter?.Add(1, new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name));
+            _cacheCapacityEvictCounter?.Add(1, _cacheNameTag);
         }
 
         /// <summary>Cache item explicitly removed by user code</summary>
         public void CacheRemoved()
         {
-            _cacheRemovedCounter?.Add(1, new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name));
+            _cacheRemovedCounter?.Add(1, _cacheNameTag);
         }
 
         #endregion
