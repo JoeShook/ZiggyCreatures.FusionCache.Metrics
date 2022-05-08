@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using System.Reflection;
+using Microsoft.Extensions.Caching.Memory;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using Xunit;
@@ -12,8 +13,9 @@ public class BackgroundFailSafeTests : BaseTest
     [Fact]
     public async Task BackgroundFailSafeAsync()
     {
+        var measurementName = "BackgroundFailSafeAsync";
         var exportedItems = new List<Metric>();
-        var cacheName = $"{Utils.GetCurrentMethodName()}";
+        var cacheName = "BackgroundFailSafeCache";
         var duration = TimeSpan.FromSeconds(2);
         var softTimeout = TimeSpan.FromMilliseconds(100);
         var hardTimeout = TimeSpan.FromMilliseconds(500);

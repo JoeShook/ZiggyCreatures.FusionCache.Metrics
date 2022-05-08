@@ -12,10 +12,11 @@ public class CountTests : BaseTest
     [Fact]
     public void LoadPluginWithItemCountCheck()
     {
+        var measurementName = "LoadPluginWithItemCountCheck";
         var exportedItems = new List<Metric>();
-        var cacheName = $"{Utils.GetCurrentMethodName()}";
+        var cacheName = "LoadPluginWithItemCountCheckCache";
         using var memoryCache = new MemoryCache(new MemoryCacheOptions());
-        using var fusionMeter = new FusionMeter(cacheName, memoryCache);
+        using var fusionMeter = new FusionMeter(cacheName, memoryCache, measurementName);
         using var meterProvider = Sdk.CreateMeterProviderBuilder()
             .AddMeter(cacheName)
             .AddInMemoryExporter(exportedItems)

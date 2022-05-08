@@ -25,12 +25,23 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         private readonly Meter _meter;
         private readonly MemoryCache? _cache;
         private readonly ISemanticConventions _conventions;
-        private readonly string _name;
-        private KeyValuePair<string, object?> _cacheNameTag;
+        private readonly string _cacheName;
+        private readonly string _measurementName;
+        private MetricsConfig _metricsConfig;
+        private readonly KeyValuePair<string, object?> _cacheNameTag;
+        private readonly KeyValuePair<string, object?> _applicationTagName;
+        private readonly KeyValuePair<string, object?> _applicationVersionTagName;
 
-        public FusionMeter(string cacheName, IMemoryCache? cache, ISemanticConventions? semanticConventions = null)
+        public FusionMeter(
+            string cacheName,
+            IMemoryCache? cache,
+            string? measurementName = null,
+            MetricsConfig? metricsConfig = null,
+            ISemanticConventions? semanticConventions = null)
         {
-            _name = cacheName;
+            _cacheName = cacheName;
+            _metricsConfig = metricsConfig ?? new MetricsConfig();
+            _measurementName = measurementName ?? $"{_metricsConfig.Prefix}_{_metricsConfig.ApplicationName}_{_metricsConfig.MeasurementName}";
             _conventions = semanticConventions ?? new SemanticConventions();
 
             if (cache is MemoryCache memoryCache)
@@ -40,27 +51,33 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
 
             _meter = new Meter(cacheName);
             CreateCounters();
-            _cacheNameTag = new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _name);
+            _cacheNameTag = new KeyValuePair<string, object?>(_conventions.CacheNameTagName, _cacheName);
+            _applicationTagName = new KeyValuePair<string, object?>(_conventions.ApplicationTagName, _metricsConfig.ApplicationName);
+            _applicationVersionTagName = new KeyValuePair<string, object?>(_conventions.ApplicationVersionTagName, _metricsConfig.ApplicationVersion);
         }
 
         private void CreateCounters()
         {
-            _cacheHitCounter = _meter.CreateCounter<int>(_conventions.CacheHitTagValue, description: "Cache Hits");
-            _cacheMissCounter = _meter.CreateCounter<int>(_conventions.CacheMissTagValue, description: "Cache Misses");
-            _cacheSetCounter = _meter.CreateCounter<int>(_conventions.CacheSetTagValue, description: "Cache Sets");
-            _cacheStaleHitCounter = _meter.CreateCounter<int>(_conventions.CacheStaleHitTagValue, description: "Cache Stale Hit");
-            _cacheBackgroundRefreshedCounter = _meter.CreateCounter<int>(_conventions.CacheBackgroundRefreshedTagValue, description: "Cache Background Refresh");
-            _cacheBackgroundRefreshedErrorCounter = _meter.CreateCounter<int>(_conventions.CacheBackgroundFailedRefreshedTagValue, description: "Cache Background Refresh Error");
-            _cacheCacheFactoryErrorCounter = _meter.CreateCounter<int>(_conventions.CacheCacheFactoryErrorTagValue, description: "Cache Factory Error");
-            _cacheFactorySyntheticTimeoutCounter = _meter.CreateCounter<int>(_conventions.CacheFactorySyntheticTimeoutTagValue, description: "Cache Factory Synthetic Timeout");
-            _cacheFailSafeActivateCounter = _meter.CreateCounter<int>(_conventions.CacheFailSafeActivateTagValue, description: "Cache Fail-Safe activation");
-            _cacheExpiredEvictCounter = _meter.CreateCounter<int>(_conventions.CacheExpiredEvictTagValue, description: "Cache Expired Eviction");
-            _cacheCapacityEvictCounter = _meter.CreateCounter<int>(_conventions.CacheCapacityEvictTagValue, description: "Cache Capacity Eviction");
-            _cacheRemovedCounter = _meter.CreateCounter<int>(_conventions.CacheRemovedTagValue, description: "Cache Removed");
+            _cacheHitCounter = _meter.CreateCounter<int>(_measurementName, description: "Cache Hits");
+            _cacheMissCounter = _meter.CreateCounter<int>(_measurementName, description: "Cache Misses");
+            _cacheSetCounter = _meter.CreateCounter<int>(_measurementName, description: "Cache Sets");
+            _cacheStaleHitCounter = _meter.CreateCounter<int>(_measurementName, description: "Cache Stale Hit");
+            _cacheBackgroundRefreshedCounter = _meter.CreateCounter<int>(_measurementName, description: "Cache Background Refresh");
+            _cacheBackgroundRefreshedErrorCounter = _meter.CreateCounter<int>(_measurementName, description: "Cache Background Refresh Error");
+            _cacheCacheFactoryErrorCounter = _meter.CreateCounter<int>(_measurementName, description: "Cache Factory Error");
+            _cacheFactorySyntheticTimeoutCounter = _meter.CreateCounter<int>(_measurementName, description: "Cache Factory Synthetic Timeout");
+            _cacheFailSafeActivateCounter = _meter.CreateCounter<int>(_measurementName, description: "Cache Fail-Safe activation");
+            _cacheExpiredEvictCounter = _meter.CreateCounter<int>(_measurementName, description: "Cache Expired Eviction");
+            _cacheCapacityEvictCounter = _meter.CreateCounter<int>(_measurementName, description: "Cache Capacity Eviction");
+            _cacheRemovedCounter = _meter.CreateCounter<int>(_measurementName, description: "Cache Removed");
             
-            var gauge = _meter.CreateObservableGauge<long>(
-                _conventions.CacheItemCountTagValue,
-                () => new Measurement<long>(_cache?.Count ?? 0, _cacheNameTag),
+            _meter.CreateObservableGauge<long>(
+                _measurementName,
+                () => new Measurement<long>(_cache?.Count ?? 0,
+                    new KeyValuePair<string, object?>(_conventions.CacheEventTagName, _conventions.CacheItemCountTagValue),
+                    _cacheNameTag, 
+                    _applicationTagName, 
+                    _applicationVersionTagName),
                 description: "Cache Size");
         }
 
@@ -69,7 +86,11 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         /// <summary>Cache item hit counter.</summary>
         public void CacheHit()
         {
-            _cacheHitCounter?.Add(1, _cacheNameTag);
+            _cacheHitCounter?.Add(1, 
+                _cacheNameTag, 
+                new KeyValuePair<string, object?>(_conventions.CacheEventTagName, _conventions.CacheHitTagValue),
+                _applicationTagName,
+                _applicationVersionTagName);
         }
 
         /// <summary>
@@ -77,7 +98,11 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         /// </summary>
         public void CacheMiss()
         {
-            _cacheMissCounter?.Add(1, _cacheNameTag);
+            _cacheMissCounter?.Add(1, 
+                _cacheNameTag,
+                new KeyValuePair<string, object?>(_conventions.CacheEventTagName, _conventions.CacheMissTagValue),
+                _applicationTagName,
+                _applicationVersionTagName);
         }
 
         /// <summary>
@@ -85,7 +110,11 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         /// </summary>
         public void CacheSet()
         {
-            _cacheSetCounter?.Add(1, _cacheNameTag);
+            _cacheSetCounter?.Add(1, 
+                _cacheNameTag,
+                new KeyValuePair<string, object?>(_conventions.CacheEventTagName, _conventions.CacheSetTagValue),
+                _applicationTagName,
+                _applicationVersionTagName);
         }
 
         /// <summary>
@@ -93,55 +122,84 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         /// </summary>
         public void CacheStaleHit()
         {
-            _cacheStaleHitCounter?.Add(1, _cacheNameTag);
+            _cacheStaleHitCounter?.Add(1,
+                _cacheNameTag,
+                new KeyValuePair<string, object?>(_conventions.CacheEventTagName, _conventions.CacheStaleHitTagValue),
+                _applicationTagName,
+                _applicationVersionTagName);
         }
 
         /// <summary>Cache item refresh in background.</summary>
         public void CacheBackgroundRefreshSuccess()
         {
-            _cacheBackgroundRefreshedCounter?.Add(1, _cacheNameTag);
+            _cacheBackgroundRefreshedCounter?.Add(1,
+                _cacheNameTag,
+                new KeyValuePair<string, object?>(_conventions.CacheEventTagName, _conventions.CacheBackgroundRefreshedTagValue),
+                _applicationTagName,
+                _applicationVersionTagName);
         }
 
         /// <summary>Cache item refresh in background failed.</summary>
         public void CacheBackgroundRefreshError()
         {
-            _cacheBackgroundRefreshedErrorCounter?.Add(1, _cacheNameTag);
+            _cacheBackgroundRefreshedErrorCounter?.Add(1,
+                new KeyValuePair<string, object?>(_conventions.CacheEventTagName, _conventions.CacheBackgroundFailedRefreshedTagValue),
+                _applicationTagName,
+                _applicationVersionTagName);
         }
 
         /// <summary>Generic cache factory error.</summary>
         public void CacheFactoryError()
         {
-            _cacheCacheFactoryErrorCounter?.Add(1, _cacheNameTag);
+            _cacheCacheFactoryErrorCounter?.Add(1,
+                new KeyValuePair<string, object?>(_conventions.CacheEventTagName, _conventions.CacheCacheFactoryErrorTagValue),
+                _applicationTagName,
+                _applicationVersionTagName);
         }
 
         /// <summary>Cache factory synthetic timeout</summary>
         public void CacheFactorySyntheticTimeout()
         {
-            _cacheFactorySyntheticTimeoutCounter?.Add(1, _cacheNameTag);
+            _cacheFactorySyntheticTimeoutCounter?.Add(1,
+                new KeyValuePair<string, object?>(_conventions.CacheEventTagName, _conventions.CacheFactorySyntheticTimeoutTagValue),
+                _applicationTagName,
+                _applicationVersionTagName);
         }
 
         /// <summary>The event for a fail-safe activation.</summary>
         public void CacheFailSafeActivate()
         {
-            _cacheFailSafeActivateCounter?.Add(1, _cacheNameTag);
+            _cacheFailSafeActivateCounter?.Add(1,
+                new KeyValuePair<string, object?>(_conventions.CacheEventTagName, _conventions.CacheFailSafeActivateTagValue),
+                _applicationTagName,
+                _applicationVersionTagName);
         }
 
         /// <summary>Cache item expired</summary>
         public void CacheExpired()
         {
-            _cacheExpiredEvictCounter?.Add(1, _cacheNameTag);
+            _cacheExpiredEvictCounter?.Add(1,
+                new KeyValuePair<string, object?>(_conventions.CacheEventTagName, _conventions.CacheExpiredEvictTagValue),
+                _applicationTagName,
+                _applicationVersionTagName);
         }
 
         /// <summary>Cache item removed due to capacity</summary>
         public void CacheCapacityExpired()
         {
-            _cacheCapacityEvictCounter?.Add(1, _cacheNameTag);
+            _cacheCapacityEvictCounter?.Add(1,
+                new KeyValuePair<string, object?>(_conventions.CacheEventTagName, _conventions.CacheCapacityEvictTagValue),
+                _applicationTagName,
+                _applicationVersionTagName);
         }
 
         /// <summary>Cache item explicitly removed by user code</summary>
         public void CacheRemoved()
         {
-            _cacheRemovedCounter?.Add(1, _cacheNameTag);
+            _cacheRemovedCounter?.Add(1,
+                new KeyValuePair<string, object?>(_conventions.CacheEventTagName, _conventions.CacheRemovedTagValue),
+                _applicationTagName,
+                _applicationVersionTagName);
         }
 
         #endregion

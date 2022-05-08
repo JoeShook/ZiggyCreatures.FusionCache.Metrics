@@ -10,23 +10,48 @@ public class BaseTest
 {
     protected static ISemanticConventions SemanticConventions = new SemanticConventions();
     protected const int MaxTimeToAllowForFlush = 10000;
-    protected static MetricPoint GetMetricPoint(List<Metric> exportedItems, string cacheTag)
+    protected static MetricPoint GetMetricPoint(List<Metric> exportedItems, string eventName, string? meterName = null)
     {
-        var metric = exportedItems.SingleOrDefault(i => i.Name == cacheTag);
-        if (metric == null)
+        List<Metric> metrics = null;
+
+        if (meterName != null)
+        {
+            metrics = exportedItems.Where(i => i.MeterName == meterName).ToList();
+        }
+        else
+        {
+            metrics = exportedItems;
+        }
+
+        if (!metrics.Any())
         {
             return new MetricPoint();
         }
 
         var metricPoints = new List<MetricPoint>();
-        foreach (ref readonly var mp in metric.GetMetricPoints())
+
+        foreach (var result in metrics)
         {
-            metricPoints.Add(mp);
+            foreach (ref readonly var mp in result.GetMetricPoints())
+            {
+                metricPoints.Add(mp);
+            }
         }
 
-        Assert.Single(metricPoints);
-        var metricPoint1 = metricPoints[0];
-        return metricPoint1;
+       
+        var metricPoint = metricPoints.SingleOrDefault(p =>
+        {
+            foreach (var argTag in p.Tags)
+            {
+                if (argTag.Value == eventName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        return metricPoint;
     }
         
     internal class Utils
