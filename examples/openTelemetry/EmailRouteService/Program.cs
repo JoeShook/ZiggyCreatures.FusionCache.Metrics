@@ -68,9 +68,13 @@ builder.Services.Configure<OpenTelemetryLoggerOptions>(opt =>
 });
 
 // Metrics
+var emailCacheName = "email";
+var domainCacheName = "domain";
+
 builder.Services.AddOpenTelemetryMetrics(options =>
 {
     options.SetResourceBuilder(resourceBuilder)
+        .AddMeter(emailCacheName, domainCacheName)
         .AddHttpClientInstrumentation()
         .AddAspNetCoreInstrumentation();
 
@@ -79,6 +83,7 @@ builder.Services.AddOpenTelemetryMetrics(options =>
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
     });
 
+    
     // options.AddConsoleExporter();
 });
 
@@ -86,7 +91,7 @@ builder.Services.AddOpenTelemetryMetrics(options =>
 // Add services to the container.
 
 var emailCache = new MemoryCache(new MemoryCacheOptions());
-var hostNameCache = new MemoryCache(new MemoryCacheOptions());
+var domainCache = new MemoryCache(new MemoryCacheOptions());
 
 //
 // Cache called "domain"
@@ -96,8 +101,8 @@ var hostNameCache = new MemoryCache(new MemoryCacheOptions());
 // FusionCacheEventSource is holding the same object as FusionCache to enabled cache count reporting.
 // See line 193 in FusionCacheEventSource.cs
 //
-builder.Services.AddSingleton<IMemoryCache>(hostNameCache);
-builder.Services.AddSingleton<IFusionCachePlugin>(new FusionMeter("domain", hostNameCache));
+builder.Services.AddSingleton<IMemoryCache>(domainCache);
+builder.Services.AddSingleton<IFusionCachePlugin>(new FusionMeter(domainCacheName, domainCache));
 builder.Services.AddFusionCache(options =>
     options.DefaultEntryOptions = new FusionCacheEntryOptions
     {
@@ -131,7 +136,7 @@ builder.Services.AddSingleton(serviceProvider =>
             .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
     };
 
-    var metrics = new FusionMeter("email", emailCache);
+    var metrics = new FusionMeter(emailCacheName, emailCache);
     var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, emailCache, logger);
     metrics.Start(fusionCache);
 
