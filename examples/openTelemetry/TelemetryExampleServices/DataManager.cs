@@ -26,7 +26,7 @@ namespace TelemetryExampleServices
             emailToIpData = JsonSerializer.Deserialize<List<EmailToIpData>>(File.ReadAllText("MockEmailToIpData.json"), serializeOptions);
         }
 
-        public async Task<DomainCertData?>? GetDomain(string name, CancellationToken ct)
+        public async Task<DomainCertData?> GetDomain(string name, CancellationToken ct)
         {
             int number = RandomGenerator.Next();
 

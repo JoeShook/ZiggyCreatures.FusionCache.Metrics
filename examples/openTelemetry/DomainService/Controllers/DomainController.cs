@@ -46,7 +46,7 @@ namespace DomainService.Controllers
 
             if (domain == null)
             {
-                return NoContent();
+                return NotFound();
             }
 
             if (!domain.Enabled)

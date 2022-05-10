@@ -8,10 +8,11 @@ using OpenTelemetry.Trace;
 using TelemetryExampleServices;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Plugins;
+using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry;
 
 var builder = WebApplication.CreateBuilder(args);
-var serviceName = "DomainService";
+var serviceName = "OtelDomainService";
 
 // OpenTelemetry
 var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown";
@@ -36,7 +37,10 @@ builder.Services.AddOpenTelemetryTracing(options =>
     {
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
     });
-    // options.AddConsoleExporter();
+
+#if DEBUG
+    options.AddConsoleExporter();
+#endif
 });
 
 // For options which can be bound from IConfiguration.
@@ -56,7 +60,10 @@ builder.Logging.AddOpenTelemetry(options =>
     {
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
     });
-    // options.AddConsoleExporter();
+
+#if DEBUG
+    options.AddConsoleExporter();
+#endif
 });
 
 builder.Services.Configure<OpenTelemetryLoggerOptions>(opt =>
@@ -67,9 +74,12 @@ builder.Services.Configure<OpenTelemetryLoggerOptions>(opt =>
 });
 
 // Metrics
+var domainMeterName = "domain"; // same as cacheName
+
 builder.Services.AddOpenTelemetryMetrics(options =>
 {
     options.SetResourceBuilder(resourceBuilder)
+        .AddMeter(domainMeterName)
         .AddHttpClientInstrumentation()
         .AddAspNetCoreInstrumentation();
 
@@ -77,16 +87,25 @@ builder.Services.AddOpenTelemetryMetrics(options =>
     {
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
     });
-
-    // options.AddConsoleExporter();
+#if DEBUG
+    options.AddConsoleExporter();
+#endif
 });
 
 
 // Add services to the container.
-
 var memoryCache = new MemoryCache(new MemoryCacheOptions());
+builder.Services.AddSingleton(builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>());
+
 builder.Services.AddSingleton<IMemoryCache>(memoryCache);
-builder.Services.AddSingleton<IFusionCachePlugin>(new FusionMeter("domain", memoryCache));
+builder.Services.AddSingleton<IFusionCachePlugin>(
+    new FusionMeter(
+        domainMeterName, 
+        memoryCache,
+        $"appMetrics_{serviceName}_cache_events"
+        )
+    );
+
 builder.Services.AddFusionCache(options =>
     options.DefaultEntryOptions = new FusionCacheEntryOptions
     {

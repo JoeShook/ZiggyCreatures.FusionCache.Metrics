@@ -62,9 +62,9 @@ namespace EmailRouteService.Controllers
                 {
                     // Adaptive Caching.  Duration set by ttl of data from dns service
                     result = await _dnsServiceCache.FusionCache.GetOrSetAsync(
-                        emailAddress, async (ctx, ct) =>
+                        emailAddress, async (ctx, _) =>
                         {
-                            var emailToIpData = await _dnsService.GetDnsData(emailAddress, ct);
+                            var emailToIpData = await _dnsService.GetDnsData(emailAddress, _);
                             if (emailToIpData != null)
                             {
                                 ctx.Options.SetDurationMs(emailToIpData.Ttl);
@@ -72,7 +72,8 @@ namespace EmailRouteService.Controllers
 
                             return emailToIpData;
                         },
-                        options => options.SetDuration(TimeSpan.FromSeconds(10)) // DEFAULT: 10 SEC
+                        options => options.SetDuration(TimeSpan.FromSeconds(10)), // DEFAULT: 10 SEC
+                        ct
                     );
                 }
                 else

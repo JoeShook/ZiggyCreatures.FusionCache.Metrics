@@ -78,19 +78,19 @@ public class BackgroundFailSafeTests : BaseTest
         var metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheHitTagValue);
         Assert.Equal(0, metricPoint.GetSumLong());
 
-        metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheFailSafeActivateTagValue);
+        metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheFailSafeActivateTagValue, cacheName);
         Assert.Equal(2, metricPoint.GetSumLong());
 
-        metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheSetTagValue);
+        metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheSetTagValue, cacheName);
         Assert.Equal(2, metricPoint.GetSumLong());
 
-        metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheStaleHitTagValue);
+        metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheStaleHitTagValue, cacheName);
         Assert.Equal(2, metricPoint.GetSumLong());
 
-        metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheBackgroundRefreshedTagValue);
+        metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheBackgroundRefreshedTagValue, cacheName);
         Assert.Equal(1, metricPoint.GetSumLong());
 
-        metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheBackgroundFailedRefreshedTagValue);
+        metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheBackgroundFailedRefreshedTagValue, cacheName);
         Assert.Equal(1, metricPoint.GetSumLong());
     }
 

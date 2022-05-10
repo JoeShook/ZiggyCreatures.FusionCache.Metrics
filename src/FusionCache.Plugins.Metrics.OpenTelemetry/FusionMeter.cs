@@ -41,7 +41,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
         {
             _cacheName = cacheName;
             _metricsConfig = metricsConfig ?? new MetricsConfig();
-            _measurementName = measurementName ?? $"{_metricsConfig.Prefix}_{_metricsConfig.ApplicationName}_{_metricsConfig.MeasurementName}";
+            _measurementName = measurementName ?? $"{_metricsConfig.Prefix}{_metricsConfig.ApplicationName}_{_metricsConfig.MeasurementName}";
             _conventions = semanticConventions ?? new SemanticConventions();
 
             if (cache is MemoryCache memoryCache)

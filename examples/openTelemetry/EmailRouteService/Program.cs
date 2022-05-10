@@ -12,7 +12,7 @@ using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry;
 
 var builder = WebApplication.CreateBuilder(args);
-var serviceName = "EmailRouteService";
+var serviceName = "OtelEmailRouteService";
 
 // OpenTelemetry
 var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown";
@@ -37,7 +37,10 @@ builder.Services.AddOpenTelemetryTracing(options =>
     {
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
     });
-    // options.AddConsoleExporter();
+
+#if DEBUG
+    options.AddConsoleExporter();
+#endif
 });
 
 // For options which can be bound from IConfiguration.
@@ -57,7 +60,10 @@ builder.Logging.AddOpenTelemetry(options =>
     {
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
     });
-    // options.AddConsoleExporter();
+
+#if DEBUG
+    options.AddConsoleExporter();
+#endif
 });
 
 builder.Services.Configure<OpenTelemetryLoggerOptions>(opt =>
@@ -68,13 +74,13 @@ builder.Services.Configure<OpenTelemetryLoggerOptions>(opt =>
 });
 
 // Metrics
-var emailCacheName = "email";
-var domainCacheName = "domain";
+var emailMeterName = "email"; // same as cacheName
+var domainMeterName = "domain"; // same as cacheName
 
 builder.Services.AddOpenTelemetryMetrics(options =>
 {
     options.SetResourceBuilder(resourceBuilder)
-        .AddMeter(emailCacheName, domainCacheName)
+        .AddMeter(emailMeterName, domainMeterName)
         .AddHttpClientInstrumentation()
         .AddAspNetCoreInstrumentation();
 
@@ -83,8 +89,9 @@ builder.Services.AddOpenTelemetryMetrics(options =>
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
     });
 
-    
-    // options.AddConsoleExporter();
+#if DEBUG
+    options.AddConsoleExporter();
+#endif
 });
 
 
@@ -92,6 +99,8 @@ builder.Services.AddOpenTelemetryMetrics(options =>
 
 var emailCache = new MemoryCache(new MemoryCacheOptions());
 var domainCache = new MemoryCache(new MemoryCacheOptions());
+
+builder.Services.AddSingleton(builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>());
 
 //
 // Cache called "domain"
@@ -102,7 +111,9 @@ var domainCache = new MemoryCache(new MemoryCacheOptions());
 // See line 193 in FusionCacheEventSource.cs
 //
 builder.Services.AddSingleton<IMemoryCache>(domainCache);
-builder.Services.AddSingleton<IFusionCachePlugin>(new FusionMeter(domainCacheName, domainCache));
+builder.Services.AddSingleton<IFusionCachePlugin>(
+    new FusionMeter(domainMeterName, domainCache, $"appMetrics_{serviceName}_cache_events"));
+
 builder.Services.AddFusionCache(options =>
     options.DefaultEntryOptions = new FusionCacheEntryOptions
     {
@@ -136,14 +147,12 @@ builder.Services.AddSingleton(serviceProvider =>
             .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
     };
 
-    var metrics = new FusionMeter(emailCacheName, emailCache);
+    var metrics = new FusionMeter(emailMeterName, emailCache, $"appMetrics_{serviceName}_cache_events");
     var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, emailCache, logger);
     metrics.Start(fusionCache);
 
     return new DnsServiceCache(fusionCache);
 });
-
-
 
 
 // Register typed client https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-6.0#typed-clients

@@ -1,14 +1,19 @@
 using System.Reflection;
+using Microsoft.Extensions.Caching.Memory;
 using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using TelemetryExampleServices;
+using ZiggyCreatures.Caching.Fusion;
+using ZiggyCreatures.Caching.Fusion.Plugins;
+using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
+using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var serviceName = "DnsService";
+var serviceName = "OtelDnsService";
 
 // OpenTelemetry
 var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown";
@@ -33,7 +38,10 @@ builder.Services.AddOpenTelemetryTracing(options =>
     {
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
     });
-    // options.AddConsoleExporter();
+
+#if DEBUG
+    options.AddConsoleExporter();
+#endif
 });
 
 // For options which can be bound from IConfiguration.
@@ -53,7 +61,10 @@ builder.Logging.AddOpenTelemetry(options =>
     {
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
     });
-    // options.AddConsoleExporter();
+
+#if DEBUG
+    options.AddConsoleExporter();
+#endif
 });
 
 builder.Services.Configure<OpenTelemetryLoggerOptions>(opt =>
@@ -64,10 +75,12 @@ builder.Services.Configure<OpenTelemetryLoggerOptions>(opt =>
 });
 
 // Metrics
+var dnsMeterName = "RR"; // same as cacheName
+
 builder.Services.AddOpenTelemetryMetrics(options =>
 {
     options.SetResourceBuilder(resourceBuilder)
-        .AddHttpClientInstrumentation()
+        .AddMeter(dnsMeterName)
         .AddAspNetCoreInstrumentation();
 
     options.AddOtlpExporter(otlpOptions =>
@@ -75,10 +88,26 @@ builder.Services.AddOpenTelemetryMetrics(options =>
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
     });
 
-    // options.AddConsoleExporter();
+#if DEBUG
+    options.AddConsoleExporter();
+#endif
 });
 
 // Add services to the container.
+var memoryCache = new MemoryCache(new MemoryCacheOptions());
+
+builder.Services.AddSingleton<IMemoryCache>(memoryCache);
+builder.Services.AddSingleton<IFusionCachePlugin>(new FusionMeter(dnsMeterName, memoryCache, metricsConfig: builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>()));
+builder.Services.AddFusionCache(options =>
+    options.DefaultEntryOptions = new FusionCacheEntryOptions
+        {
+            Duration = TimeSpan.FromSeconds(60)
+        }
+        .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(5))
+        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
+);
+
+
 builder.Services.AddSingleton<IDataManager>(new DataManager());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
