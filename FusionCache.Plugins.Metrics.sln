@@ -75,8 +75,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnsService", "examples\open
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailRouteService", "examples\openTelemetry\EmailRouteService\EmailRouteService.csproj", "{74D6F597-E8FA-40EF-91C3-E7E0565DF750}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelemetryExampleServices", "examples\openTelemetry\TelemetryExampleServices\TelemetryExampleServices.csproj", "{CD41241C-EC8F-4719-BF81-B94B190A685C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{ADC1DC53-BB72-435D-9AA1-69837B48AA38}"
 	ProjectSection(SolutionItems) = preProject
 		examples\openTelemetry\Docker\collector.yaml = examples\openTelemetry\Docker\collector.yaml
@@ -86,6 +84,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{ADC1DC
 		examples\openTelemetry\Docker\prometheus.yml = examples\openTelemetry\Docker\prometheus.yml
 		examples\openTelemetry\Docker\tempo.yaml = examples\openTelemetry\Docker\tempo.yaml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Switchboard", "examples\openTelemetry\Switchboard\Switchboard.csproj", "{F35700BC-8E92-4F48-B622-CA2D2DC4F6C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "examples\openTelemetry\Services\Services.csproj", "{26AE4F5B-0575-42E3-8CF5-44168A029A9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -165,10 +167,14 @@ Global
 		{74D6F597-E8FA-40EF-91C3-E7E0565DF750}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74D6F597-E8FA-40EF-91C3-E7E0565DF750}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74D6F597-E8FA-40EF-91C3-E7E0565DF750}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CD41241C-EC8F-4719-BF81-B94B190A685C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD41241C-EC8F-4719-BF81-B94B190A685C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD41241C-EC8F-4719-BF81-B94B190A685C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD41241C-EC8F-4719-BF81-B94B190A685C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F35700BC-8E92-4F48-B622-CA2D2DC4F6C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F35700BC-8E92-4F48-B622-CA2D2DC4F6C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F35700BC-8E92-4F48-B622-CA2D2DC4F6C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F35700BC-8E92-4F48-B622-CA2D2DC4F6C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26AE4F5B-0575-42E3-8CF5-44168A029A9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26AE4F5B-0575-42E3-8CF5-44168A029A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26AE4F5B-0575-42E3-8CF5-44168A029A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26AE4F5B-0575-42E3-8CF5-44168A029A9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -197,8 +203,9 @@ Global
 		{489BE803-AE9E-4895-AFB7-C4E771E177D7} = {298F7E7F-BE15-408B-AA26-347EE3811556}
 		{E4114B72-2EF1-4C0D-BCBD-A1C2B3AA2519} = {298F7E7F-BE15-408B-AA26-347EE3811556}
 		{74D6F597-E8FA-40EF-91C3-E7E0565DF750} = {298F7E7F-BE15-408B-AA26-347EE3811556}
-		{CD41241C-EC8F-4719-BF81-B94B190A685C} = {298F7E7F-BE15-408B-AA26-347EE3811556}
 		{ADC1DC53-BB72-435D-9AA1-69837B48AA38} = {298F7E7F-BE15-408B-AA26-347EE3811556}
+		{F35700BC-8E92-4F48-B622-CA2D2DC4F6C6} = {298F7E7F-BE15-408B-AA26-347EE3811556}
+		{26AE4F5B-0575-42E3-8CF5-44168A029A9B} = {298F7E7F-BE15-408B-AA26-347EE3811556}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32C4269F-FC33-47FA-91DA-2B6C5DF7D025}

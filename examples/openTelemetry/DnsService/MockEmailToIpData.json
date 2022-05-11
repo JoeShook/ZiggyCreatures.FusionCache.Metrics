@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "email": "rpearn0@amazon.co.uk",
+    "email": "rpearn0@amazon.co.ukc",
     "smtpIp": "140.133.38.66",
     "ttl": 2000
   },
@@ -1215,7 +1215,7 @@
     "id": 203,
     "email": "fhastewell5m@loc.gov",
     "smtpIp": "2.131.226.4",
-    "ttl": 8000
+    "ttl": 20
   },
   {
     "id": 204,

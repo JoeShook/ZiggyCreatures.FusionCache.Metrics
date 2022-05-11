@@ -1,20 +1,32 @@
 ﻿using System.Text.Json;
 using FusionCache.Example.Domain.Model;
 
-namespace TelemetryExampleServices
+namespace Services
 {
     public interface IDataManager
     {
         Task<DomainCertData?>? GetDomain(string name, CancellationToken cancellationToken);
         Task<EmailToIpData?>? GetEmailRoute(string name, CancellationToken cancellationToken);
+        string DomainCertDataPath { get; }
+        string EmailToIpDataPath { get; }
+        void LoadData<T>(string path);
     }
 
     public class DataManager : IDataManager
     {
-        private readonly List<DomainCertData?> domains;
-        private readonly List<EmailToIpData?> emailToIpData;
+        private List<DomainCertData>? domains;
+        private List<EmailToIpData>? emailToIpData;
 
-        public DataManager()
+        public DataManager(string domainCertDataPath, string emailToIpDataPath)
+        {
+            DomainCertDataPath = domainCertDataPath;
+            EmailToIpDataPath = emailToIpDataPath;
+
+            LoadData<DomainCertData>(DomainCertDataPath);
+            LoadData<EmailToIpData>(EmailToIpDataPath);
+        }
+
+        public void LoadData<T>(string path)
         {
             var serializeOptions = new JsonSerializerOptions
             {
@@ -22,9 +34,22 @@ namespace TelemetryExampleServices
                 WriteIndented = true
             };
 
-            domains = JsonSerializer.Deserialize<List<DomainCertData>>(File.ReadAllText("MockDomainCertData.json"), serializeOptions);
-            emailToIpData = JsonSerializer.Deserialize<List<EmailToIpData>>(File.ReadAllText("MockEmailToIpData.json"), serializeOptions);
+            var data = JsonSerializer.Deserialize<List<T>>(File.ReadAllText(path), serializeOptions);
+
+            if (typeof(T) == typeof(DomainCertData))
+            {
+                domains = JsonSerializer.Deserialize<List<DomainCertData>>(File.ReadAllText(path), serializeOptions);
+            }
+
+            if (typeof(T) == typeof(EmailToIpData))
+            {
+                emailToIpData = JsonSerializer.Deserialize<List<EmailToIpData>>(File.ReadAllText(path), serializeOptions);
+            }
         }
+
+        public string DomainCertDataPath { get; } 
+        public string EmailToIpDataPath { get; }
+
 
         public async Task<DomainCertData?> GetDomain(string name, CancellationToken ct)
         {

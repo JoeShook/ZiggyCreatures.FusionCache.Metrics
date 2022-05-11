@@ -1,0 +1,19 @@
+﻿{
+  "Switchboard": {
+    "DnsService": {
+      "CacheConfig": {
+        "Enabled": true
+      }
+    },
+    "DomainService": {
+      "CacheConfig": {
+        "Enabled": false
+      }
+    },
+    "EmailRouteService": {
+      "CacheConfig": {
+        "Enabled": true
+      }
+    }
+  }
+}

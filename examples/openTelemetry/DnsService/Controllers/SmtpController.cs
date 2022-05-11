@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
+using DnsService.Services;
 using FusionCache.Example.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
-using TelemetryExampleServices;
+using Services;
+using Services.Model;
 using ZiggyCreatures.Caching.Fusion;
 
 namespace DnsService.Controllers
@@ -11,15 +13,19 @@ namespace DnsService.Controllers
     public class SmtpController : ControllerBase
     {
         private readonly IDataManager _dataManager;
+        private readonly CacheConfig _cacheConfig;
         private readonly IFusionCache? _cache;
         private readonly ILogger<SmtpController> _logger;
 
         public SmtpController(
             IDataManager dataManager, 
             ILogger<SmtpController> logger,
+            DnsServiceConfig dnsServiceConfig,
+            
             IFusionCache? cache = null)
         {
             _dataManager = dataManager;
+            _cacheConfig = dnsServiceConfig.CacheConfig;
             _cache = cache;
             _logger = logger;
         }
@@ -32,7 +38,7 @@ namespace DnsService.Controllers
 
             EmailToIpData? resourceRecord;
 
-            if (_cache != null)
+            if (_cacheConfig.Enabled)
             {
                 resourceRecord = await _cache.GetOrSetAsync(
                     emailAddress, async (ctx, _) =>

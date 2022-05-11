@@ -1,17 +1,22 @@
 using System.Reflection;
+using DnsService.Services;
+using DomainService.Services;
 using Microsoft.Extensions.Caching.Memory;
 using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using TelemetryExampleServices;
+using Services;
+using Services.Model;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Plugins;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry;
+using DataFileMonitorService = DnsService.Services.DataFileMonitorService;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile(@"C:\Source\GitHub\JoeShook\FusionCacheMetricsPlayground\examples\openTelemetry\Switchboard\switchboard.json", optional: true, reloadOnChange: true);
 
 var serviceName = "OtelDnsService";
 
@@ -40,7 +45,7 @@ builder.Services.AddOpenTelemetryTracing(options =>
     });
 
 #if DEBUG
-    options.AddConsoleExporter();
+    // options.AddConsoleExporter();
 #endif
 });
 
@@ -51,7 +56,7 @@ builder.Services
     );
 
 // Logging
-builder.Logging.ClearProviders();
+// builder.Logging.ClearProviders();
 
 builder.Logging.AddOpenTelemetry(options =>
 {
@@ -63,7 +68,7 @@ builder.Logging.AddOpenTelemetry(options =>
     });
 
 #if DEBUG
-    options.AddConsoleExporter();
+    // options.AddConsoleExporter();
 #endif
 });
 
@@ -89,7 +94,7 @@ builder.Services.AddOpenTelemetryMetrics(options =>
     });
 
 #if DEBUG
-    options.AddConsoleExporter();
+    // options.AddConsoleExporter();
 #endif
 });
 
@@ -107,8 +112,15 @@ builder.Services.AddFusionCache(options =>
         .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
 );
 
+builder.Services.AddSingleton<IDataManager>(new DataManager("MockDomainCertData.json", "MockEmailToIpData.json"));
+builder.Services.AddHostedService<DataFileMonitorService>();
 
-builder.Services.AddSingleton<IDataManager>(new DataManager());
+builder.Services.AddHostedService(sp =>
+    new SwitchboardService(
+        "../switchboard/switchboard.json",
+        sp.GetRequiredService<DnsServiceConfig>(),
+        sp.GetService<ILogger<SwitchboardService>>()));
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

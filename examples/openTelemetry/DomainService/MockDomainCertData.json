@@ -21,7 +21,7 @@
     "id": 4,
     "domain": "loc.gov",
     "certificate": "0dd928b16b177aee51b1f2e07d5c93e9260d9a52",
-    "enabled": false
+    "enabled": true
   },
   {
     "id": 5,

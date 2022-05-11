@@ -1,4 +1,4 @@
-﻿namespace TelemetryExampleServices
+﻿namespace Services
 {
     public static class RandomGenerator
     {

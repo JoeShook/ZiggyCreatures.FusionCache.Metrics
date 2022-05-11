@@ -1,15 +1,19 @@
+using System.Diagnostics;
 using System.Reflection;
+using DomainService.Services;
 using Microsoft.Extensions.Caching.Memory;
 using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using TelemetryExampleServices;
+using Services;
+using Services.Model;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Plugins;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry;
+using DataFileMonitorService = DomainService.Services.DataFileMonitorService;
 
 var builder = WebApplication.CreateBuilder(args);
 var serviceName = "OtelDomainService";
@@ -39,7 +43,7 @@ builder.Services.AddOpenTelemetryTracing(options =>
     });
 
 #if DEBUG
-    options.AddConsoleExporter();
+    // options.AddConsoleExporter();
 #endif
 });
 
@@ -50,7 +54,7 @@ builder.Services
     );
 
 // Logging
-builder.Logging.ClearProviders();
+// builder.Logging.ClearProviders();
 
 builder.Logging.AddOpenTelemetry(options =>
 {
@@ -62,7 +66,7 @@ builder.Logging.AddOpenTelemetry(options =>
     });
 
 #if DEBUG
-    options.AddConsoleExporter();
+    // options.AddConsoleExporter();
 #endif
 });
 
@@ -88,7 +92,7 @@ builder.Services.AddOpenTelemetryMetrics(options =>
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
     });
 #if DEBUG
-    options.AddConsoleExporter();
+    // options.AddConsoleExporter();
 #endif
 });
 
@@ -116,9 +120,16 @@ builder.Services.AddFusionCache(options =>
 );
 
 
+builder.Services.AddSingleton<IDataManager>(new DataManager("MockDomainCertData.json", "MockEmailToIpData.json"));
+builder.Services.AddHostedService<DataFileMonitorService>();
+builder.Services.AddSingleton(new DomainServiceConfig());
 
+builder.Services.AddHostedService(sp => 
+    new SwitchboardService(
+        "../switchboard/switchboard.json", 
+        sp.GetRequiredService<DomainServiceConfig>(),
+        sp.GetService<ILogger<SwitchboardService>>()));
 
-builder.Services.AddSingleton<IDataManager>(new DataManager());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

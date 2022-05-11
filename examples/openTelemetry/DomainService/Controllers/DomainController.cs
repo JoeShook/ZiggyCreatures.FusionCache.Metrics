@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using FusionCache.Example.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
-using TelemetryExampleServices;
+using Services;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
 

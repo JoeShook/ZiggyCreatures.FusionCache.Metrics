@@ -22,7 +22,7 @@
   <ItemGroup>
       <ProjectReference Include="..\..\..\src\FusionCache.Plugins.Metrics.OpenTelemetry\FusionCache.Plugins.Metrics.OpenTelemetry.csproj" />
       <ProjectReference Include="..\..\FusionCache.Example.Domain.Data\FusionCache.Example.Domain.Model.csproj" />
-      <ProjectReference Include="..\TelemetryExampleServices\TelemetryExampleServices.csproj" />
+      <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
 </Project>
