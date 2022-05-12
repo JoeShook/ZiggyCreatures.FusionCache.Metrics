@@ -1,0 +1,24 @@
+on:
+  push:
+    branches: [ develop ]
+    tags:
+    - "v[0-9]+.[0-9]+.[0-9]+-alph[0-9][0-9][0-9]"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Set VERSION variable from tag
+      run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+    - name: Pack
+      run: |
+        dotnet pack -v normal -c Release -p:PackageVersion=${VERSION} src/FusionCache.Plugins.Metrics.OpenTelemetry/FusionCache.Plugins.Metrics.OpenTelemetry.csproj --output .        
+    - name: Push
+      run: |
+        dotnet nuget push JoeShook.ZiggyCreatures.FusionCache.Metrics.OpenTelemetry.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
