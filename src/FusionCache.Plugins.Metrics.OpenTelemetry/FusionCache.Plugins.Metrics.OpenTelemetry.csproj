@@ -30,7 +30,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="artwork\logo-plugin-128x128.png" />
+        <None Include="artwork\logo-plugin-128x128.png" Pack="true" PackagePath="\" />
         <None Include="docs\README.md" Pack="True" PackagePath="\" />
     </ItemGroup>
 
