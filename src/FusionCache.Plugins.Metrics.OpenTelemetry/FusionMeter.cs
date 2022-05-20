@@ -34,6 +34,21 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
 
         public FusionMeter(
             string cacheName,
+            string? measurementName = null,
+            MetricsConfig? metricsConfig = null,
+            ISemanticConventions? semanticConventions = null)
+            : this(
+                cacheName,
+                new MemoryCache(new MemoryCacheOptions()),
+                measurementName, 
+                metricsConfig,
+                semanticConventions
+                )
+        {
+        } 
+
+        public FusionMeter(
+            string cacheName,
             IMemoryCache? cache,
             string? measurementName = null,
             MetricsConfig? metricsConfig = null,
@@ -80,6 +95,8 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry
                     _applicationVersionTagName),
                 description: "Cache Size");
         }
+
+        public MemoryCache MemoryCache => _cache;
 
         #region IFusionMetrics
 

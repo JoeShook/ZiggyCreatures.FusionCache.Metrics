@@ -1,6 +1,5 @@
 using System.Reflection;
 using DnsService.Services;
-using DomainService.Services;
 using Microsoft.Extensions.Caching.Memory;
 using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Logs;
@@ -115,10 +114,12 @@ builder.Services.AddFusionCache(options =>
 builder.Services.AddSingleton<IDataManager>(new DataManager("MockDomainCertData.json", "MockEmailToIpData.json"));
 builder.Services.AddHostedService<DataFileMonitorService>();
 
+builder.Services.AddSingleton(new DnsServiceConfig());
+
 builder.Services.AddHostedService(sp =>
     new SwitchboardService(
         "../switchboard/switchboard.json",
-        sp.GetRequiredService<DnsServiceConfig>(),
+        sp.GetService<DnsServiceConfig>(),
         sp.GetService<ILogger<SwitchboardService>>()));
 
 builder.Services.AddControllers();

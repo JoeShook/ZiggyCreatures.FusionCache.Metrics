@@ -106,7 +106,8 @@ builder.Services.AddSingleton<IFusionCachePlugin>(
     new FusionMeter(
         domainMeterName, 
         memoryCache,
-        $"appMetrics_{serviceName}_cache_events"
+        $"appMetrics_{serviceName}_cache_events",
+        metricsConfig: builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>()
         )
     );
 

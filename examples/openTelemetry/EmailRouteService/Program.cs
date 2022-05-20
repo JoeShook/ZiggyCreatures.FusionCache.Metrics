@@ -6,6 +6,7 @@ using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Services.Model;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Plugins;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
@@ -97,9 +98,6 @@ builder.Services.AddOpenTelemetryMetrics(options =>
 
 // Add services to the container.
 
-var emailCache = new MemoryCache(new MemoryCacheOptions());
-var domainCache = new MemoryCache(new MemoryCacheOptions());
-
 builder.Services.AddSingleton(builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>());
 
 //
@@ -110,9 +108,9 @@ builder.Services.AddSingleton(builder.Configuration.GetSection("CacheMetrics").G
 // FusionCacheEventSource is holding the same object as FusionCache to enabled cache count reporting.
 // See line 193 in FusionCacheEventSource.cs
 //
-builder.Services.AddSingleton<IMemoryCache>(domainCache);
+
 builder.Services.AddSingleton<IFusionCachePlugin>(
-    new FusionMeter(domainMeterName, domainCache, $"appMetrics_{serviceName}_cache_events"));
+    new FusionMeter(domainMeterName, $"appMetrics_{serviceName}_cache_events", metricsConfig: builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>()));
 
 builder.Services.AddFusionCache(options =>
     options.DefaultEntryOptions = new FusionCacheEntryOptions
@@ -147,8 +145,8 @@ builder.Services.AddSingleton(serviceProvider =>
             .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
     };
 
-    var metrics = new FusionMeter(emailMeterName, emailCache, $"appMetrics_{serviceName}_cache_events");
-    var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, emailCache, logger);
+    var metrics = new FusionMeter(emailMeterName, $"appMetrics_{serviceName}_cache_events", metricsConfig: builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>());
+    var fusionCache = new ZiggyCreatures.Caching.Fusion.FusionCache(fusionCacheOptions, metrics.MemoryCache, logger);
     metrics.Start(fusionCache);
 
     return new DnsServiceCache(fusionCache);
@@ -158,6 +156,15 @@ builder.Services.AddSingleton(serviceProvider =>
 // Register typed client https://docs.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-6.0#typed-clients
 builder.Services.AddHttpClient<DnsService>();
 builder.Services.AddHttpClient<DomainService>();
+
+builder.Services.AddSingleton(new EmailRouteServiceConfig());
+
+builder.Services.AddHostedService(sp =>
+    new SwitchboardService(
+        "../switchboard/switchboard.json",
+        sp.GetService<EmailRouteServiceConfig>(),
+        sp.GetService<ILogger<SwitchboardService>>()));
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

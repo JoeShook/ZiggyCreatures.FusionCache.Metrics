@@ -29,7 +29,6 @@ namespace EmailRouteService.Controllers
             _dnsService = dnsService;
             _domainService = domainService;
             _logger = logger;
-
         }
 
 

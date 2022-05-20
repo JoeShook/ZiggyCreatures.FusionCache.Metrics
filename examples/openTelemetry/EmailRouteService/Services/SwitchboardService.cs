@@ -1,11 +1,10 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
 using Services;
 using Services.Model;
 
-namespace DomainService.Services
+namespace EmailRouteService.Services
 {
     public class SwitchboardService : BackgroundService
     {
@@ -16,7 +15,7 @@ namespace DomainService.Services
         private ILogger<SwitchboardService>? _logger;
         private byte[] _switchboardFileHash;
 
-        public SwitchboardService(string switchboardPath, EmailRouteServiceConfig emailRouteServiceConfig, ILogger<SwitchboardService>? logger)
+        public SwitchboardService(string switchboardPath, EmailRouteServiceConfig? emailRouteServiceConfig, ILogger<SwitchboardService>? logger)
         {
             if (!File.Exists(switchboardPath))
             {
