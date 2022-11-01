@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.10.0" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.15.0" />
   </ItemGroup>
 
   <ItemGroup>
