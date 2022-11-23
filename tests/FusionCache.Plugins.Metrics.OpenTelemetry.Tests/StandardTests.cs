@@ -244,7 +244,7 @@ public class StandardTests
             meterProvider.ForceFlush(MaxTimeToAllowForFlush);
 
             var metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheMissTagValue);
-            Assert.Equal(3, metricPoint.GetSumLong());
+            Assert.Equal(4, metricPoint.GetSumLong());
 
             metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheHitTagValue);
             Assert.Equal(2, metricPoint.GetSumLong());

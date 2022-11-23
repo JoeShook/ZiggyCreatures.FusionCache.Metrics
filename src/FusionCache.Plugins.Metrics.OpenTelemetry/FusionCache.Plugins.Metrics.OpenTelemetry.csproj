@@ -36,7 +36,7 @@
 
     <ItemGroup>
         <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="6.0.0" />
-        <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.10.0" />
+        <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.16.0" />
     </ItemGroup>
 
     <ItemGroup>

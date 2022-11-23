@@ -125,6 +125,7 @@ public class BackgroundFailSafeTests : BaseTest
         fusionMeter.Start(cache);
 
         // INITIAL
+        // MISS: +1
         // SET: +1
         await cache.GetOrSetAsync("foo", async (ctx, _) =>
         {
@@ -174,7 +175,7 @@ public class BackgroundFailSafeTests : BaseTest
         meterProvider.ForceFlush(MaxTimeToAllowForFlush);
 
         var metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheMissTagValue);
-        Assert.Equal(0, metricPoint.GetSumLong());
+        Assert.Equal(1, metricPoint.GetSumLong());
 
         metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheHitTagValue);
         Assert.Equal(0, metricPoint.GetSumLong());

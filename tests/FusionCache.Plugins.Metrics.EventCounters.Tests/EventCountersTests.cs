@@ -345,6 +345,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
                 // MISS: +1
                 await cache.TryGetAsync<int>("bar");
 
+                // MISS: +1
                 // SET: +1
                 await cache.GetOrSetAsync<int>(
                     "foo",
@@ -362,7 +363,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
                         await Task.Delay(1, _);
                         throw new Exception("Should not be here");
                     });
-
+                
                 // HIT: +1
                 await cache.GetOrSetAsync<int>(
                     "foo",
@@ -419,7 +420,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.EventCounters.Tests
 
                 var messages = listener.Messages.ToList();
 
-                Assert.Equal(3, GetMetric(messages, SemanticConventions.Instance().CacheMissTagValue));
+                Assert.Equal(4, GetMetric(messages, SemanticConventions.Instance().CacheMissTagValue));
                 Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
                 Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
                 Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
