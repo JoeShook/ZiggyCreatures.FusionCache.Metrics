@@ -19,7 +19,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics</PackageProjectUrl>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <PackageReleaseNotes>Update to FusionCache v0.9</PackageReleaseNotes>
+    <PackageReleaseNotes>Update to FusionCache v0.10</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
