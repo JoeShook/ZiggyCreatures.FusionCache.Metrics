@@ -20,7 +20,7 @@
     <RepositoryUrl>https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics</PackageProjectUrl>
-    <PackageReleaseNotes>Update to FusionCache v0.9</PackageReleaseNotes>
+    <PackageReleaseNotes>Update to FusionCache v0.10</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.10.0" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.16.0" />
   </ItemGroup>
 
   <ItemGroup>

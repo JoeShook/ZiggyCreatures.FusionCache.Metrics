@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>ZiggyCreatures.Fusion.Caching.Plugins.OpenTelemetry.Benchmarks</RootNamespace>
+        <AssemblyName>FusionCache.Plugins.Metrics.OpenTelemetry.Benchmarks</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
+        <PackageReference Include="OpenTelemetry" Version="1.3.1" />
+        <PackageReference Include="OpenTelemetry.Exporter.InMemory" Version="1.3.1" />
+        <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.16.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\FusionCache.Plugins.Metrics.OpenTelemetry\FusionCache.Plugins.Metrics.OpenTelemetry.csproj" />
+    </ItemGroup>
+
+</Project>

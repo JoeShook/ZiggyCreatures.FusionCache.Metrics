@@ -215,6 +215,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
                     // MISS: +1
                     await cache.TryGetAsync<int>("bar");
 
+                    // MISS: +1
                     // SET: +1
                     await cache.GetOrSetAsync<int>(
                         "foo",
@@ -289,7 +290,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
 
                     var messages = reporter.Messages.ToList();
 
-                    Assert.Equal(3, GetMetric(messages, SemanticConventions.Instance().CacheMissTagValue));
+                    Assert.Equal(4, GetMetric(messages, SemanticConventions.Instance().CacheMissTagValue));
                     Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheHitTagValue));
                     Assert.Equal(2, GetMetric(messages, SemanticConventions.Instance().CacheStaleHitTagValue));
                     Assert.Equal(1, GetMetric(messages, SemanticConventions.Instance().CacheSetTagValue));
