@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+      <Description>FusionCache.Plugins.Metrics for OpenTelemetry</Description>
+      <LangVersion>9.0</LangVersion>
+      <Nullable>enable</Nullable>
+      <Authors>Joe Shook</Authors>
+      <Product>Metrics Plugins for FusionCache based on OpenTelemetry</Product>
+      <PackageId>JoeShook.ZiggyCreatures.FusionCache.Metrics.OpenTelemetry</PackageId>
+      <Version>0.1.0</Version>
+      <Copyright>Copyright © Joe Shook 2022</Copyright>
+      <PackageIcon>logo-plugin-128x128.png</PackageIcon>
+      <Description>OpenTelemetry metrics provider implementation.</Description>
+      <PackageLicenseExpression>MIT</PackageLicenseExpression>
+      <PackageTags>caching;cache;multi-level;multilevel;fusion;fusioncache;fusion-cache;performance;async;ziggy;metrics;EventSource;EventCounter;DiagnosticCounter;OpenTelemetry</PackageTags>
+      <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+      <RootNamespace>ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry</RootNamespace>
+      <AssemblyName>ZiggyCreatures.Caching.Fusion.Plugins.Metrics.OpenTelemetry</AssemblyName>
+      <PackageReadmeFile>README.md</PackageReadmeFile>
+      <RepositoryUrl>https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics</RepositoryUrl>
+      <RepositoryType>git</RepositoryType>
+      <PackageProjectUrl>https://github.com/JoeShook/ZiggyCreatures.FusionCache.Metrics</PackageProjectUrl>
+  </PropertyGroup>
+
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DebugType>full</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="artwork\logo-plugin-128x128.png" Pack="true" PackagePath="\" />
+        <None Include="docs\README.md" Pack="True" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="7.0.0" />
+        <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.16.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\FusionCache.Plugins.Metrics.Core\FusionCache.Plugins.Metrics.Core.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+﻿{
+  "DnsServiceConfig": {
+    "CacheConfig": {
+      "Enabled": true
+    }
+  },
+  "DomainServiceConfig": {
+    "CacheConfig": {
+      "Enabled": true  
+    }
+  },
+  "EmailRouteServiceConfig": {
+    "CacheConfig": {
+      "Enabled": true
+    }
+  }
+}

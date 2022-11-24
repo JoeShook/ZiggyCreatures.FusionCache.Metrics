@@ -1,0 +1,32 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "DomainService",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/Domain": {
+      "get": {
+        "tags": [
+          "Domain"
+        ],
+        "parameters": [
+          {
+            "name": "hostName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": { }
+}

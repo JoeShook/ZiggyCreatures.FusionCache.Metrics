@@ -298,6 +298,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.EventCounters
         #endregion
 
 
+        /// <inheritdoc />
         public void Stop(IFusionCache fusionCache)
         {
             fusionCache.Events.Hit -= HandleCacheHit;
@@ -312,6 +313,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.EventCounters
             fusionCache.Events.FailSafeActivate -= HandleFailSafeActivate;
         }
 
+        /// <inheritdoc />
         public void Start(IFusionCache fusionCache)
         {
             fusionCache.Events.Hit += HandleCacheHit;
