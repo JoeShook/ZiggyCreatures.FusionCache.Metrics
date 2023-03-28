@@ -26,21 +26,22 @@ var resourceBuilder  = ResourceBuilder
         serviceInstanceId: Environment.MachineName);
 
 // Traces
-builder.Services.AddOpenTelemetryTracing(options =>
+builder.Services.AddOpenTelemetry()
+    .WithTracing(traceBuilder =>
 {
-    options
+    traceBuilder
         .SetResourceBuilder(resourceBuilder)
         .SetSampler(new AlwaysOnSampler())
         .AddHttpClientInstrumentation()
         .AddAspNetCoreInstrumentation();
 
-    options.AddOtlpExporter(otlpOptions =>
+    traceBuilder.AddOtlpExporter(otlpOptions =>
     {
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
     });
 
 #if DEBUG
-    options.AddConsoleExporter();
+    traceBuilder.AddConsoleExporter();
 #endif
 });
 
@@ -78,20 +79,20 @@ builder.Services.Configure<OpenTelemetryLoggerOptions>(opt =>
 var emailMeterName = "email"; // same as cacheName
 var domainMeterName = "domain"; // same as cacheName
 
-builder.Services.AddOpenTelemetryMetrics(options =>
+builder.Services.AddOpenTelemetry().WithMetrics(meterBuilder =>
 {
-    options.SetResourceBuilder(resourceBuilder)
+    meterBuilder.SetResourceBuilder(resourceBuilder)
         .AddMeter(emailMeterName, domainMeterName)
         .AddHttpClientInstrumentation()
         .AddAspNetCoreInstrumentation();
 
-    options.AddOtlpExporter(otlpOptions =>
+    meterBuilder.AddOtlpExporter(otlpOptions =>
     {
         otlpOptions.Endpoint = new Uri(builder.Configuration.GetValue<string>("Otlp:Endpoint"));
     });
 
 #if DEBUG
-    options.AddConsoleExporter();
+    meterBuilder.AddConsoleExporter();
 #endif
 });
 
