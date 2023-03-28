@@ -1,4 +1,13 @@
-﻿using System;
+﻿#region (c) 2021 Joseph Shook. All rights reserved.
+// /*
+//  Authors:
+//     Joseph Shook   Joseph.Shook@Surescripts.com
+// 
+//  See LICENSE in the project root for license information.
+// */
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -8,7 +17,6 @@ using App.Metrics.Extensions.Hosting;
 using App.Metrics.Formatters.Json;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Hosting.Internal;
 using Moq;
 using Xunit;
 using Xunit.Abstractions;

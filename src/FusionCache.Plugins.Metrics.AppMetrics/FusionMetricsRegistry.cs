@@ -1,4 +1,13 @@
-﻿using App.Metrics;
+﻿#region (c) 2021 Joseph Shook. All rights reserved.
+// /*
+//  Authors:
+//     Joseph Shook   Joseph.Shook@Surescripts.com
+// 
+//  See LICENSE in the project root for license information.
+// */
+#endregion
+
+using App.Metrics;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using ZiggyCreatures.Caching.Fusion.Plugins.Metrics.Core;
