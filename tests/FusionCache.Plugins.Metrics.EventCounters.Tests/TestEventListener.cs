@@ -1,4 +1,13 @@
-﻿using System;
+﻿#region (c) 2021 Joseph Shook. All rights reserved.
+// /*
+//  Authors:
+//     Joseph Shook   Joseph.Shook@Surescripts.com
+// 
+//  See LICENSE in the project root for license information.
+// */
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Threading;

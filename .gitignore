@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 *.html
 examples/superbenchmarker/20*
+NuGet.config
