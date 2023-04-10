@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
@@ -30,7 +30,7 @@
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Serilog.Settings.AppSettings" Version="2.2.2" />
     <PackageReference Include="System.Text.Json" Version="7.0.2" />
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.19.0" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.20.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.19.0" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.20.0" />
   </ItemGroup>
 
   <ItemGroup>
