@@ -24,7 +24,7 @@
     <PackageReference Include="App.Metrics.Reporting.TextFile" Version="4.3.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.20.0" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.21.0" />
   </ItemGroup>
 
   <ItemGroup>
