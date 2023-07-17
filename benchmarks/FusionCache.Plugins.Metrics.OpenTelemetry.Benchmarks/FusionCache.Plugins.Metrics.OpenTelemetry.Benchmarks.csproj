@@ -10,7 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
+        <PackageReference Include="BenchmarkDotNet" Version="0.13.6" />
         <PackageReference Include="OpenTelemetry" Version="1.5.1" />
         <PackageReference Include="OpenTelemetry.Exporter.InMemory" Version="1.5.1" />
         <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.22.0" />
