@@ -51,15 +51,14 @@ namespace EventCountersPluginExampleDotNetCore
             //
             services.AddSingleton<IMemoryCache>(hostNameCache);
             services.AddSingleton<IFusionCachePlugin>(new FusionCacheEventSource("domain", hostNameCache));
-            services.AddFusionCache(options =>
-                options.DefaultEntryOptions = new FusionCacheEntryOptions
+            services.AddFusionCache()
+                .WithDefaultEntryOptions(options =>
                 {
-                    Duration = TimeSpan.FromSeconds(1),
-                    JitterMaxDuration = TimeSpan.FromMilliseconds(200)
-                }
-                    .SetFailSafe(true, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(1))
-                    .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
-                );
+                    options.Duration = TimeSpan.FromSeconds(1);
+                    options.JitterMaxDuration = TimeSpan.FromMilliseconds(200);
+                    options.SetFailSafe(true, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(1));
+                    options.SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1));
+                });
 
             //
             // Cache called "email"
