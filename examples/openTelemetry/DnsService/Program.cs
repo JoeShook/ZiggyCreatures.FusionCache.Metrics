@@ -102,7 +102,7 @@ builder.Services.AddOpenTelemetry().WithMetrics(meterBuilder =>
 var memoryCache = new MemoryCache(new MemoryCacheOptions());
 
 builder.Services.AddSingleton<IMemoryCache>(memoryCache);
-builder.Services.AddSingleton<IFusionCachePlugin>(new FusionMeter(dnsMeterName, memoryCache, metricsConfig: builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>()));
+builder.Services.AddSingleton<IFusionCachePlugin>(new FusionMeter(dnsMeterName, memoryCache));
 builder.Services.AddFusionCache(options =>
     options.DefaultEntryOptions = new FusionCacheEntryOptions
         {

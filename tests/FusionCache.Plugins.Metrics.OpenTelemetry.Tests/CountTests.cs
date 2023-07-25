@@ -21,11 +21,10 @@ public class CountTests : BaseTest
     [Fact]
     public void LoadPluginWithItemCountCheck()
     {
-        var measurementName = "LoadPluginWithItemCountCheck";
         var exportedItems = new List<Metric>();
         var cacheName = "LoadPluginWithItemCountCheckCache";
         using var memoryCache = new MemoryCache(new MemoryCacheOptions());
-        using var fusionMeter = new FusionMeter(cacheName, memoryCache, measurementName);
+        using var fusionMeter = new FusionMeter(cacheName, memoryCache);
         using var meterProvider = Sdk.CreateMeterProviderBuilder()
             .AddMeter(cacheName)
             .AddInMemoryExporter(exportedItems)
@@ -33,39 +32,6 @@ public class CountTests : BaseTest
         using var cache = new ZiggyCreatures.Caching.Fusion.FusionCache(
             new FusionCacheOptions(),
             memoryCache);
-
-        fusionMeter.Start(cache);
-
-        for (int i = 0; i < 100; i++)
-        {
-            var i1 = i;
-            cache.GetOrSet($"A-Key-{i}", () => $"A-Value{i1}");
-        }
-
-        Thread.Sleep(600);
-
-        meterProvider.ForceFlush(MaxTimeToAllowForFlush);
-
-        var metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheSetTagValue);
-        Assert.Equal(100, metricPoint.GetSumLong());
-
-        metricPoint = GetMetricPoint(exportedItems, SemanticConventions.CacheItemCountTagValue);
-        Assert.Equal(100, metricPoint.GetGaugeLastValueLong());
-    }
-
-    [Fact]
-    public void LoadPluginWithItemCountCheck_AutoCreate_MemoryCache()
-    {
-        var measurementName = "LoadPluginWithItemCountCheck";
-        var exportedItems = new List<Metric>();
-        var cacheName = "LoadPluginWithItemCountCheckCache";
-        using var fusionMeter = new FusionMeter(cacheName, measurementName);
-        using var meterProvider = Sdk.CreateMeterProviderBuilder()
-            .AddMeter(cacheName)
-            .AddInMemoryExporter(exportedItems)
-            .Build();
-
-        using var cache = new ZiggyCreatures.Caching.Fusion.FusionCache(new FusionCacheOptions(), fusionMeter.MemoryCache);
 
         fusionMeter.Start(cache);
 

@@ -100,16 +100,11 @@ builder.Services.AddOpenTelemetry().WithMetrics(meterBuilder =>
 
 // Add services to the container.
 var memoryCache = new MemoryCache(new MemoryCacheOptions());
-builder.Services.AddSingleton(builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>());
-
 builder.Services.AddSingleton<IMemoryCache>(memoryCache);
 builder.Services.AddSingleton<IFusionCachePlugin>(
     new FusionMeter(
         domainMeterName, 
-        memoryCache,
-        $"appMetrics_{serviceName}_cache_events",
-        metricsConfig: builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>()
-        )
+        memoryCache)
     );
 
 builder.Services.AddFusionCache(options =>

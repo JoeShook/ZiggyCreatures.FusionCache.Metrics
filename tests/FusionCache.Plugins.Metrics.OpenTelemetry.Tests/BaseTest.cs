@@ -38,28 +38,15 @@ public class BaseTest
 
         var metricPoints = new List<MetricPoint>();
 
-        foreach (var result in metrics)
+        foreach (var result in metrics.Where(i => i.Name == eventName))
         {
             foreach (ref readonly var mp in result.GetMetricPoints())
             {
                 metricPoints.Add(mp);
             }
         }
-
-       
-        var metricPoint = metricPoints.SingleOrDefault(p =>
-        {
-            foreach (var argTag in p.Tags)
-            {
-                if (argTag.Value == eventName)
-                {
-                    return true;
-                }
-            }
-            return false;
-        });
-
-        return metricPoint;
+        
+        return metricPoints.SingleOrDefault();
     }
         
     internal class Utils

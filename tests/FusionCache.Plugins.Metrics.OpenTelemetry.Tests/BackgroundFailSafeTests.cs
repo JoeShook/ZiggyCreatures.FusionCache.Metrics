@@ -21,7 +21,6 @@ public class BackgroundFailSafeTests : BaseTest
     [Fact]
     public async Task BackgroundFailSafeAsync()
     {
-        var measurementName = "BackgroundFailSafeAsync";
         var exportedItems = new List<Metric>();
         var cacheName = "BackgroundFailSafeCache";
         var duration = TimeSpan.FromSeconds(2);
