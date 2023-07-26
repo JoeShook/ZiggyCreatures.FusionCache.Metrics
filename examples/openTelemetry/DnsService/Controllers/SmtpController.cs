@@ -38,9 +38,9 @@ namespace DnsService.Controllers
 
             EmailToIpData? resourceRecord;
 
-            if (_cacheConfig.Enabled)
+            if (_cacheConfig.Enabled && _cache != null)
             {
-                resourceRecord = await _cache.GetOrSetAsync(
+                resourceRecord = await _cache.GetOrSetAsync<EmailToIpData>(
                     emailAddress, async (ctx, _) =>
                     {
                         var emailToIpData = await _dataManager.GetEmailRoute(emailAddress, _)!;

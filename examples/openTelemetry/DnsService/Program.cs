@@ -103,14 +103,15 @@ var memoryCache = new MemoryCache(new MemoryCacheOptions());
 
 builder.Services.AddSingleton<IMemoryCache>(memoryCache);
 builder.Services.AddSingleton<IFusionCachePlugin>(new FusionMeter(dnsMeterName, memoryCache, metricsConfig: builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>()));
-builder.Services.AddFusionCache(options =>
-    options.DefaultEntryOptions = new FusionCacheEntryOptions
-        {
-            Duration = TimeSpan.FromSeconds(60)
-        }
-        .SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(5))
-        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
-);
+
+builder.Services.AddFusionCache()
+    .WithDefaultEntryOptions(options =>
+    {
+        options.Duration = TimeSpan.FromSeconds(60);
+        options.SetFailSafe(true, TimeSpan.FromHours(1), TimeSpan.FromSeconds(5));
+        options.SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1));
+    });
+
 
 builder.Services.AddSingleton<IDataManager>(new DataManager("MockDomainCertData.json", "MockEmailToIpData.json"));
 builder.Services.AddHostedService<DataFileMonitorService>();

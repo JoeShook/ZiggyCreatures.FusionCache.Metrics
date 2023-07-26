@@ -113,15 +113,14 @@ builder.Services.AddSingleton(builder.Configuration.GetSection("CacheMetrics").G
 builder.Services.AddSingleton<IFusionCachePlugin>(
     new FusionMeter(domainMeterName, $"appMetrics_{serviceName}_cache_events", metricsConfig: builder.Configuration.GetSection("CacheMetrics").Get<MetricsConfig>()));
 
-builder.Services.AddFusionCache(options =>
-    options.DefaultEntryOptions = new FusionCacheEntryOptions
+builder.Services.AddFusionCache()
+    .WithDefaultEntryOptions(options =>
     {
-        Duration = TimeSpan.FromSeconds(1),
-        JitterMaxDuration = TimeSpan.FromMilliseconds(200)
-    }
-        .SetFailSafe(true, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(1))
-        .SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1))
-    );
+        options.Duration = TimeSpan.FromSeconds(1);
+        options.JitterMaxDuration = TimeSpan.FromMilliseconds(200);
+        options.SetFailSafe(true, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(1));
+        options.SetFactoryTimeouts(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1));
+    });
 
 //
 // Cache called "email"

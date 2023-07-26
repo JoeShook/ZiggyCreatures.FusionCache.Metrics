@@ -64,18 +64,20 @@ namespace AppMetricsPluginExampleDotNetCore
             //
             services.AddSingleton<IMemoryCache>(hostNameCache);
             services.AddSingleton<IFusionCachePlugin>(serviceProvider => new AppMetricsProvider("domain", serviceProvider.GetService<IMetrics>(), hostNameCache, mySemantics));
-            services.AddFusionCache(options =>
-            {
-                options.DefaultEntryOptions = new FusionCacheEntryOptions
+            
+            services.AddFusionCache()
+                .WithDefaultEntryOptions(options =>
                 {
-                    Duration = TimeSpan.FromSeconds(1),
-                    JitterMaxDuration = TimeSpan.FromMilliseconds(200),
-                    IsFailSafeEnabled = true,
-                    FailSafeMaxDuration = TimeSpan.FromHours(1),
-                    FailSafeThrottleDuration = TimeSpan.FromSeconds(1),
-                    FactorySoftTimeout = TimeSpan.FromMilliseconds(100),
-                    FactoryHardTimeout = TimeSpan.FromSeconds(1)
-                };
+                    options.Duration = TimeSpan.FromSeconds(1);
+                    options.JitterMaxDuration = TimeSpan.FromMilliseconds(200);
+                    options.IsFailSafeEnabled = true;
+                    options.FailSafeMaxDuration = TimeSpan.FromHours(1);
+                    options.FailSafeThrottleDuration = TimeSpan.FromSeconds(1);
+                    options.FactorySoftTimeout = TimeSpan.FromMilliseconds(100);
+                    options.FactoryHardTimeout = TimeSpan.FromSeconds(1);
+                });
+
+
                 //
                 // Event logs are very noisy when testing this example mostly because the example is designed to 
                 // demonstrate all cache events and to track them with the AppMetrics library.  
@@ -86,7 +88,7 @@ namespace AppMetricsPluginExampleDotNetCore
                 // options.DistributedCacheErrorsLogLevel = LogLevel.None;
                 // options.FactorySyntheticTimeoutsLogLevel = LogLevel.None;
                 // options.FactoryErrorsLogLevel = LogLevel.None;
-            });
+            
 
             //
             // Cache called "email"

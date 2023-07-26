@@ -96,16 +96,16 @@ namespace AppMetricsPluginExampleFrameworkOnAspNetCore
             //
             services.AddSingleton<IMemoryCache>(hostNameCache);
             services.AddSingleton<IFusionCachePlugin>(new AppMetricsProvider("domain", appMetrics, hostNameCache));
-            services.AddFusionCache(options =>
-                options.DefaultEntryOptions = new FusionCacheEntryOptions
+            services.AddFusionCache()
+                .WithDefaultEntryOptions(options =>
                 {
-                    Duration = TimeSpan.FromSeconds(1),
-                    JitterMaxDuration = TimeSpan.FromMilliseconds(200),
-                    IsFailSafeEnabled = true,
-                    FailSafeMaxDuration = TimeSpan.FromHours(1),
-                    FailSafeThrottleDuration = TimeSpan.FromSeconds(1),
-                    FactorySoftTimeout = TimeSpan.FromMilliseconds(100), 
-                    FactoryHardTimeout = TimeSpan.FromSeconds(1)
+                    options.Duration = TimeSpan.FromSeconds(1);
+                    options.JitterMaxDuration = TimeSpan.FromMilliseconds(200);
+                    options.IsFailSafeEnabled = true;
+                    options.FailSafeMaxDuration = TimeSpan.FromHours(1);
+                    options.FailSafeThrottleDuration = TimeSpan.FromSeconds(1);
+                    options.FactorySoftTimeout = TimeSpan.FromMilliseconds(100);
+                    options.FactoryHardTimeout = TimeSpan.FromSeconds(1);
                 });
 
             //

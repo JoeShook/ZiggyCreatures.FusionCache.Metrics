@@ -60,7 +60,7 @@ namespace EmailRouteService.Controllers
                 if (domain != null && domain.Enabled)
                 {
                     // Adaptive Caching.  Duration set by ttl of data from dns service
-                    result = await _dnsServiceCache.FusionCache.GetOrSetAsync(
+                    result = await _dnsServiceCache.FusionCache.GetOrSetAsync<EmailToIpData>(
                         emailAddress, async (ctx, _) =>
                         {
                             var emailToIpData = await _dnsService.GetDnsData(emailAddress, _);

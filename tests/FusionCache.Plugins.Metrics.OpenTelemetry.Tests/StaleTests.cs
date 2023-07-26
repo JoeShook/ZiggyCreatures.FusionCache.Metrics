@@ -103,7 +103,7 @@ public class StaleTests : BaseTest
         fusionMeter.Start(cache);
 
         // SET: +1
-        cache.GetOrSet("foo", (ctx, _) =>
+        cache.GetOrSet<int>("foo", (ctx, _) =>
         {
             // Duration set by factory return value
             ctx.Options.SetDuration(adaptiveDuration).SetFailSafe(true);
@@ -113,7 +113,7 @@ public class StaleTests : BaseTest
 
 
         // HIT: +1
-        cache.GetOrSet("foo", (ctx, _) =>
+        cache.GetOrSet<int>("foo", (ctx, _) =>
         {
             // Duration overriden in factory from minutes to seconds.
             ctx.Options.SetDuration(adaptiveDuration).SetFailSafe(true);
@@ -125,7 +125,7 @@ public class StaleTests : BaseTest
         Thread.Sleep(adaptiveDuration);
 
         // HIT (STALE): +1
-        cache.GetOrSet("foo", (ctx, _) =>
+        cache.GetOrSet<int>("foo", (ctx, _) =>
         {
             Thread.Sleep(throttleDuration);
             // Duration overriden in factory from minutes to seconds.
