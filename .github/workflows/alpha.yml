@@ -14,6 +14,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions: 
+      packages: write
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -28,4 +30,8 @@ jobs:
         dotnet pack -v normal -c Release -p:PackageVersion=${VERSION} src/FusionCache.Plugins.Metrics.OpenTelemetry/FusionCache.Plugins.Metrics.OpenTelemetry.csproj --output .        
     - name: Push
       run: |
-        dotnet nuget push ${PACKAGE_ID}.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+        if [ -n "${{ secrets.NUGET_API_KEY }}" ]; then
+            dotnet nuget push ${PACKAGE_ID}.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key "${{ secrets.NUGET_API_KEY }}"
+        else
+            dotnet nuget push ${PACKAGE_ID}.${VERSION}.nupkg --source https://nuget.pkg.github.com/${{ vars.NAMESPACE }}/index.json --api-key "${{ secrets.GITHUB_TOKEN }}"
+        fi
