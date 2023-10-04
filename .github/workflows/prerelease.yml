@@ -20,8 +20,10 @@ jobs:
         dotnet pack -v normal -c Release -p:PackageVersion=${VERSION} src/FusionCache.Plugins.Metrics.Core/FusionCache.Plugins.Metrics.Core.csproj --output .
         dotnet pack -v normal -c Release -p:PackageVersion=${VERSION} src/FusionCache.Plugins.Metrics.EventCounters/FusionCache.Plugins.Metrics.EventCounters.csproj --output .
         dotnet pack -v normal -c Release -p:PackageVersion=${VERSION} src/FusionCache.Plugins.Metrics.AppMetrics/FusionCache.Plugins.Metrics.AppMetrics.csproj --output .
+        dotnet pack -v normal -c Release -p:PackageVersion=${VERSION} src/FusionCache.Plugins.Metrics.OpenTelemetry/FusionCache.Plugins.Metrics.OpenTelemetry.csproj --output .
     - name: Push
       run: |
         dotnet nuget push JoeShook.ZiggyCreatures.FusionCache.Metrics.Core.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
         dotnet nuget push JoeShook.ZiggyCreatures.FusionCache.Metrics.EventCounters.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
         dotnet nuget push JoeShook.ZiggyCreatures.FusionCache.Metrics.AppMetrics.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+        dotnet nuget push JoeShook.ZiggyCreatures.FusionCache.Metrics.OpenTelemetry.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
