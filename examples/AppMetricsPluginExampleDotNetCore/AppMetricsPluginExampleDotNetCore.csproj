@@ -22,9 +22,9 @@
     <PackageReference Include="App.Metrics.Formatters.Json" Version="4.3.0" />
     <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="4.3.0" />
     <PackageReference Include="App.Metrics.Reporting.TextFile" Version="4.3.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.22.0" />
+    <PackageReference Include="ZiggyCreatures.FusionCache" Version="0.23.0" />
   </ItemGroup>
 
   <ItemGroup>
