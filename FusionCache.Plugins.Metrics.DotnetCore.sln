@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31205.134
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}"
 EndProject
@@ -46,6 +46,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.Plugins.Metrics.AppMetrics.Tests", "tests\FusionCache.Plugins.Metrics.AppMetrics.Tests\FusionCache.Plugins.Metrics.AppMetrics.Tests.csproj", "{A72F5BD6-2901-4FAC-8FCE-42323566AC0B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.Plugins.Metrics.EventCounters.Tests", "tests\FusionCache.Plugins.Metrics.EventCounters.Tests\FusionCache.Plugins.Metrics.EventCounters.Tests.csproj", "{9534810D-64DC-4D24-A008-B82C5E0D4813}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.Plugins.Metrics.OpenTelemetry", "src\FusionCache.Plugins.Metrics.OpenTelemetry\FusionCache.Plugins.Metrics.OpenTelemetry.csproj", "{B5898B01-FC82-42B3-A2A2-38DAFE4F13D5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FusionCache.Plugins.Metrics.OpenTelemetry.Tests", "tests\FusionCache.Plugins.Metrics.OpenTelemetry.Tests\FusionCache.Plugins.Metrics.OpenTelemetry.Tests.csproj", "{7CFCF67F-7323-4EA8-AC34-6EF3D2FC401C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +97,14 @@ Global
 		{9534810D-64DC-4D24-A008-B82C5E0D4813}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9534810D-64DC-4D24-A008-B82C5E0D4813}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9534810D-64DC-4D24-A008-B82C5E0D4813}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5898B01-FC82-42B3-A2A2-38DAFE4F13D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5898B01-FC82-42B3-A2A2-38DAFE4F13D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5898B01-FC82-42B3-A2A2-38DAFE4F13D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5898B01-FC82-42B3-A2A2-38DAFE4F13D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CFCF67F-7323-4EA8-AC34-6EF3D2FC401C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CFCF67F-7323-4EA8-AC34-6EF3D2FC401C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CFCF67F-7323-4EA8-AC34-6EF3D2FC401C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CFCF67F-7323-4EA8-AC34-6EF3D2FC401C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,6 +122,8 @@ Global
 		{C363221A-B27E-475A-8377-C7B925690BCC} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
 		{A72F5BD6-2901-4FAC-8FCE-42323566AC0B} = {A8A86176-AAA6-4CB3-9172-16A841E32138}
 		{9534810D-64DC-4D24-A008-B82C5E0D4813} = {A8A86176-AAA6-4CB3-9172-16A841E32138}
+		{B5898B01-FC82-42B3-A2A2-38DAFE4F13D5} = {59FD9164-7D0C-4C89-8896-FAAC7DD5EC53}
+		{7CFCF67F-7323-4EA8-AC34-6EF3D2FC401C} = {A8A86176-AAA6-4CB3-9172-16A841E32138}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32C4269F-FC33-47FA-91DA-2B6C5DF7D025}
