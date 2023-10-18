@@ -468,7 +468,7 @@ namespace ZiggyCreatures.Caching.Fusion.Plugins.Metrics.AppMetrics.Tests
                     appMetricsProvider.Stop(cache);
 
                     // Let EventListener poll for data
-                    await Task.Delay(1000);
+                    await Task.Delay(1600);
 
                     var messages = reporter.Messages.ToList();
 
