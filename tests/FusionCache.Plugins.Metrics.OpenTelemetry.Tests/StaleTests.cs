@@ -58,7 +58,7 @@ public class StaleTests : BaseTest
         // HIT (STALE): +1
         cache.TryGet<int>("foo");
 
-        Thread.Sleep(600);
+        Thread.Sleep(1600);
 
         // Assert
         meterProvider.ForceFlush(MaxTimeToAllowForFlush);
@@ -89,7 +89,7 @@ public class StaleTests : BaseTest
             .AddInMemoryExporter(exportedItems)
             .Build();
         using var cache = new ZiggyCreatures.Caching.Fusion.FusionCache(
-            new FusionCacheOptions(),
+            new FusionCacheOptions() { EnableSyncEventHandlersExecution = true },
             memoryCache);
 
 
@@ -143,8 +143,6 @@ public class StaleTests : BaseTest
 
             return 42;
         });
-
-        Thread.Sleep(600);
 
         // Assert
         meterProvider.ForceFlush(MaxTimeToAllowForFlush);
