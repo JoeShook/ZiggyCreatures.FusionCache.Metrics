@@ -18,40 +18,42 @@ public class BaseTest
 {
     protected static ISemanticConventions SemanticConventions = new SemanticConventions();
     protected const int MaxTimeToAllowForFlush = 10000;
-    protected static MetricPoint GetMetricPoint(List<Metric> exportedItems, string eventName, string? meterName = null)
+    protected static MetricPoint GetMetricPoint(List<Metric>? exportedItems, string eventName, string? meterName = null)
     {
-        List<Metric> metrics = null;
+        List<Metric>? metrics;
 
         if (meterName != null)
         {
-            metrics = exportedItems.Where(i => i.MeterName == meterName).ToList();
+            metrics = exportedItems?.Where(i => i.MeterName == meterName).ToList();
         }
         else
         {
             metrics = exportedItems;
         }
 
-        if (!metrics.Any())
+        if (metrics != null && !metrics.Any())
         {
             return new MetricPoint();
         }
 
         var metricPoints = new List<MetricPoint>();
 
-        foreach (var result in metrics)
+        if (metrics != null)
         {
-            foreach (ref readonly var mp in result.GetMetricPoints())
+            foreach (var result in metrics)
             {
-                metricPoints.Add(mp);
+                foreach (ref readonly var mp in result.GetMetricPoints())
+                {
+                    metricPoints.Add(mp);
+                }
             }
         }
 
-       
         var metricPoint = metricPoints.SingleOrDefault(p =>
         {
             foreach (var argTag in p.Tags)
             {
-                if (argTag.Value == eventName)
+                if ((string)argTag.Value == eventName)
                 {
                     return true;
                 }
